@@ -1,0 +1,13 @@
+[[headers]]
+  for = "/*"
+  [headers.values]
+    # Povolí vložení stránky do iframu (nutné pro tvé portfolio)
+    X-Frame-Options = "ALLOWALL"
+    
+    # Bezpečnostní pravidlo: říká, kdo smí tuhle stránku vkládat do iframu
+    # Povolujeme: samotnou aplikaci, tvé portfolio na webu i tvůj localhost pro vývoj
+    Content-Security-Policy = "frame-ancestors 'self' https://hribal.site https://*.hribal.site http://localhost:*"
+
+    # Volitelné: vynucení HTTPS a ochrana proti podvržení typu obsahu
+    X-Content-Type-Options = "nosniff"
+    X-XSS-Protection = "1; mode=block"
