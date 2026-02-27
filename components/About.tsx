@@ -1,3 +1,5 @@
+import { Code2, Zap, Users } from "lucide-react";
+
 const skillCategories = [
   {
     label: "Frontend",
@@ -5,15 +7,33 @@ const skillCategories = [
   },
   {
     label: "Backend",
-    skills: ["Node.js", "tRPC", "Prisma", "PostgreSQL", "MongoDB"],
+    skills: ["Node.js", "Kotlin", "tRPC", "Prisma", "PostgreSQL", "MongoDB"],
   },
   {
     label: "Tooling",
-    skills: ["Git", "GitHub Actions", "Docker", "Vite", "Storybook"],
+    skills: ["Git", "GitHub Actions", "Docker", "Vite", "Linux", "CI/CD"],
   },
   {
     label: "Design",
-    skills: ["Figma", "Radix UI", "shadcn/ui", "CSS Animations", "SVG"],
+    skills: ["Figma", "Radix UI", "shadcn/ui", "CSS Animations", "SVG", "Responsive Design"],
+  },
+];
+
+const philosophy = [
+  {
+    icon: Code2,
+    title: "Clean Code",
+    desc: "I write readable, maintainable code with consistent structure. Every function has a clear purpose, every module a single responsibility.",
+  },
+  {
+    icon: Zap,
+    title: "Performance First",
+    desc: "From lazy loading to database indexing, I obsess over speed. Fast apps aren't a bonus — they're a baseline expectation.",
+  },
+  {
+    icon: Users,
+    title: "User-Centric Design",
+    desc: "I build for real people. Every interaction is intentional, every layout is tested, and accessibility is never an afterthought.",
   },
 ];
 
@@ -35,18 +55,25 @@ export default function About() {
             </h2>
             <div className="space-y-4 text-zinc-400 text-base leading-relaxed">
               <p>
-                My journey into development started pretty quietly while studying 
-                at INFIS in Pilsen. I realized I enjoyed building things and putting 
-                them together way more than just using them. Lately, I've been spending 
-                most of my time with Next.js and Tailwind, turning ideas into fast, 
-                functional apps.
+                My journey into development started while studying IT at INFIS in
+                Pilsen, where I quickly realized I enjoyed <em>building</em> things
+                far more than just using them. What began with experimenting on
+                small hobby projects evolved into architecting production platforms
+                serving hundreds of thousands of users.
               </p>
               <p>
-                What I love about programming is the constant challenge—figuring out 
-                how to build a solid foundation on the backend while keeping the user 
-                interface clean and straightforward. For me, a project isn't truly 
-                finished until the code makes sense and using the app feels completely 
-                natural.
+                Over the past four years I&apos;ve gone deep into the modern
+                JavaScript and Kotlin ecosystems — from crafting pixel-perfect
+                frontends with Next.js and Nuxt.js to designing scalable backend
+                APIs and managing containerized infrastructure with Docker. I thrive
+                in environments where I can own the full stack, from database schema
+                design to the final CSS animation.
+              </p>
+              <p>
+                When I&apos;m not coding, I&apos;m usually exploring new technologies,
+                contributing to open-source tools, or brewing my third espresso of 
+                the day while reading about system design patterns. I believe the 
+                best software comes from genuine curiosity and relentless iteration.
               </p>
             </div>
           </div>
@@ -72,6 +99,27 @@ export default function About() {
               </div>
             ))}
           </div>
+        </div>
+
+        {/* Philosophy Cards */}
+        <div className="grid md:grid-cols-3 gap-6 mt-20">
+          {philosophy.map((item) => (
+            <div
+              key={item.title}
+              className="group p-6 rounded-2xl border border-zinc-800/60 bg-zinc-900/20 hover:bg-zinc-900/50 hover:border-zinc-700/60 hover:-translate-y-1 transition-all duration-300"
+            >
+              <item.icon
+                size={24}
+                className="text-emerald-500 mb-4 group-hover:scale-110 transition-transform duration-300"
+              />
+              <h3 className="text-base font-semibold text-zinc-100 mb-2">
+                {item.title}
+              </h3>
+              <p className="text-sm text-zinc-400 leading-relaxed">
+                {item.desc}
+              </p>
+            </div>
+          ))}
         </div>
       </div>
     </section>

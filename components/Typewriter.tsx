@@ -41,7 +41,7 @@ export default function Typewriter() {
   }, [charIndex, deleting, roleIndex]);
 
   return (
-    <span className="text-zinc-400 font-light">
+    <span className="text-zinc-400 font-light text-2xl sm:text-3xl md:text-4xl">
       {displayed}
       <span className="inline-block w-[2px] h-[0.85em] bg-emerald-400 ml-[2px] translate-y-[2px] animate-pulse" />
     </span>

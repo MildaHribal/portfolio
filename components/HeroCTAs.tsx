@@ -1,12 +1,12 @@
 "use client";
 
 import Link from "next/link";
-import { ArrowRight, Mail } from "lucide-react";
+import { ArrowRight, Mail, Download } from "lucide-react";
 import posthog from "posthog-js";
 
 export default function HeroCTAs() {
   return (
-    <div className="animate-fade-up animation-delay-300 flex flex-wrap items-center justify-center gap-4">
+    <div className="animate-fade-up animation-delay-300 flex flex-wrap items-center gap-4">
       <Link
         href="#projects"
         onClick={(e) => {
@@ -36,6 +36,17 @@ export default function HeroCTAs() {
         <Mail size={15} />
         Contact Me
       </Link>
+      <a
+        href="/resume.pdf"
+        download
+        onClick={() => {
+          posthog.capture("hero_cta_clicked", { cta: "download_cv" });
+        }}
+        className="inline-flex items-center gap-2 px-6 py-3 rounded-full border border-zinc-800 text-zinc-500 text-sm font-medium hover:border-emerald-800/50 hover:text-emerald-400 hover:bg-emerald-950/20 transition-all duration-200"
+      >
+        <Download size={15} />
+        Download CV
+      </a>
     </div>
   );
 }
