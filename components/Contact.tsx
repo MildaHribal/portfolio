@@ -74,9 +74,7 @@ export default function Contact() {
               Let&apos;s work together
             </h2>
             <p className="text-zinc-400 text-sm leading-relaxed mb-8">
-              Have a project in mind, a role to fill, or just want to say hello?
-              My inbox is always open. I&apos;ll do my best to reply within
-              24 hours.
+              Got a project or an open role? Or just want to connect? Drop me a message. I typically respond within a day.
             </p>
 
             {/* Contact details */}
