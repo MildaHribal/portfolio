@@ -3,7 +3,7 @@ import type { NextConfig } from "next";
 const nextConfig: NextConfig = {
   output: "standalone",
   images: {
-    unoptimized: true,
+    formats: ['image/avif', 'image/webp'],
   },
   async rewrites() {
     return [
@@ -19,6 +19,9 @@ const nextConfig: NextConfig = {
   },
   // Required to support PostHog trailing slash API requests
   skipTrailingSlashRedirect: true,
+  experimental: {
+    optimizeCss: true,
+  },
 };
 
 export default nextConfig;

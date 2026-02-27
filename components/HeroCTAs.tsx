@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { ArrowRight, Mail, Download } from "lucide-react";
-import posthog from "posthog-js";
+import { getPostHog } from "@/lib/posthog";
 
 export default function HeroCTAs() {
   return (
@@ -11,7 +11,7 @@ export default function HeroCTAs() {
         href="#projects"
         onClick={(e) => {
           e.preventDefault();
-          posthog.capture("hero_cta_clicked", { cta: "view_work" });
+          getPostHog().capture("hero_cta_clicked", { cta: "view_work" });
           document.querySelector("#projects")?.scrollIntoView({ behavior: "smooth" });
           window.history.pushState(null, "", "#projects");
         }}
@@ -27,7 +27,7 @@ export default function HeroCTAs() {
         href="#contact"
         onClick={(e) => {
           e.preventDefault();
-          posthog.capture("hero_cta_clicked", { cta: "contact_me" });
+          getPostHog().capture("hero_cta_clicked", { cta: "contact_me" });
           document.querySelector("#contact")?.scrollIntoView({ behavior: "smooth" });
           window.history.pushState(null, "", "#contact");
         }}
@@ -40,7 +40,7 @@ export default function HeroCTAs() {
         href="/resume.pdf"
         download
         onClick={() => {
-          posthog.capture("hero_cta_clicked", { cta: "download_cv" });
+          getPostHog().capture("hero_cta_clicked", { cta: "download_cv" });
         }}
         className="inline-flex items-center gap-2 px-6 py-3 rounded-full border border-zinc-800 text-zinc-500 text-sm font-medium hover:border-emerald-800/50 hover:text-emerald-400 hover:bg-emerald-950/20 transition-all duration-200"
       >

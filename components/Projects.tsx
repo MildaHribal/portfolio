@@ -3,7 +3,7 @@
 import { ExternalLink, Github, ArrowUpRight } from "lucide-react";
 import Image from "next/image";
 import { useState } from "react";
-import posthog from "posthog-js";
+import { getPostHog } from "@/lib/posthog";
 
 interface Project {
   title: string;
@@ -112,11 +112,12 @@ export default function Projects() {
                         src={project.image}
                         alt={project.title}
                         fill
-                        quality={100}
+                        sizes={isBudBuddy ? "300px" : isQuestie ? "(max-width: 768px) 100vw, 800px" : "(max-width: 768px) 100vw, 50vw"}
                         className={`transition-transform duration-500 group-hover/img:scale-[1.03] ${
                           isBudBuddy ? "object-cover" : isQuestie ? "object-cover object-top" : "object-cover aspect-video"
                         }`}
                         priority={i === 0}
+                        loading={i === 0 ? undefined : "lazy"}
                       />
 
                     </div>

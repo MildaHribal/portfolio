@@ -4,13 +4,14 @@ import Projects from "@/components/Projects";
 import TechMarquee from "@/components/TechMarquee";
 import About from "@/components/About";
 import Experience from "@/components/Experience";
-import Contact from "@/components/Contact";
 import Footer from "@/components/Footer";
-import StatsStrip from "@/components/StatsStrip";
-import CursorSpotlight from "@/components/CursorSpotlight";
-import CodeTerminal from "@/components/CodeTerminal";
-
 import SectionReveal from "@/components/SectionReveal";
+import CursorSpotlight from "@/components/CursorSpotlight";
+import dynamic from "next/dynamic";
+
+const StatsStrip = dynamic(() => import("@/components/StatsStrip"), { ssr: true });
+const CodeTerminal = dynamic(() => import("@/components/CodeTerminal"), { ssr: true });
+const Contact = dynamic(() => import("@/components/Contact"), { ssr: true });
 
 export default function Home() {
   return (

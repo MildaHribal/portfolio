@@ -89,6 +89,7 @@ body {
 
 .animate-marquee {
   animation: marquee 30s linear infinite;
+  will-change: transform;
 }
 
 /* ── Glow pulse for accent elements ─────────────── */
@@ -153,4 +154,22 @@ body {
 
 .animate-line-reveal {
   animation: lineReveal 0.4s ease forwards;
+}
+
+/* ── Performance: Reduce motion for a11y ───────── */
+@media (prefers-reduced-motion: reduce) {
+  .animate-fade-up,
+  .animate-marquee,
+  .animate-glow-pulse,
+  .animate-gradient-shift,
+  .animate-float,
+  .animate-line-reveal {
+    animation: none !important;
+    transition: none !important;
+  }
+}
+
+/* ── Section layout containment ──────────────── */
+section {
+  contain: layout style;
 }

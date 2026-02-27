@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { Menu, X } from "lucide-react";
-import posthog from "posthog-js";
+import { getPostHog } from "@/lib/posthog";
 
 const navLinks = [
   { label: "Projects", href: "#projects" },
@@ -33,7 +33,7 @@ export default function Header() {
         window.history.pushState(null, "", href);
       }
       
-      posthog.capture("nav_link_clicked", {
+      getPostHog().capture("nav_link_clicked", {
         label: label,
         href: href,
         menu: menuType,

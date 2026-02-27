@@ -1,6 +1,5 @@
-"use client";
-
-import { Github, Linkedin, Twitter, ArrowUp } from "lucide-react";
+import { Github, Linkedin, Twitter } from "lucide-react";
+import ScrollToTop from "@/components/ScrollToTop";
 
 const socials = [
   {
@@ -21,12 +20,6 @@ const socials = [
 ];
 
 export default function Footer() {
-  const year = new Date().getFullYear();
-
-  const scrollToTop = () => {
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  };
-
   return (
     <footer className="border-t border-zinc-800/60 py-12">
       <div className="max-w-6xl mx-auto px-6">
@@ -38,7 +31,7 @@ export default function Footer() {
               hribal.site
             </div>
             <p className="text-xs text-zinc-600">
-              © {year} Miloslav Hříbal. Built with Next.js &amp; Tailwind CSS.
+              © {new Date().getFullYear()} Miloslav Hříbal. Built with Next.js &amp; Tailwind CSS.
             </p>
           </div>
 
@@ -59,16 +52,7 @@ export default function Footer() {
           </div>
 
           {/* Right – back to top */}
-          <button
-            onClick={scrollToTop}
-            aria-label="Back to top"
-            className="group flex items-center gap-2 text-xs text-zinc-600 hover:text-zinc-300 transition-colors duration-300 cursor-pointer"
-          >
-            Back to top
-            <span className="flex items-center justify-center w-8 h-8 rounded-lg border border-zinc-800 bg-zinc-900/30 group-hover:border-zinc-600 group-hover:-translate-y-0.5 transition-all duration-300">
-              <ArrowUp size={14} />
-            </span>
-          </button>
+          <ScrollToTop />
         </div>
       </div>
     </footer>
