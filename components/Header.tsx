@@ -22,6 +22,25 @@ export default function Header() {
     return () => window.removeEventListener("scroll", handler);
   }, []);
 
+  const handleScroll = (e: React.MouseEvent<HTMLAnchorElement>, href: string, label: string, menuType: string) => {
+    if (href.startsWith("#")) {
+      e.preventDefault();
+      setMenuOpen(false);
+      
+      const element = document.querySelector(href);
+      if (element) {
+        element.scrollIntoView({ behavior: "smooth" });
+        window.history.pushState(null, "", href);
+      }
+      
+      posthog.capture("nav_link_clicked", {
+        label: label,
+        href: href,
+        menu: menuType,
+      });
+    }
+  };
+
   return (
     <header
       className="fixed top-0 inset-x-0 z-50 bg-zinc-950/90 backdrop-blur-md border-b border-zinc-800/60 shadow-[0_1px_0_0_rgba(255,255,255,0.03)] transition-all duration-500"
@@ -42,13 +61,7 @@ export default function Header() {
             <Link
               key={link.href}
               href={link.href}
-              onClick={() =>
-                posthog.capture("nav_link_clicked", {
-                  label: link.label,
-                  href: link.href,
-                  menu: "desktop",
-                })
-              }
+              onClick={(e) => handleScroll(e, link.href, link.label, "desktop")}
               className="text-sm text-zinc-400 hover:text-zinc-50 transition-colors duration-200"
             >
               {link.label}
@@ -56,13 +69,7 @@ export default function Header() {
           ))}
           <Link
             href="#contact"
-            onClick={() =>
-              posthog.capture("nav_link_clicked", {
-                label: "Contact",
-                href: "#contact",
-                menu: "desktop",
-              })
-            }
+            onClick={(e) => handleScroll(e, "#contact", "Contact", "desktop")}
             className="text-sm px-4 py-1.5 rounded-full border border-zinc-700 text-zinc-300 hover:border-zinc-400 hover:text-white transition-all duration-200"
           >
             Contact
@@ -86,14 +93,7 @@ export default function Header() {
             <Link
               key={link.href}
               href={link.href}
-              onClick={() => {
-                setMenuOpen(false);
-                posthog.capture("nav_link_clicked", {
-                  label: link.label,
-                  href: link.href,
-                  menu: "mobile",
-                });
-              }}
+              onClick={(e) => handleScroll(e, link.href, link.label, "mobile")}
               className="text-sm text-zinc-400 hover:text-zinc-50 transition-colors"
             >
               {link.label}
@@ -101,14 +101,7 @@ export default function Header() {
           ))}
           <Link
             href="#contact"
-            onClick={() => {
-              setMenuOpen(false);
-              posthog.capture("nav_link_clicked", {
-                label: "Contact",
-                href: "#contact",
-                menu: "mobile",
-              });
-            }}
+            onClick={(e) => handleScroll(e, "#contact", "Contact", "mobile")}
             className="text-sm w-fit px-4 py-1.5 rounded-full border border-zinc-700 text-zinc-300 hover:border-zinc-400 hover:text-white transition-all"
           >
             Contact

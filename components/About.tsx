@@ -35,17 +35,18 @@ export default function About() {
             </h2>
             <div className="space-y-4 text-zinc-400 text-base leading-relaxed">
               <p>
-                I studied information technology at INFIS in Pilsen, 
-                where I built a solid foundation for my software engineering journey. 
-                Since then, I've fully immersed myself in the modern web ecosystem, 
-                focusing primarily on building fast, responsive, and high-performing applications.
+                My journey into development started pretty quietly while studying 
+                at INFIS in Pilsen. I realized I enjoyed building things and putting 
+                them together way more than just using them. Lately, I've been spending 
+                most of my time with Next.js and Tailwind, turning ideas into fast, 
+                functional apps.
               </p>
               <p>
-                I enjoy the entire process of bringing digital products to life—from 
-                crafting pixel-perfect user interfaces with Tailwind CSS to designing 
-                robust frontend architectures using React and Next.js. My main focus is 
-                always on writing clean code, ensuring smooth interactions, and delivering 
-                an intuitive user experience.
+                What I love about programming is the constant challenge—figuring out 
+                how to build a solid foundation on the backend while keeping the user 
+                interface clean and straightforward. For me, a project isn't truly 
+                finished until the code makes sense and using the app feels completely 
+                natural.
               </p>
             </div>
           </div>

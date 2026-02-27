@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Send, CheckCircle, AlertCircle, Loader2 } from "lucide-react";
+import { Send, CheckCircle, AlertCircle, Loader2, Mail } from "lucide-react";
 import posthog from "posthog-js";
 
 type Status = "idle" | "loading" | "success" | "error";
@@ -80,18 +80,21 @@ export default function Contact() {
             </p>
 
             {/* Contact details */}
-            <div className="space-y-3">
-              {[
-                { label: "Email", value: "miloslav@hribal.site" },
-                { label: "Location", value: "Pilsen, Czech Republic" },
-              ].map((item) => (
-                <div key={item.label} className="flex gap-3">
-                  <span className="text-xs text-zinc-600 w-20 pt-0.5">
-                    {item.label}
-                  </span>
-                  <span className="text-sm text-zinc-300">{item.value}</span>
-                </div>
-              ))}
+            <div className="space-y-4 mb-4">
+              <div className="flex items-center gap-3">
+                <span className="text-xs text-zinc-600 w-20">Email</span>
+                <a
+                  href="mailto:miloslav@hribal.site"
+                  className="group flex items-center gap-2 text-base sm:text-lg font-medium text-zinc-300 hover:text-emerald-400 transition-colors duration-300"
+                >
+                  <Mail className="w-5 h-5 text-zinc-500 group-hover:text-emerald-400 transition-colors duration-300" />
+                  miloslav@hribal.site
+                </a>
+              </div>
+              <div className="flex items-center gap-3">
+                <span className="text-xs text-zinc-600 w-20">Location</span>
+                <span className="text-sm text-zinc-300">Pilsen, Czech Republic</span>
+              </div>
             </div>
           </div>
 

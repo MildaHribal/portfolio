@@ -9,9 +9,12 @@ export default function HeroCTAs() {
     <div className="animate-fade-up animation-delay-300 flex flex-wrap items-center justify-center gap-4">
       <Link
         href="#projects"
-        onClick={() =>
-          posthog.capture("hero_cta_clicked", { cta: "view_work" })
-        }
+        onClick={(e) => {
+          e.preventDefault();
+          posthog.capture("hero_cta_clicked", { cta: "view_work" });
+          document.querySelector("#projects")?.scrollIntoView({ behavior: "smooth" });
+          window.history.pushState(null, "", "#projects");
+        }}
         className="group inline-flex items-center gap-2 px-6 py-3 rounded-full bg-zinc-50 text-zinc-950 text-sm font-medium hover:bg-white transition-colors duration-200"
       >
         View Work
@@ -22,9 +25,12 @@ export default function HeroCTAs() {
       </Link>
       <Link
         href="#contact"
-        onClick={() =>
-          posthog.capture("hero_cta_clicked", { cta: "contact_me" })
-        }
+        onClick={(e) => {
+          e.preventDefault();
+          posthog.capture("hero_cta_clicked", { cta: "contact_me" });
+          document.querySelector("#contact")?.scrollIntoView({ behavior: "smooth" });
+          window.history.pushState(null, "", "#contact");
+        }}
         className="inline-flex items-center gap-2 px-6 py-3 rounded-full border border-zinc-700 text-zinc-300 text-sm font-medium hover:border-zinc-400 hover:text-white transition-all duration-200"
       >
         <Mail size={15} />
