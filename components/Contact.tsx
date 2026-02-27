@@ -1,17 +1,47 @@
 "use client";
 
 import { useState } from "react";
-import { Send } from "lucide-react";
+import { Send, CheckCircle, AlertCircle, Loader2 } from "lucide-react";
+
+type Status = "idle" | "loading" | "success" | "error";
 
 const inputClass =
   "w-full px-4 py-3 rounded-xl border border-zinc-800 bg-zinc-900/50 text-white placeholder:text-zinc-600 text-sm focus:outline-none focus:ring-1 focus:ring-zinc-500 focus:border-zinc-600 transition-colors";
 
 export default function Contact() {
   const [form, setForm] = useState({ name: "", email: "", message: "" });
+  const [status, setStatus] = useState<Status>("idle");
+  const [errorMsg, setErrorMsg] = useState("");
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => setForm({ ...form, [e.target.name]: e.target.value });
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setStatus("loading");
+    setErrorMsg("");
+
+    try {
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(form),
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        throw new Error(data.error ?? "Something went wrong");
+      }
+
+      setStatus("success");
+      setForm({ name: "", email: "", message: "" });
+    } catch (err) {
+      setStatus("error");
+      setErrorMsg(err instanceof Error ? err.message : "Failed to send message");
+    }
+  };
 
   return (
     <section id="contact" className="py-32 border-t border-zinc-800/60">
@@ -37,7 +67,7 @@ export default function Contact() {
             {/* Contact details */}
             <div className="space-y-3">
               {[
-                { label: "Email", value: "miloslav.hribal@gmail.com" },
+                { label: "Email", value: "miloslav@hribal.site" },
                 { label: "Location", value: "Pilsen, Czech Republic" },
               ].map((item) => (
                 <div key={item.label} className="flex gap-3">
@@ -51,11 +81,7 @@ export default function Contact() {
           </div>
 
           {/* Right – form */}
-          <form
-            className="space-y-4"
-            onSubmit={(e) => e.preventDefault()}
-            noValidate
-          >
+          <form className="space-y-4" onSubmit={handleSubmit} noValidate>
             <div className="grid sm:grid-cols-2 gap-4">
               <div className="flex flex-col gap-1.5">
                 <label htmlFor="name" className="text-xs text-zinc-500">
@@ -69,6 +95,8 @@ export default function Contact() {
                   value={form.name}
                   onChange={handleChange}
                   className={inputClass}
+                  required
+                  disabled={status === "loading"}
                 />
               </div>
               <div className="flex flex-col gap-1.5">
@@ -83,6 +111,8 @@ export default function Contact() {
                   value={form.email}
                   onChange={handleChange}
                   className={inputClass}
+                  required
+                  disabled={status === "loading"}
                 />
               </div>
             </div>
@@ -98,17 +128,44 @@ export default function Contact() {
                 value={form.message}
                 onChange={handleChange}
                 className={`${inputClass} resize-none`}
+                required
+                disabled={status === "loading"}
               />
             </div>
+
+            {/* Status messages */}
+            {status === "success" && (
+              <div className="flex items-center gap-2 text-sm text-emerald-400 bg-emerald-950/40 border border-emerald-800/50 rounded-xl px-4 py-3">
+                <CheckCircle size={15} className="shrink-0" />
+                Message sent! I&apos;ll get back to you within 24 hours.
+              </div>
+            )}
+            {status === "error" && (
+              <div className="flex items-center gap-2 text-sm text-red-400 bg-red-950/40 border border-red-800/50 rounded-xl px-4 py-3">
+                <AlertCircle size={15} className="shrink-0" />
+                {errorMsg}
+              </div>
+            )}
+
             <button
               type="submit"
-              className="group w-full flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-zinc-50 text-zinc-950 text-sm font-medium hover:bg-white transition-colors duration-200"
+              disabled={status === "loading"}
+              className="group w-full flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-zinc-50 text-zinc-950 text-sm font-medium hover:bg-white transition-colors duration-200 disabled:opacity-60 disabled:cursor-not-allowed"
             >
-              Send Message
-              <Send
-                size={14}
-                className="group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform"
-              />
+              {status === "loading" ? (
+                <>
+                  <Loader2 size={14} className="animate-spin" />
+                  Sending…
+                </>
+              ) : (
+                <>
+                  Send Message
+                  <Send
+                    size={14}
+                    className="group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform"
+                  />
+                </>
+              )}
             </button>
           </form>
         </div>

@@ -61,9 +61,9 @@ export default function About() {
                   {cat.skills.map((skill) => (
                     <li
                       key={skill}
-                      className="flex items-center gap-2 text-sm text-zinc-300"
+                      className="group/skill flex items-center gap-2 text-sm text-zinc-300 hover:text-emerald-400 transition-colors duration-200 cursor-default"
                     >
-                      <span className="w-1 h-1 rounded-full bg-zinc-600 shrink-0" />
+                      <span className="w-1 h-1 rounded-full bg-zinc-600 group-hover/skill:bg-emerald-500 shrink-0 transition-colors duration-200" />
                       {skill}
                     </li>
                   ))}

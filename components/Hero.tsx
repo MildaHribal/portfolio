@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { ArrowRight, Mail } from "lucide-react";
+import Typewriter from "@/components/Typewriter";
 
 export default function Hero() {
   return (
@@ -30,7 +31,7 @@ export default function Hero() {
             <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
             <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500" />
           </span>
-          Available for work
+          AVAILABLE FO PROJECT
         </div>
 
         {/* Headline */}
@@ -40,7 +41,7 @@ export default function Hero() {
             Miloslav Hříbal
           </span>
           <br />
-          <span className="text-zinc-400 font-light">Frontend Developer</span>
+          <Typewriter />
         </h1>
 
         {/* Sub-copy */}

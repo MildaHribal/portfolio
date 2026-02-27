@@ -6,6 +6,7 @@ import { Menu, X } from "lucide-react";
 
 const navLinks = [
   { label: "Projects", href: "#projects" },
+  { label: "Experience", href: "#experience" },
   { label: "About", href: "#about" },
   { label: "Contact", href: "#contact" },
 ];
@@ -22,24 +23,21 @@ export default function Header() {
 
   return (
     <header
-      className={`fixed top-0 inset-x-0 z-50 transition-all duration-500 ${
-        scrolled
-          ? "bg-zinc-950/80 backdrop-blur-md border-b border-zinc-800/60 shadow-[0_1px_0_0_rgba(255,255,255,0.03)]"
-          : "bg-transparent"
-      }`}
+      className="fixed top-0 inset-x-0 z-50 bg-zinc-950/90 backdrop-blur-md border-b border-zinc-800/60 shadow-[0_1px_0_0_rgba(255,255,255,0.03)] transition-all duration-500"
     >
       <div className="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
         {/* Logo / Name */}
         <Link
           href="/"
-          className="text-zinc-50 font-semibold tracking-tight text-sm hover:text-white transition-colors"
+          className="group inline-flex items-center gap-2 text-zinc-400 font-semibold tracking-tight text-base hover:text-zinc-200 transition-colors duration-200"
         >
-          Miloslav Hříbal<span className="text-zinc-500">.</span>
+          <span className="w-2 h-2 rounded-full bg-emerald-500 shrink-0 transition-transform duration-200 group-hover:scale-150" />
+          hribal.site
         </Link>
 
         {/* Desktop nav */}
         <nav className="hidden md:flex items-center gap-8">
-          {navLinks.map((link) => (
+          {navLinks.slice(0, -1).map((link) => (
             <Link
               key={link.href}
               href={link.href}
@@ -52,7 +50,7 @@ export default function Header() {
             href="#contact"
             className="text-sm px-4 py-1.5 rounded-full border border-zinc-700 text-zinc-300 hover:border-zinc-400 hover:text-white transition-all duration-200"
           >
-            Hire me
+            Contact
           </Link>
         </nav>
 
@@ -69,7 +67,7 @@ export default function Header() {
       {/* Mobile menu */}
       {menuOpen && (
         <div className="md:hidden bg-zinc-950/95 backdrop-blur-md border-b border-zinc-800 px-6 py-4 flex flex-col gap-4">
-          {navLinks.map((link) => (
+          {navLinks.slice(0, -1).map((link) => (
             <Link
               key={link.href}
               href={link.href}
@@ -84,7 +82,7 @@ export default function Header() {
             onClick={() => setMenuOpen(false)}
             className="text-sm w-fit px-4 py-1.5 rounded-full border border-zinc-700 text-zinc-300 hover:border-zinc-400 hover:text-white transition-all"
           >
-            Hire me
+            Contact
           </Link>
         </div>
       )}
