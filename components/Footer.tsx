@@ -30,7 +30,7 @@ export default function Footer() {
               <span className="w-2 h-2 rounded-full bg-emerald-500" />
               hribal.site
             </div>
-            <p className="text-xs text-zinc-600">
+            <p className="text-xs text-zinc-500">
               © {new Date().getFullYear()} Miloslav Hříbal. Built with Next.js &amp; Tailwind CSS.
             </p>
           </div>

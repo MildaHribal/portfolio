@@ -51,7 +51,7 @@ export default function CodeTerminal() {
             <span className="w-3 h-3 rounded-full bg-red-500/80" />
             <span className="w-3 h-3 rounded-full bg-yellow-500/80" />
             <span className="w-3 h-3 rounded-full bg-green-500/80" />
-            <span className="ml-3 text-xs text-zinc-600 font-mono">developer.ts</span>
+            <span className="ml-3 text-xs text-zinc-500 font-mono">developer.ts</span>
           </div>
 
           {/* Code body */}

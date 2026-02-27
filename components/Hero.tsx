@@ -81,7 +81,7 @@ export default function Hero() {
 
         {/* Scroll hint */}
         <div className="animate-fade-up animation-delay-500 mt-20 flex justify-center w-full">
-          <div className="flex flex-col items-center gap-1 text-zinc-600 text-xs tracking-widest uppercase">
+          <div className="flex flex-col items-center gap-1 text-zinc-500 text-xs tracking-widest uppercase">
             <span>Scroll</span>
             <div className="w-px h-8 bg-gradient-to-b from-zinc-600 to-transparent" />
           </div>

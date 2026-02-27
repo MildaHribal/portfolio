@@ -7,7 +7,7 @@ import { getPostHog } from "@/lib/posthog";
 type Status = "idle" | "loading" | "success" | "error";
 
 const inputClass =
-  "w-full px-4 py-3 rounded-xl border border-zinc-800 bg-zinc-900/50 text-white placeholder:text-zinc-600 text-sm focus:outline-none focus:ring-1 focus:ring-zinc-500 focus:border-zinc-600 transition-colors";
+  "w-full px-4 py-3 rounded-xl border border-zinc-800 bg-zinc-900/50 text-white placeholder:text-zinc-500 text-sm focus:outline-none focus:ring-1 focus:ring-zinc-500 focus:border-zinc-600 transition-colors";
 
 export default function Contact() {
   const [form, setForm] = useState({ name: "", email: "", message: "" });
@@ -80,7 +80,7 @@ export default function Contact() {
             {/* Contact details */}
             <div className="space-y-4 mb-4">
               <div className="flex items-center gap-3">
-                <span className="text-xs text-zinc-600 w-20">Email</span>
+                <span className="text-xs text-zinc-500 w-20">Email</span>
                 <a
                   href="mailto:miloslav@hribal.site"
                   className="group flex items-center gap-2 text-base sm:text-lg font-medium text-zinc-300 hover:text-emerald-400 transition-colors duration-300"
@@ -90,7 +90,7 @@ export default function Contact() {
                 </a>
               </div>
               <div className="flex items-center gap-3">
-                <span className="text-xs text-zinc-600 w-20">Location</span>
+                <span className="text-xs text-zinc-500 w-20">Location</span>
                 <span className="text-sm text-zinc-300">Pilsen, Czech Republic</span>
               </div>
             </div>
