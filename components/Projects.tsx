@@ -3,6 +3,7 @@
 import { ExternalLink, Github, ChevronRight, ChevronLeft, ArrowUpRight } from "lucide-react";
 import Image from "next/image";
 import { useState } from "react";
+import posthog from "posthog-js";
 
 interface Project {
   title: string;
@@ -195,7 +196,18 @@ export default function Projects() {
                 );
 
                 return hasLink ? (
-                  <a href={project.href} target="_blank" rel="noopener noreferrer" className={`block ${!isQuestie && i % 2 === 1 ? "md:order-last" : ""}`}>
+                  <a
+                    href={project.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className={`block ${!isQuestie && i % 2 === 1 ? "md:order-last" : ""}`}
+                    onClick={() =>
+                      posthog.capture("project_link_clicked", {
+                        project_title: project.title,
+                        href: project.href,
+                      })
+                    }
+                  >
                     {imageContent}
                   </a>
                 ) : imageContent;

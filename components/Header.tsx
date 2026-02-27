@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { Menu, X } from "lucide-react";
+import posthog from "posthog-js";
 
 const navLinks = [
   { label: "Projects", href: "#projects" },
@@ -41,6 +42,13 @@ export default function Header() {
             <Link
               key={link.href}
               href={link.href}
+              onClick={() =>
+                posthog.capture("nav_link_clicked", {
+                  label: link.label,
+                  href: link.href,
+                  menu: "desktop",
+                })
+              }
               className="text-sm text-zinc-400 hover:text-zinc-50 transition-colors duration-200"
             >
               {link.label}
@@ -48,6 +56,13 @@ export default function Header() {
           ))}
           <Link
             href="#contact"
+            onClick={() =>
+              posthog.capture("nav_link_clicked", {
+                label: "Contact",
+                href: "#contact",
+                menu: "desktop",
+              })
+            }
             className="text-sm px-4 py-1.5 rounded-full border border-zinc-700 text-zinc-300 hover:border-zinc-400 hover:text-white transition-all duration-200"
           >
             Contact
@@ -71,7 +86,14 @@ export default function Header() {
             <Link
               key={link.href}
               href={link.href}
-              onClick={() => setMenuOpen(false)}
+              onClick={() => {
+                setMenuOpen(false);
+                posthog.capture("nav_link_clicked", {
+                  label: link.label,
+                  href: link.href,
+                  menu: "mobile",
+                });
+              }}
               className="text-sm text-zinc-400 hover:text-zinc-50 transition-colors"
             >
               {link.label}
@@ -79,7 +101,14 @@ export default function Header() {
           ))}
           <Link
             href="#contact"
-            onClick={() => setMenuOpen(false)}
+            onClick={() => {
+              setMenuOpen(false);
+              posthog.capture("nav_link_clicked", {
+                label: "Contact",
+                href: "#contact",
+                menu: "mobile",
+              });
+            }}
             className="text-sm w-fit px-4 py-1.5 rounded-full border border-zinc-700 text-zinc-300 hover:border-zinc-400 hover:text-white transition-all"
           >
             Contact

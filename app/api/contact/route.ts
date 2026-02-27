@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import nodemailer from "nodemailer";
+import { getPostHogClient } from "@/lib/posthog-server";
 
 interface ContactPayload {
   name: string;
@@ -23,6 +24,9 @@ function buildHtml(name: string, email: string, message: string) {
 
 export async function POST(req: NextRequest) {
   let body: ContactPayload;
+
+  const distinctId = req.headers.get("x-posthog-distinct-id") ?? "anonymous";
+  const sessionId = req.headers.get("x-posthog-session-id") ?? undefined;
 
   try {
     body = await req.json();
@@ -64,6 +68,12 @@ export async function POST(req: NextRequest) {
       socketTimeout: 10000,
     });
     await transporter.sendMail(mailOptions);
+    const posthog = getPostHogClient();
+    posthog.capture({
+      distinctId,
+      event: "contact_api_message_sent",
+      properties: { method: "smtp_ssl", ...(sessionId && { $session_id: sessionId }) },
+    });
     return NextResponse.json({ success: true });
   } catch (err) {
     const msg = err instanceof Error ? err.message : String(err);
@@ -87,6 +97,12 @@ export async function POST(req: NextRequest) {
       socketTimeout: 10000,
     });
     await transporter.sendMail(mailOptions);
+    const posthog = getPostHogClient();
+    posthog.capture({
+      distinctId,
+      event: "contact_api_message_sent",
+      properties: { method: "smtp_starttls", ...(sessionId && { $session_id: sessionId }) },
+    });
     return NextResponse.json({ success: true });
   } catch (err) {
     const msg = err instanceof Error ? err.message : String(err);
@@ -106,6 +122,12 @@ export async function POST(req: NextRequest) {
       socketTimeout: 10000,
     });
     await transporter.sendMail(mailOptions);
+    const posthog = getPostHogClient();
+    posthog.capture({
+      distinctId,
+      event: "contact_api_message_sent",
+      properties: { method: "emailproffi", ...(sessionId && { $session_id: sessionId }) },
+    });
     return NextResponse.json({ success: true });
   } catch (err) {
     const msg = err instanceof Error ? err.message : String(err);
@@ -121,6 +143,12 @@ export async function POST(req: NextRequest) {
       path: "/usr/sbin/sendmail",
     });
     await transporter.sendMail(mailOptions);
+    const posthog = getPostHogClient();
+    posthog.capture({
+      distinctId,
+      event: "contact_api_message_sent",
+      properties: { method: "sendmail", ...(sessionId && { $session_id: sessionId }) },
+    });
     return NextResponse.json({ success: true });
   } catch (err) {
     const msg = err instanceof Error ? err.message : String(err);
@@ -129,6 +157,13 @@ export async function POST(req: NextRequest) {
   }
 
   console.error("[contact] All attempts failed:", errors);
+
+  const posthog = getPostHogClient();
+  posthog.capture({
+    distinctId,
+    event: "contact_api_message_failed",
+    properties: { errors, ...(sessionId && { $session_id: sessionId }) },
+  });
 
   return NextResponse.json(
     { error: "Failed to send message. Please try emailing directly." },

@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { Send, CheckCircle, AlertCircle, Loader2 } from "lucide-react";
+import posthog from "posthog-js";
 
 type Status = "idle" | "loading" | "success" | "error";
 
@@ -22,10 +23,20 @@ export default function Contact() {
     setStatus("loading");
     setErrorMsg("");
 
+    posthog.capture("contact_form_submitted", {
+      has_name: form.name.trim().length > 0,
+      has_email: form.email.trim().length > 0,
+      has_message: form.message.trim().length > 0,
+    });
+
     try {
       const res = await fetch("/api/contact", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          "X-POSTHOG-DISTINCT-ID": posthog.get_distinct_id() ?? "",
+          "X-POSTHOG-SESSION-ID": posthog.get_session_id() ?? "",
+        },
         body: JSON.stringify(form),
       });
 
@@ -35,11 +46,15 @@ export default function Contact() {
         throw new Error(data.error ?? "Something went wrong");
       }
 
+      posthog.capture("contact_form_succeeded");
       setStatus("success");
       setForm({ name: "", email: "", message: "" });
     } catch (err) {
+      const errorMessage = err instanceof Error ? err.message : "Failed to send message";
+      posthog.capture("contact_form_failed", { error: errorMessage });
+      posthog.captureException(err);
       setStatus("error");
-      setErrorMsg(err instanceof Error ? err.message : "Failed to send message");
+      setErrorMsg(errorMessage);
     }
   };
 

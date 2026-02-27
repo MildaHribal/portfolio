@@ -58,4 +58,4 @@ jobs:
     steps:
       - name: Trigger Webhook
         if: success()
-        run: curl -X POST https://n8n.turhobr.cz/webhook/1f139090-e1d4-4134-a5be-62ea727278dc
+        run: curl -X POST https://n8n.turhobr.cz/webhook/a02a8670-1453-451b-95c5-9b21bd96fe65

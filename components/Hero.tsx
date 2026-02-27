@@ -1,6 +1,5 @@
-import Link from "next/link";
-import { ArrowRight, Mail } from "lucide-react";
 import Typewriter from "@/components/Typewriter";
+import HeroCTAs from "@/components/HeroCTAs";
 
 export default function Hero() {
   return (
@@ -52,25 +51,7 @@ export default function Hero() {
         </p>
 
         {/* CTA buttons */}
-        <div className="animate-fade-up animation-delay-300 flex flex-wrap items-center justify-center gap-4">
-          <Link
-            href="#projects"
-            className="group inline-flex items-center gap-2 px-6 py-3 rounded-full bg-zinc-50 text-zinc-950 text-sm font-medium hover:bg-white transition-colors duration-200"
-          >
-            View Work
-            <ArrowRight
-              size={15}
-              className="group-hover:translate-x-0.5 transition-transform"
-            />
-          </Link>
-          <Link
-            href="#contact"
-            className="inline-flex items-center gap-2 px-6 py-3 rounded-full border border-zinc-700 text-zinc-300 text-sm font-medium hover:border-zinc-400 hover:text-white transition-all duration-200"
-          >
-            <Mail size={15} />
-            Contact Me
-          </Link>
-        </div>
+        <HeroCTAs />
 
         {/* Scroll hint */}
         <div className="animate-fade-up animation-delay-400 mt-20 flex justify-center">
