@@ -146,7 +146,7 @@ export default function Projects() {
           </span>
         </div>
         <h2 className="text-3xl sm:text-4xl font-bold tracking-tight text-zinc-50 mb-16">
-          Things I&apos;ve built
+          My Projects
         </h2>
 
         {/* Project list */}
