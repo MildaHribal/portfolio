@@ -17,11 +17,21 @@ const nextConfig: NextConfig = {
       },
     ];
   },
+  async headers() {
+    return [
+      {
+        source: "/ingest/static/:path*",
+        headers: [
+          {
+            key: "Cache-Control",
+            value: "public, max-age=31536000, immutable",
+          },
+        ],
+      },
+    ];
+  },
   // Required to support PostHog trailing slash API requests
   skipTrailingSlashRedirect: true,
-  experimental: {
-    optimizeCss: true,
-  },
 };
 
 export default nextConfig;

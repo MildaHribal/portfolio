@@ -2,7 +2,12 @@
 // This eliminates ~54.5 KiB of render-blocking JavaScript during initial page load.
 
 if (typeof window !== 'undefined') {
+  let posthogInitialized = false;
+
   const initPostHog = () => {
+    if (posthogInitialized) return;
+    posthogInitialized = true;
+
     import('posthog-js').then(({ default: posthog }) => {
       posthog.init(process.env.NEXT_PUBLIC_POSTHOG_KEY!, {
         api_host: "/ingest",
@@ -12,13 +17,20 @@ if (typeof window !== 'undefined') {
         debug: process.env.NODE_ENV === "development",
       });
     });
+
+    // Cleanup listeners
+    ['mousemove', 'scroll', 'touchstart', 'keydown'].forEach((event) => {
+      window.removeEventListener(event, initPostHog, { capture: true });
+    });
   };
 
-  if ('requestIdleCallback' in window) {
-    window.requestIdleCallback(initPostHog);
-  } else {
-    setTimeout(initPostHog, 3500);
-  }
+  // Wait for user interaction to load PostHog
+  ['mousemove', 'scroll', 'touchstart', 'keydown'].forEach((event) => {
+    window.addEventListener(event, initPostHog, { once: true, passive: true, capture: true });
+  });
+
+  // Fallback if no interaction after 5 seconds
+  setTimeout(initPostHog, 5000);
 }
 
 // IMPORTANT: Never combine this approach with other client-side PostHog initialization
