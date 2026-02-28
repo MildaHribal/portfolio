@@ -36,6 +36,6 @@ export default function HeroCTAs() {
         <Mail size={15} />
         Contact Me
       </Link>
-    </div>
+    </div> 
   );
 }

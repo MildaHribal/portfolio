@@ -32,7 +32,7 @@ const projects: Project[] = [
     tags: ["Nuxt.js", "Vue.js", "Tailwind CSS", "TypeScript", "Ionic"],
     href: "https://questieapp.com/",
     repo: "#",
-    image: "/Qusteie.webp",
+    image: "/Questie.webp",
   },
   {
     title: "Minecraft IP List",
@@ -112,7 +112,9 @@ export default function Projects() {
                         src={project.image}
                         alt={project.title}
                         fill
-                        sizes={isBudBuddy ? "300px" : isQuestie ? "(max-width: 768px) 100vw, 800px" : "(max-width: 768px) 100vw, 50vw"}
+                        quality={100}
+                        unoptimized={isQuestie}
+                        sizes={isBudBuddy ? "300px" : isQuestie ? "100vw" : "(max-width: 768px) 100vw, 50vw"}
                         className={`transition-transform duration-500 group-hover/img:scale-[1.03] ${
                           isBudBuddy ? "object-cover" : isQuestie ? "object-cover object-top" : "object-cover aspect-video"
                         }`}

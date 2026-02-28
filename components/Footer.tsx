@@ -1,4 +1,4 @@
-import { Github, Linkedin, Twitter } from "lucide-react";
+import { Github, Linkedin } from "lucide-react";
 import ScrollToTop from "@/components/ScrollToTop";
 
 const socials = [
@@ -9,13 +9,8 @@ const socials = [
   },
   {
     label: "LinkedIn",
-    href: "https://linkedin.com/in/miloslav-hribal",
+    href: "https://www.linkedin.com/in/miloslav-h%C5%99%C3%ADbal-792578280/",
     icon: Linkedin,
-  },
-  {
-    label: "X / Twitter",
-    href: "https://x.com/MiloslavHribal",
-    icon: Twitter,
   },
 ];
 
