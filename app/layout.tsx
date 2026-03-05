@@ -19,7 +19,8 @@ const siteUrl = "https://hribal.site";
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: {
-    default: "Miloslav Hříbal — Fullstack Developer | React, Next.js & TypeScript",
+    default:
+      "Miloslav Hříbal — Fullstack Developer | React, Next.js & TypeScript",
     template: "%s | Miloslav Hříbal",
   },
   description:
@@ -81,7 +82,9 @@ export const metadata: Metadata = {
     canonical: siteUrl,
   },
   icons: {
-    icon: "/favicon.svg",
+    icon: [
+      { url: "/logo.webp?v=4", type: "image/webp" },
+    ],
   },
   other: {
     "darkreader-lock": "true",
