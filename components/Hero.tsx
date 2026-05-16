@@ -39,14 +39,20 @@ export default function Hero() {
             Miloslav Hříbal
           </span>
           <br />
-          <Typewriter />
+          <span className="sr-only">
+            Fullstack Developer — React, Next.js, TypeScript, Nuxt.js and Kotlin
+          </span>
+          <span aria-hidden="true">
+            <Typewriter />
+          </span>
         </h1>
 
         {/* Sub-copy */}
         <p className="animate-fade-up animation-delay-200 max-w-2xl text-zinc-400 text-lg sm:text-xl leading-relaxed mb-6">
-          Software Engineer & Fullstack Developer with 4 years of experience. 
-          I build robust backend systems in Kotlin & Node.js, modern web platforms 
-          with Next.js & Nuxt.js, and manage production Linux/Docker infrastructure.
+          Software Engineer &amp; Fullstack Developer from Pilsen, Czech Republic with 4+ years of experience.
+          I build robust backend systems in Kotlin &amp; Node.js, modern web platforms
+          with Next.js &amp; Nuxt.js, and manage production Linux/Docker infrastructure.
+          Available for hire — full-time, contract or freelance, remote or on-site.
         </p>
 
         {/* Location */}
