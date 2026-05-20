@@ -16,41 +16,40 @@ interface Project {
 
 const projects: Project[] = [
   {
-    title: "BudBuddy",
+    title: "SkinsMC",
     description:
-      "BudBuddy is a comprehensive plant management and journaling application, developed using Vue.js and Nuxt.js. It empowers users to meticulously track their plants' journey, from logging daily care activities like watering and nutrient application to documenting growth stages with notes and photos.",
-    tags: ["Nuxt.js", "Vue.js", "Tailwind CSS", "TypeScript", "Capacitor"],
-    // OPRAVA: Použití vlastní subdomény, aby fungovalo CSP z netlify.toml
-    href: "https://budbuddy.hribal.site", 
-    repo: "https://github.com/MildaHribal/budbuddy",
-    image: "/BudBuddy.webp",
-  },
-  {
-    title: "Questie App",
-    description:
-      "A gamified personal task management app that turns everyday to-dos into quests. Users earn XP, level up unique characters, and unlock achievements as they complete tasks. Built the complete Nuxt.js frontend and application architecture from scratch.",
-    tags: ["Nuxt.js", "Vue.js", "Tailwind CSS", "TypeScript", "Ionic"],
-    href: "https://questieapp.com/",
+      "A Minecraft skin gallery serving millions of users — browse, upload, tag-based search, an in-browser skin editor, and Microsoft account integration. Worked across the Nuxt.js frontend and Kotlin backend as part of a small team, focused on keeping image-heavy pages fast under heavy load, plus Docker-based deployment and DevOps.",
+    tags: ["Nuxt.js", "Kotlin", "PHP", "PostgreSQL", "Docker"],
+    href: "https://skinsmc.org/",
     repo: "#",
-    image: "/Questie.webp",
+    image: "/skinsmc.webp",
   },
   {
     title: "Minecraft IP List",
     description:
-      "A comprehensive directory for finding and exploring the best Minecraft multiplayer servers. It features a modern Nuxt.js frontend and a resilient Kotlin backend, robustly containerized using Docker.",
+      "A directory for discovering Minecraft multiplayer servers — tag-based search, rankings, and detailed server pages with video banners and live player counts, indexing thousands of servers with daily international traffic. Built the Nuxt.js frontend with performance as a first-class constraint, and collaborated on the Kotlin + MongoDB backend and Docker deployment.",
     tags: ["Nuxt.js", "Kotlin", "MongoDB", "Docker", "DevOps"],
     href: "https://www.minecraftiplist.com/",
     repo: "#",
     image: "/mcip.webp",
   },
   {
-    title: "SkinsMC",
+    title: "BudBuddy",
     description:
-      "A popular platform for browsing, downloading, and uploading millions of Minecraft skins. Powered by a scalable architecture utilizing Kotlin and PHP, with a strong focus on robust DevOps operations.",
-    tags: ["Kotlin", "PHP", "MariaDB", "Docker", "DevOps"],
-    href: "https://skinsmc.org/",
+      "A cross-platform plant care app where users log watering, light, and photos to build a timeline of each plant's growth. Built solo with a single Nuxt.js codebase shipped to web, iOS, and Android via Capacitor — with offline-friendly state syncing across devices.",
+    tags: ["Nuxt.js", "Vue.js", "Tailwind CSS", "TypeScript", "Capacitor"],
+    href: "https://budbuddy.hribal.site",
+    repo: "https://github.com/MildaHribal/budbuddy",
+    image: "/BudBuddy.webp",
+  },
+  {
+    title: "Questie App",
+    description:
+      "A gamified task manager that turns everyday to-dos into quests — earn XP, level up characters, and unlock achievements. Built the Nuxt.js frontend and shaped the app's architecture, with a focus on making the game mechanics feel motivating without becoming pressure.",
+    tags: ["Nuxt.js", "Vue.js", "Tailwind CSS", "TypeScript", "Ionic"],
+    href: "https://questieapp.com/",
     repo: "#",
-    image: "/skinsmc.webp",
+    image: "/Questie.webp",
   },
 ];
 
@@ -79,25 +78,23 @@ export default function Projects() {
             return (
               <article
                 key={project.title}
-                className={`group p-6 md:p-8 rounded-2xl border border-zinc-800/60 bg-zinc-900/20 hover:bg-zinc-900/40 hover:border-zinc-700/60 hover:-translate-y-1 hover:shadow-xl hover:shadow-black/30 transition-all duration-300 ${
-                  isQuestie ? "flex flex-col gap-8" : "grid md:grid-cols-2 gap-8"
-                }`}
+                className={`group p-6 md:p-8 rounded-2xl border border-zinc-800/60 bg-zinc-900/20 hover:bg-zinc-900/40 hover:border-zinc-700/60 hover:-translate-y-1 hover:shadow-xl hover:shadow-black/30 transition-all duration-300 ${isQuestie ? "flex flex-col gap-8" : "grid md:grid-cols-2 gap-8"
+                  }`}
               >
                 {/* Image / Iframe Container */}
                 <div
-                  className={`relative rounded-[2.5rem] overflow-hidden bg-zinc-950 border border-zinc-800 group/img ${
-                    isBudBuddy
-                      ? activeIframe === project.title
-                        ? "aspect-[9/20.5] max-w-[370px] w-full mx-auto"
-                        : "aspect-[9/19.5] max-w-[300px] w-full mx-auto"
-                      : isQuestie ? "w-full aspect-[2.2/1]" : "aspect-video"
-                  } ${!isQuestie && i % 2 === 1 ? "md:order-last" : ""}`}
+                  className={`relative rounded-[2.5rem] overflow-hidden bg-zinc-950 border border-zinc-800 group/img ${isBudBuddy
+                    ? activeIframe === project.title
+                      ? "aspect-[9/20.5] max-w-[370px] w-full mx-auto"
+                      : "aspect-[9/19.5] max-w-[300px] w-full mx-auto"
+                    : isQuestie ? "w-full aspect-[2.2/1]" : "aspect-video"
+                    } ${!isQuestie && i % 2 === 1 ? "md:order-last" : ""}`}
                 >
                   {isBudBuddy && activeIframe === project.title ? (
                     <div className="relative w-full h-full">
                       {/* Simulace horního výřezu (Notch) */}
                       <div className="absolute top-4 left-1/2 -translate-x-1/2 w-20 h-5 bg-zinc-900 rounded-full z-50 pointer-events-none border border-zinc-800" />
-                      
+
                       <iframe
                         src={project.href}
                         // OPRAVA: Přidán silný rámeček (border-12) pro simulaci těla telefonu
@@ -110,14 +107,13 @@ export default function Projects() {
                     <div className="relative w-full h-full">
                       <Image
                         src={project.image}
-                        alt={project.title}
+                        alt={`${project.title} — project screenshot by Miloslav Hříbal (${project.tags.join(", ")})`}
                         fill
                         quality={100}
                         unoptimized={isQuestie}
                         sizes={isBudBuddy ? "300px" : isQuestie ? "100vw" : "(max-width: 768px) 100vw, 50vw"}
-                        className={`transition-transform duration-500 group-hover/img:scale-[1.03] ${
-                          isBudBuddy ? "object-cover" : isQuestie ? "object-cover object-top" : "object-cover aspect-video"
-                        }`}
+                        className={`transition-transform duration-500 group-hover/img:scale-[1.03] ${isBudBuddy ? "object-cover" : isQuestie ? "object-cover object-top" : "object-cover aspect-video"
+                          }`}
                         priority={i === 0}
                         loading={i === 0 ? undefined : "lazy"}
                       />
