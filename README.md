@@ -1,36 +1,80 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 💼 Portfolio
 
-## Getting Started
+A personal portfolio website built with **Next.js 16** (App Router) and **React 19**, styled with **Tailwind CSS v4**. It features hero, about, experience and projects sections, plus a contact form that sends emails over SMTP. Traffic is tracked with PostHog. ✨
 
-First, run the development server:
+## 🧰 Tech stack
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+- ⚡ [Next.js 16](https://nextjs.org) (App Router, standalone output)
+- ⚛️ [React 19](https://react.dev)
+- 🎨 [Tailwind CSS v4](https://tailwindcss.com)
+- 🟦 [TypeScript](https://www.typescriptlang.org)
+- ✉️ [Nodemailer](https://nodemailer.com) – sending emails from the contact form
+- 📊 [PostHog](https://posthog.com) – analytics (client + server)
+- 🎯 [lucide-react](https://lucide.dev) – icons
+- 📦 [pnpm](https://pnpm.io) – package manager
+
+## 📁 Project structure
+
+```
+app/
+  layout.tsx            root layout
+  page.tsx              main page
+  globals.css           global styles (Tailwind)
+  api/contact/route.ts  contact form API endpoint
+components/             UI components (Hero, About, Experience, Projects, Contact, ...)
+lib/
+  posthog.ts            PostHog client (browser)
+  posthog-server.ts     PostHog client (server)
+public/                static assets
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 🚀 Development
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Requirements: Node.js 20+ and pnpm.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```bash
+pnpm install
+pnpm dev
+```
 
-## Learn More
+The app runs at [http://localhost:3000](http://localhost:3000).
 
-To learn more about Next.js, take a look at the following resources:
+### 📜 Scripts
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+| Command      | Description               |
+| ------------ | ------------------------- |
+| `pnpm dev`   | Start the dev server      |
+| `pnpm build` | Production build          |
+| `pnpm start` | Run the production build  |
+| `pnpm lint`  | Run ESLint                |
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## 🔐 Environment variables
 
-## Deploy on Vercel
+Create a `.env.local` file (for development) with the following values:
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+```bash
+# Contact form (SMTP)
+SMTP_HOST=smtp.seznam.com   # default: smtp.seznam.com
+SMTP_PORT=587               # default: 587 (STARTTLS); 465 is tried first over SSL
+SMTP_USER=you@email.com     # also the recipient of form messages
+SMTP_PASS=password
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+# PostHog analytics
+NEXT_PUBLIC_POSTHOG_KEY=phc_...
+NEXT_PUBLIC_POSTHOG_HOST=https://eu.i.posthog.com
+```
+
+> 💡 The contact endpoint tries to deliver the email through several methods in order: SMTP over SSL (465), SMTP over STARTTLS (587), `emailproffi.seznam.cz` without authentication, and finally local `sendmail`. This lets it work both on regular hosting and inside a Docker container.
+
+## 🐳 Docker
+
+The repository includes a multi-stage `Dockerfile` (deps → build → runner) using the Next.js standalone output. The runner image ships `msmtp` as `sendmail` for the email fallback.
+
+```bash
+docker build -t portfolio .
+docker run -p 3000:3000 --env-file .env.local portfolio
+```
+
+## 📈 Analytics
+
+PostHog is integrated on both the client (`instrumentation-client.ts`, `lib/posthog.ts`) and the server (`lib/posthog-server.ts`). Requests are proxied through `/ingest` (see rewrites in `next.config.ts`). The contact API captures the `contact_api_message_sent` and `contact_api_message_failed` events.
