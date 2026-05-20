@@ -4,14 +4,14 @@ const experiences = [
     role: "Freelance Software Engineer",
     company: "Self-Employed",
     description:
-      "Working independently on web and mobile projects across the full stack. Delivering custom software solutions for clients while continuously maintaining and evolving personal projects like SkinsMC and MinecraftIPList. Focused on modern JavaScript ecosystems, scalable backend architecture, and clean user interfaces.",
+      "Working independently on web and mobile projects across the full stack, delivering custom solutions for clients. Building personal projects like BudBuddy and Questie to explore new technologies and sharpen my skills. Focused on modern JavaScript ecosystems, clean architecture, and shipping working products.",
   },
   {
     period: "2024 — 2025",
     role: "Fullstack Developer",
     company: "SkinsMC",
     description:
-      "Architected and maintained a high-traffic platform for browsing and uploading Minecraft skins, serving millions of users. Responsible for both the Kotlin backend and the Nuxt.js frontend, with a strong emphasis on DevOps — containerized infrastructure using Docker and managed the full deployment pipeline.",
+      "Worked across the full stack on a high-traffic platform for browsing and uploading Minecraft skins, serving millions of users. Contributed to both the Kotlin backend and the Nuxt.js frontend as part of a small team, and helped with DevOps — containerized infrastructure using Docker and the deployment pipeline.",
   },
   {
     period: "2023 — 2025",

@@ -16,9 +16,27 @@ interface Project {
 
 const projects: Project[] = [
   {
+    title: "SkinsMC",
+    description:
+      "A Minecraft skin gallery serving millions of users — browse, upload, tag-based search, an in-browser skin editor, and Microsoft account integration. Worked across the Nuxt.js frontend and Kotlin backend as part of a small team, focused on keeping image-heavy pages fast under heavy load, plus Docker-based deployment and DevOps.",
+    tags: ["Nuxt.js", "Kotlin", "PHP", "PostgreSQL", "Docker"],
+    href: "https://skinsmc.org/",
+    repo: "#",
+    image: "/skinsmc.webp",
+  },
+  {
+    title: "Minecraft IP List",
+    description:
+      "A directory for discovering Minecraft multiplayer servers — tag-based search, rankings, and detailed server pages with video banners and live player counts, indexing thousands of servers with daily international traffic. Built the Nuxt.js frontend with performance as a first-class constraint, and collaborated on the Kotlin + MongoDB backend and Docker deployment.",
+    tags: ["Nuxt.js", "Kotlin", "MongoDB", "Docker", "DevOps"],
+    href: "https://www.minecraftiplist.com/",
+    repo: "#",
+    image: "/mcip.webp",
+  },
+  {
     title: "BudBuddy",
     description:
-      "BudBuddy is a comprehensive plant management and journaling application, developed using Vue.js and Nuxt.js. It empowers users to meticulously track their plants' journey, from logging daily care activities like watering and nutrient application to documenting growth stages with notes and photos.",
+      "A cross-platform plant care app where users log watering, light, and photos to build a timeline of each plant's growth. Built solo with a single Nuxt.js codebase shipped to web, iOS, and Android via Capacitor — with offline-friendly state syncing across devices.",
     tags: ["Nuxt.js", "Vue.js", "Tailwind CSS", "TypeScript", "Capacitor"],
     href: "https://budbuddy.hribal.site",
     repo: "https://github.com/MildaHribal/budbuddy",
@@ -27,29 +45,11 @@ const projects: Project[] = [
   {
     title: "Questie App",
     description:
-      "A gamified personal task management app that turns everyday to-dos into quests. Users earn XP, level up unique characters, and unlock achievements as they complete tasks. Built the complete Nuxt.js frontend and application architecture from scratch.",
+      "A gamified task manager that turns everyday to-dos into quests — earn XP, level up characters, and unlock achievements. Built the Nuxt.js frontend and shaped the app's architecture, with a focus on making the game mechanics feel motivating without becoming pressure.",
     tags: ["Nuxt.js", "Vue.js", "Tailwind CSS", "TypeScript", "Ionic"],
     href: "https://questieapp.com/",
     repo: "#",
     image: "/Questie.webp",
-  },
-  {
-    title: "Minecraft IP List",
-    description:
-      "A comprehensive directory for finding and exploring the best Minecraft multiplayer servers. It features a modern Nuxt.js frontend and a resilient Kotlin backend, robustly containerized using Docker.",
-    tags: ["Nuxt.js", "Kotlin", "MongoDB", "Docker", "DevOps"],
-    href: "https://www.minecraftiplist.com/",
-    repo: "#",
-    image: "/mcip.webp",
-  },
-  {
-    title: "SkinsMC",
-    description:
-      "A popular platform for browsing, downloading, and uploading millions of Minecraft skins. Powered by a scalable architecture utilizing Kotlin and PHP, with a strong focus on robust DevOps operations.",
-    tags: ["Kotlin", "PHP", "MariaDB", "Docker", "DevOps"],
-    href: "https://skinsmc.org/",
-    repo: "#",
-    image: "/skinsmc.webp",
   },
 ];
 

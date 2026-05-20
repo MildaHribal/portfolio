@@ -55,12 +55,12 @@ export default function About() {
             </h2>
             <div className="space-y-4 text-zinc-400 text-base leading-relaxed">
               <p>
-                My journey began at INFIS in Pilsen, where I transitioned from 
-                experimenting with hobby projects to architecting production platforms 
-                serving hundreds of thousands of users. Over the past four years, I&apos;ve 
-                specialized in the JavaScript and Kotlin ecosystems, moving seamlessly 
-                between crafting pixel-perfect frontends in Next.js/Nuxt.js and designing 
-                scalable backend APIs with Dockerized infrastructure.
+                My journey began at INFIS in Pilsen, where I went from
+                experimenting with hobby projects to contributing to production platforms
+                serving hundreds of thousands of users. Over the past four years, I&apos;ve
+                focused on the JavaScript and Kotlin ecosystems, moving between
+                building frontends in Next.js/Nuxt.js and working on
+                backend APIs with Dockerized infrastructure.
               </p>
               <p>
                 I thrive in environments where I can own the full stack, from database 
