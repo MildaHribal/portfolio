@@ -1,5 +1,5 @@
 # ── Stage 1: Install dependencies ──
-FROM node:20-alpine AS deps
+FROM node:22-alpine AS deps
 
 RUN corepack enable && corepack prepare pnpm@latest --activate
 
@@ -9,7 +9,7 @@ COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
 RUN pnpm install --frozen-lockfile
 
 # ── Stage 2: Build ──
-FROM node:20-alpine AS builder
+FROM node:22-alpine AS builder
 
 RUN corepack enable && corepack prepare pnpm@latest --activate
 
@@ -23,7 +23,7 @@ ENV NEXT_TELEMETRY_DISABLED=1
 RUN pnpm run build
 
 # ── Stage 3: Production runner ──
-FROM node:20-alpine AS runner
+FROM node:22-alpine AS runner
 
 RUN apk add --no-cache msmtp ca-certificates \
     && ln -sf /usr/bin/msmtp /usr/sbin/sendmail
