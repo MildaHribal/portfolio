@@ -1,35 +1,37 @@
-const experiences = [
-  {
-    period: "2025 — Present",
-    role: "Freelance Software Engineer",
-    company: "Self-Employed",
-    description:
-      "Working independently on web and mobile projects across the full stack, delivering custom solutions for clients. Building personal projects like BudBuddy and Questie to explore new technologies and sharpen my skills. Focused on modern JavaScript ecosystems, clean architecture, and shipping working products.",
-  },
-  {
-    period: "2024 — 2025",
-    role: "Fullstack Developer",
-    company: "SkinsMC",
-    description:
-      "Worked across the full stack on a high-traffic platform for browsing and uploading Minecraft skins, serving millions of users. Contributed to both the Kotlin backend and the Nuxt.js frontend as part of a small team, and helped with DevOps — containerized infrastructure using Docker and the deployment pipeline.",
-  },
-  {
-    period: "2023 — 2025",
-    role: "Frontend Developer",
-    company: "MinecraftIPList",
-    description:
-      "Built and maintained the Nuxt.js frontend for a comprehensive Minecraft server directory. Collaborated on integrating a resilient Kotlin-based backend with MongoDB, and handled containerization and deployment using Docker. Improved overall site performance and user experience across major feature releases.",
-  },
-  {
-    period: "2020 — 2024",
-    role: "IT Student",
-    company: "INFIS — Secondary School of Information Technology, Pilsen",
-    description:
-      "Studied information technology with a focus on software development, computer networks, and system administration. Graduated with a solid foundation in programming principles and modern web technologies, which fueled further self-directed learning in the JavaScript and Kotlin ecosystems.",
-  },
-];
+"use client";
+
+import { useT } from "@/lib/language-context";
 
 export default function Experience() {
+  const t = useT();
+
+  const experiences = [
+    {
+      period: `2025 — ${t.experience.present}`,
+      role: t.experience.items.freelance.role,
+      company: t.experience.items.freelance.company,
+      description: t.experience.items.freelance.description,
+    },
+    {
+      period: "2024 — 2025",
+      role: t.experience.items.skinsmc.role,
+      company: t.experience.items.skinsmc.company,
+      description: t.experience.items.skinsmc.description,
+    },
+    {
+      period: "2023 — 2025",
+      role: t.experience.items.mcip.role,
+      company: t.experience.items.mcip.company,
+      description: t.experience.items.mcip.description,
+    },
+    {
+      period: "2020 — 2024",
+      role: t.experience.items.infis.role,
+      company: t.experience.items.infis.company,
+      description: t.experience.items.infis.description,
+    },
+  ];
+
   return (
     <section id="experience" className="py-32 border-t border-zinc-800/60">
       <div className="max-w-6xl mx-auto px-6">
@@ -37,11 +39,11 @@ export default function Experience() {
         <div className="flex items-center gap-3 mb-4">
           <span className="h-px w-8 bg-zinc-700" />
           <span className="text-xs text-zinc-500 uppercase tracking-widest font-medium">
-            Career
+            {t.experience.eyebrow}
           </span>
         </div>
         <h2 className="text-3xl sm:text-4xl font-bold tracking-tight text-zinc-50 mb-16">
-          Experience
+          {t.experience.title}
         </h2>
 
         <div className="flex flex-col">

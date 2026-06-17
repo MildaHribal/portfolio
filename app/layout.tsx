@@ -1,6 +1,9 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+import { cookies } from "next/headers";
 import "./globals.css";
+import { LanguageProvider } from "@/lib/language-context";
+import { DEFAULT_LANG, LANG_COOKIE, isLang } from "@/lib/i18n";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -308,13 +311,17 @@ const graphJsonLd = {
   "@graph": [personSchema, websiteSchema, profilePageSchema, projectsItemList],
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const cookieStore = await cookies();
+  const cookieLang = cookieStore.get(LANG_COOKIE)?.value;
+  const lang = isLang(cookieLang) ? cookieLang : DEFAULT_LANG;
+
   return (
-    <html lang="en" className="dark" suppressHydrationWarning>
+    <html lang={lang} className="dark" suppressHydrationWarning>
       <head>
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <script
@@ -326,7 +333,7 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased bg-zinc-950 text-zinc-50`}
         suppressHydrationWarning
       >
-        {children}
+        <LanguageProvider initialLang={lang}>{children}</LanguageProvider>
       </body>
     </html>
   );

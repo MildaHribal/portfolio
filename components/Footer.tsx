@@ -1,5 +1,8 @@
+"use client";
+
 import { Github, Linkedin } from "lucide-react";
 import ScrollToTop from "@/components/ScrollToTop";
+import { useT } from "@/lib/language-context";
 
 const socials = [
   {
@@ -15,6 +18,7 @@ const socials = [
 ];
 
 export default function Footer() {
+  const t = useT();
   return (
     <footer className="border-t border-zinc-800/60 py-12">
       <div className="max-w-6xl mx-auto px-6">
@@ -26,7 +30,7 @@ export default function Footer() {
               hribal.site
             </div>
             <p className="text-xs text-zinc-500">
-              © {new Date().getFullYear()} Miloslav Hříbal. Built with Next.js &amp; Tailwind CSS.
+              © {new Date().getFullYear()} Miloslav Hříbal. {t.footer.builtWith}
             </p>
           </div>
 
