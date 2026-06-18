@@ -15,6 +15,17 @@ const nextConfig: NextConfig = {
         source: "/ingest/:path*",
         destination: "https://eu.i.posthog.com/:path*",
       },
+      // Montana Cans mockup — statický export bundlovaný do public/montana/
+      // při buildu (viz portfolio/package.json → build:montana). Rewrite zajistí,
+      // že /montana a /montana/ servírují index.html, místo aby Next router vracel 404.
+      {
+        source: "/montana",
+        destination: "/montana/index.html",
+      },
+      {
+        source: "/montana/",
+        destination: "/montana/index.html",
+      },
     ];
   },
   async headers() {
