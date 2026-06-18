@@ -51,9 +51,10 @@ export function Reveal({
 
   const style: CSSProperties = {
     opacity: shown ? 1 : 0,
-    transform: shown ? 'translateY(0)' : 'translateY(28px)',
-    transition: `opacity 800ms cubic-bezier(0.22, 1, 0.36, 1) ${delay}ms, transform 800ms cubic-bezier(0.22, 1, 0.36, 1) ${delay}ms`,
-    willChange: 'opacity, transform',
+    transform: shown ? 'translateY(0)' : 'translateY(20px)',
+    filter: shown ? 'blur(0)' : 'blur(6px)',
+    transition: `opacity 550ms cubic-bezier(0.16, 1, 0.3, 1) ${delay}ms, transform 550ms cubic-bezier(0.16, 1, 0.3, 1) ${delay}ms, filter 400ms ease-out ${delay}ms`,
+    willChange: 'opacity, transform, filter',
   };
 
   return (

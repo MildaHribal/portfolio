@@ -1,4 +1,4 @@
-import { ProductGraphic } from './ProductGraphic';
+import { HeroCan } from './HeroCan';
 import { Counter, Magnetic, SectionNumber } from './interactive';
 
 export function Hero() {
@@ -14,12 +14,12 @@ export function Hero() {
 
           <h1 className="display-tight leading-[0.86]">
             <span className="block text-[12vw] sm:text-[9vw] lg:text-[6.2vw] xl:text-[100px]">
-              <SprayLine word="NEJVĚTŠÍ VÝBĚR" delay="180ms" accent="#ff2d4a" />
+              <SprayLine word="NEJVĚTŠÍ VÝBĚR" delay="80ms" accent="#ff2d4a" />
             </span>
             <span className="block text-[12vw] sm:text-[9vw] lg:text-[6.2vw] xl:text-[100px]">
               <SprayLine
                 word="MONTANA CANS V ČR."
-                delay="640ms"
+                delay="320ms"
                 accent="#ffd400"
               />
             </span>
@@ -27,28 +27,28 @@ export function Hero() {
             <span className="block mt-4 md:mt-6 text-[8vw] sm:text-[6vw] lg:text-[4vw] xl:text-[66px] leading-[0.95]">
               <span
                 className="inline-block animate-spray-reveal text-bone"
-                style={{ animationDelay: '1100ms' }}
+                style={{ animationDelay: '600ms' }}
               >
                 PŘES
               </span>
               <span className="inline-block w-[0.3em]" />
               <span
                 className="inline-block animate-spray-reveal"
-                style={{ animationDelay: '1240ms', color: 'var(--accent)' }}
+                style={{ animationDelay: '680ms', color: 'var(--accent)' }}
               >
                 200
               </span>
               <span className="inline-block w-[0.3em]" />
               <span
                 className="inline-block animate-spray-reveal text-bone"
-                style={{ animationDelay: '1380ms' }}
+                style={{ animationDelay: '760ms' }}
               >
                 ODSTÍNŮ
               </span>
               <span className="inline-block w-[0.3em]" />
               <span
                 className="inline-block animate-spray-reveal text-bone"
-                style={{ animationDelay: '1520ms' }}
+                style={{ animationDelay: '840ms' }}
               >
                 SKLADEM.
               </span>
@@ -63,7 +63,7 @@ export function Hero() {
 
           <p
             className="mt-10 max-w-xl text-base md:text-lg text-bone/80 leading-relaxed animate-rise"
-            style={{ animationDelay: '1700ms' }}
+            style={{ animationDelay: '950ms' }}
           >
             Oficiální dovozce Montana Cans pro ČR. Vyber svoji barvu na stěně níž —{' '}
             <span className="text-bone underline decoration-tape decoration-2 underline-offset-4">
@@ -74,7 +74,7 @@ export function Hero() {
 
           <div
             className="mt-8 flex flex-wrap gap-3 animate-rise items-center"
-            style={{ animationDelay: '1320ms' }}
+            style={{ animationDelay: '720ms' }}
           >
             <Magnetic strength={0.4}>
               <a href="#stena" className="btn-primary">
@@ -89,7 +89,7 @@ export function Hero() {
 
           <dl
             className="mt-12 grid grid-cols-3 max-w-md text-left animate-rise"
-            style={{ animationDelay: '1440ms' }}
+            style={{ animationDelay: '820ms' }}
           >
             <Spec>
               <Counter to={212} className="font-display text-3xl md:text-4xl tracking-tightest" />
@@ -109,45 +109,7 @@ export function Hero() {
         </div>
 
         {/* RIGHT — angled real Montana can */}
-        <div
-          className="lg:col-span-4 relative animate-rise"
-          style={{ animationDelay: '900ms' }}
-        >
-          <div className="relative mx-auto w-[70%] sm:w-[50%] lg:w-full max-w-[420px] aspect-[3/4]">
-            <div
-              aria-hidden
-              className="absolute inset-0 -z-10 blur-3xl opacity-70"
-              style={{
-                background:
-                  'radial-gradient(circle at 50% 40%, rgba(255,138,42,0.55), transparent 60%)',
-              }}
-            />
-            <div className="absolute inset-0 rotate-[6deg] drop-shadow-[0_30px_40px_rgba(0,0,0,0.6)]">
-              <ProductGraphic
-                product={{
-                  id: 'hero',
-                  name: 'Montana BLACK 400 Mandarine',
-                  line: '',
-                  price: 0,
-                  kind: 'spray',
-                  hex: '#e25a15',
-                  image: '/products/cans/black-orange.png',
-                }}
-                variant="bare"
-                eager
-              />
-            </div>
-            <div className="absolute -bottom-2 -left-4 rotate-[-10deg] z-10">
-              <div className="tape-strip px-4 py-2 font-display tracking-tightest text-lg">
-                NOVÉ&nbsp;·&nbsp;MANDARINE
-              </div>
-            </div>
-            <div className="absolute top-4 right-0 stamp bg-wall-deep/80 backdrop-blur">
-              <span className="size-1.5 rounded-full bg-[#e25a15]" />
-              MTN-4030
-            </div>
-          </div>
-        </div>
+        <HeroCan />
       </div>
 
       {/* scroll indicator */}

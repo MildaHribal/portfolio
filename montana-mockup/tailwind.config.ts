@@ -30,10 +30,10 @@ const config: Config = {
         tightest: '-0.04em',
       },
       animation: {
-        'spray-reveal': 'sprayReveal 1.6s cubic-bezier(0.22, 1, 0.36, 1) 0.15s both',
-        'spray-blob': 'sprayBlob 1.6s cubic-bezier(0.22, 1, 0.36, 1) 0.15s both',
-        'drip': 'drip 1.4s ease-out 1.6s both',
-        'rise': 'rise 0.9s cubic-bezier(0.22, 1, 0.36, 1) both',
+        'spray-reveal': 'sprayReveal 0.85s cubic-bezier(0.16, 1, 0.3, 1) 0.05s both',
+        'spray-blob': 'sprayBlob 1.1s cubic-bezier(0.22, 1, 0.36, 1) 0.05s both',
+        'drip': 'drip 0.7s cubic-bezier(0.34, 1.4, 0.64, 1) 0.5s both',
+        'rise': 'rise 0.6s cubic-bezier(0.16, 1, 0.3, 1) both',
         'marquee': 'marquee 28s linear infinite',
       },
       keyframes: {
@@ -44,8 +44,17 @@ const config: Config = {
            * shorter than the font's ascender, so `inset(0 0 0 0)` would clip
            * diacritics off the top.
            */
-          '0%': { clipPath: 'inset(-35% 100% -20% 0)' },
-          '100%': { clipPath: 'inset(-35% 0 -20% 0)' },
+          '0%': {
+            clipPath: 'inset(-35% 100% -20% 0)',
+            transform: 'translateX(-8px)',
+            opacity: '0.4',
+          },
+          '60%': { opacity: '1' },
+          '100%': {
+            clipPath: 'inset(-35% 0 -20% 0)',
+            transform: 'translateX(0)',
+            opacity: '1',
+          },
         },
         sprayBlob: {
           '0%': { transform: 'translateX(-30%) scale(0.6)', opacity: '0' },
@@ -55,12 +64,13 @@ const config: Config = {
         },
         drip: {
           '0%': { transform: 'scaleY(0)', transformOrigin: 'top' },
-          '60%': { transform: 'scaleY(1.05)', transformOrigin: 'top' },
+          '70%': { transform: 'scaleY(1.08)', transformOrigin: 'top' },
           '100%': { transform: 'scaleY(1)', transformOrigin: 'top' },
         },
         rise: {
-          '0%': { transform: 'translateY(24px)', opacity: '0' },
-          '100%': { transform: 'translateY(0)', opacity: '1' },
+          '0%': { transform: 'translateY(18px)', opacity: '0', filter: 'blur(4px)' },
+          '60%': { filter: 'blur(0)' },
+          '100%': { transform: 'translateY(0)', opacity: '1', filter: 'blur(0)' },
         },
         marquee: {
           '0%': { transform: 'translateX(0)' },
