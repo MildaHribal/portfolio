@@ -1,15 +1,11 @@
 "use client";
 
 import { useState, useEffect } from "react";
-
-const roles = [
-  "Fullstack Developer",
-  "Frontend Engineer",
-  "Software Engineer",
-  "UI Craftsman",
-];
+import { useT } from "@/lib/language-context";
 
 export default function Typewriter() {
+  const t = useT();
+  const roles = t.typewriter;
   const [roleIndex, setRoleIndex] = useState(0);
   const [displayed, setDisplayed] = useState("");
   const [deleting, setDeleting] = useState(false);
@@ -38,7 +34,7 @@ export default function Typewriter() {
     }
 
     return () => clearTimeout(timeout);
-  }, [charIndex, deleting, roleIndex]);
+  }, [charIndex, deleting, roleIndex, roles]);
 
   return (
     <span className="text-zinc-400 font-light text-2xl sm:text-3xl md:text-4xl">

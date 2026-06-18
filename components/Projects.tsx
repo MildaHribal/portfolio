@@ -4,6 +4,7 @@ import { ExternalLink, Github, ArrowUpRight } from "lucide-react";
 import Image from "next/image";
 import { useState } from "react";
 import { getPostHog } from "@/lib/posthog";
+import { useT } from "@/lib/language-context";
 
 interface Project {
   title: string;
@@ -14,46 +15,42 @@ interface Project {
   image: string;
 }
 
-const projects: Project[] = [
-  {
-    title: "SkinsMC",
-    description:
-      "A Minecraft skin gallery serving millions of users — browse, upload, tag-based search, an in-browser skin editor, and Microsoft account integration. Worked across the Nuxt.js frontend and Kotlin backend as part of a small team, focused on keeping image-heavy pages fast under heavy load, plus Docker-based deployment and DevOps.",
-    tags: ["Nuxt.js", "Kotlin", "PHP", "PostgreSQL", "Docker"],
-    href: "https://skinsmc.org/",
-    repo: "#",
-    image: "/skinsmc.webp",
-  },
-  {
-    title: "Minecraft IP List",
-    description:
-      "A directory for discovering Minecraft multiplayer servers — tag-based search, rankings, and detailed server pages with video banners and live player counts, indexing thousands of servers with daily international traffic. Built the Nuxt.js frontend with performance as a first-class constraint, and collaborated on the Kotlin + MongoDB backend and Docker deployment.",
-    tags: ["Nuxt.js", "Kotlin", "MongoDB", "Docker", "DevOps"],
-    href: "https://www.minecraftiplist.com/",
-    repo: "#",
-    image: "/mcip.webp",
-  },
-  {
-    title: "BudBuddy",
-    description:
-      "A cross-platform plant care app where users log watering, light, and photos to build a timeline of each plant's growth. Built solo with a single Nuxt.js codebase shipped to web, iOS, and Android via Capacitor — with offline-friendly state syncing across devices.",
-    tags: ["Nuxt.js", "Vue.js", "Tailwind CSS", "TypeScript", "Capacitor"],
-    href: "https://budbuddy.hribal.site",
-    repo: "https://github.com/MildaHribal/budbuddy",
-    image: "/BudBuddy.webp",
-  },
-  {
-    title: "Questie App",
-    description:
-      "A gamified task manager that turns everyday to-dos into quests — earn XP, level up characters, and unlock achievements. Built the Nuxt.js frontend and shaped the app's architecture, with a focus on making the game mechanics feel motivating without becoming pressure.",
-    tags: ["Nuxt.js", "Vue.js", "Tailwind CSS", "TypeScript", "Ionic"],
-    href: "https://questieapp.com/",
-    repo: "#",
-    image: "/Questie.webp",
-  },
-];
-
 export default function Projects() {
+  const t = useT();
+  const projects: Project[] = [
+    {
+      title: "SkinsMC",
+      description: t.projects.items.skinsmc,
+      tags: ["Nuxt.js", "Kotlin", "PHP", "PostgreSQL", "Docker"],
+      href: "https://skinsmc.org/",
+      repo: "#",
+      image: "/skinsmc.webp",
+    },
+    {
+      title: "Minecraft IP List",
+      description: t.projects.items.mcip,
+      tags: ["Nuxt.js", "Kotlin", "MongoDB", "Docker", "DevOps"],
+      href: "https://www.minecraftiplist.com/",
+      repo: "#",
+      image: "/mcip.webp",
+    },
+    {
+      title: "BudBuddy",
+      description: t.projects.items.budbuddy,
+      tags: ["Nuxt.js", "Vue.js", "Tailwind CSS", "TypeScript", "Capacitor"],
+      href: "https://budbuddy.hribal.site",
+      repo: "https://github.com/MildaHribal/budbuddy",
+      image: "/BudBuddy.webp",
+    },
+    {
+      title: "Questie App",
+      description: t.projects.items.questie,
+      tags: ["Nuxt.js", "Vue.js", "Tailwind CSS", "TypeScript", "Ionic"],
+      href: "https://questieapp.com/",
+      repo: "#",
+      image: "/Questie.webp",
+    },
+  ];
   const [activeIframe, setActiveIframe] = useState<string | null>(null);
 
   return (
@@ -62,11 +59,11 @@ export default function Projects() {
         <div className="flex items-center gap-3 mb-4">
           <span className="h-px w-8 bg-zinc-700" />
           <span className="text-xs text-zinc-500 uppercase tracking-widest font-medium">
-            Selected Work
+            {t.projects.eyebrow}
           </span>
         </div>
         <h2 className="text-3xl sm:text-4xl font-bold tracking-tight text-zinc-50 mb-16">
-          My Projects
+          {t.projects.title}
         </h2>
 
         <div className="flex flex-col gap-8">
@@ -126,7 +123,7 @@ export default function Projects() {
                     <a href={project.href} target="_blank" rel="noopener noreferrer" className="absolute inset-0 z-20">
                       <div className="absolute inset-0 flex items-start justify-end p-3">
                         <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-black/60 backdrop-blur-sm text-white/90 text-xs font-semibold border border-white/10 opacity-0 group-hover:opacity-100 transition-all duration-300">
-                          Visit <ArrowUpRight size={13} />
+                          {t.projects.visit} <ArrowUpRight size={13} />
                         </span>
                       </div>
                     </a>
@@ -153,10 +150,10 @@ export default function Projects() {
                         className="inline-flex items-center gap-2 px-5 py-2.5 bg-zinc-100 text-zinc-900 rounded-xl font-semibold hover:bg-white hover:scale-105 transition-all duration-300 active:scale-95 cursor-pointer"
                       >
                         <ExternalLink size={18} />
-                        {activeIframe === project.title ? "Close Demo" : "Live Demo"}
+                        {activeIframe === project.title ? t.projects.closeDemo : t.projects.liveDemo}
                       </button>
                       <a href={project.repo} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 text-sm font-medium text-zinc-400 hover:text-zinc-200 transition-colors">
-                        <Github size={18} /> Source
+                        <Github size={18} /> {t.projects.source}
                       </a>
                     </div>
                   )}

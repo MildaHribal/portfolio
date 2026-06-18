@@ -1,43 +1,48 @@
+"use client";
+
 import { Code2, Zap, Users } from "lucide-react";
-
-const skillCategories = [
-  {
-    label: "Frontend",
-    skills: ["React", "Next.js", "TypeScript", "Vue.js", "Nuxt.js", "Tailwind CSS"],
-  },
-  {
-    label: "Backend",
-    skills: ["Node.js", "Kotlin", "tRPC", "Prisma", "PostgreSQL", "MongoDB"],
-  },
-  {
-    label: "Tooling",
-    skills: ["Git", "GitHub Actions", "Docker", "Vite", "Linux", "CI/CD"],
-  },
-  {
-    label: "Design",
-    skills: ["Figma", "Radix UI", "shadcn/ui", "CSS Animations", "SVG", "Responsive Design"],
-  },
-];
-
-const philosophy = [
-  {
-    icon: Code2,
-    title: "Clean Code",
-    desc: "I write readable, maintainable code with consistent structure. Every function has a clear purpose, every module a single responsibility.",
-  },
-  {
-    icon: Zap,
-    title: "Performance First",
-    desc: "From lazy loading to database indexing, I obsess over speed. Fast apps aren't a bonus — they're a baseline expectation.",
-  },
-  {
-    icon: Users,
-    title: "User-Centric Design",
-    desc: "I build for real people. Every interaction is intentional, every layout is tested, and accessibility is never an afterthought.",
-  },
-];
+import { useT } from "@/lib/language-context";
 
 export default function About() {
+  const t = useT();
+
+  const skillCategories = [
+    {
+      label: t.about.skills.frontend,
+      skills: ["React", "Next.js", "TypeScript", "Vue.js", "Nuxt.js", "Tailwind CSS"],
+    },
+    {
+      label: t.about.skills.backend,
+      skills: ["Node.js", "Kotlin", "tRPC", "Prisma", "PostgreSQL", "MongoDB"],
+    },
+    {
+      label: t.about.skills.tooling,
+      skills: ["Git", "GitHub Actions", "Docker", "Vite", "Linux", "CI/CD"],
+    },
+    {
+      label: t.about.skills.design,
+      skills: ["Figma", "Radix UI", "shadcn/ui", "CSS Animations", "SVG", "Responsive Design"],
+    },
+  ];
+
+  const philosophy = [
+    {
+      icon: Code2,
+      title: t.about.philosophy.cleanTitle,
+      desc: t.about.philosophy.cleanDesc,
+    },
+    {
+      icon: Zap,
+      title: t.about.philosophy.perfTitle,
+      desc: t.about.philosophy.perfDesc,
+    },
+    {
+      icon: Users,
+      title: t.about.philosophy.userTitle,
+      desc: t.about.philosophy.userDesc,
+    },
+  ];
+
   return (
     <section id="about" className="py-32 border-t border-zinc-800/60">
       <div className="max-w-6xl mx-auto px-6">
@@ -47,28 +52,15 @@ export default function About() {
             <div className="flex items-center gap-3 mb-4">
               <span className="h-px w-8 bg-zinc-700" />
               <span className="text-xs text-zinc-500 uppercase tracking-widest font-medium">
-                About me
+                {t.about.eyebrow}
               </span>
             </div>
             <h2 className="text-3xl sm:text-4xl font-bold tracking-tight text-zinc-50 mb-6">
-              Passionate about the craft
+              {t.about.title}
             </h2>
             <div className="space-y-4 text-zinc-400 text-base leading-relaxed">
-              <p>
-                My journey began at INFIS in Pilsen, where I went from
-                experimenting with hobby projects to contributing to production platforms
-                serving hundreds of thousands of users. Over the past four years, I&apos;ve
-                focused on the JavaScript and Kotlin ecosystems, moving between
-                building frontends in Next.js/Nuxt.js and working on
-                backend APIs with Dockerized infrastructure.
-              </p>
-              <p>
-                I thrive in environments where I can own the full stack, from database 
-                schema design to the final CSS animation. Driven by genuine curiosity and 
-                relentless iteration, I’m always exploring new system design patterns—usually
-                 with a fresh espresso in hand. I believe the best software isn't just written;
-                  it's carefully crafted through continuous learning.
-              </p>
+              <p>{t.about.p1}</p>
+              <p>{t.about.p2}</p>
             </div>
           </div>
 

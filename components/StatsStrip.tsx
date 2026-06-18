@@ -1,13 +1,9 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { useT } from "@/lib/language-context";
 
-const stats = [
-  { value: 4, suffix: "+", label: "Years of experience" },
-  { value: 3, suffix: "", label: "Live projects" },
-  { value: 10, suffix: "+", label: "Technologies I work with" },
-  { value: 100, suffix: "k+", label: "Users reached" },
-];
+const targets = [4, 3, 10, 100];
 
 function Counter({ target, suffix }: { target: number; suffix: string }) {
   const [count, setCount] = useState(0);
@@ -51,6 +47,13 @@ function Counter({ target, suffix }: { target: number; suffix: string }) {
 }
 
 export default function StatsStrip() {
+  const t = useT();
+  const stats = t.stats.map((entry, i) => ({
+    value: targets[i],
+    suffix: entry.suffix,
+    label: entry.label,
+  }));
+
   return (
     <div className="w-full py-8">
       <div className="max-w-6xl mx-auto px-6">
