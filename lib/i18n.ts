@@ -50,6 +50,7 @@ const en = {
       liveDemo: "Live Demo",
       closeDemo: "Close Demo",
       source: "Source",
+      personalProject: "Personal project",
       items: {
         skinsmc:
           "A Minecraft skin gallery serving millions of users — browse, upload, tag-based search, an in-browser skin editor, and Microsoft account integration. Worked across the Nuxt.js frontend and Kotlin backend as part of a small team, focused on keeping image-heavy pages fast under heavy load, plus Docker-based deployment and DevOps.",
@@ -58,6 +59,8 @@ const en = {
           "A cross-platform plant care app where users log watering, light, and photos to build a timeline of each plant's growth. Built solo with a single Nuxt.js codebase shipped to web, iOS, and Android via Capacitor — with offline-friendly state syncing across devices.",
         questie:
           "A gamified task manager that turns everyday to-dos into quests — earn XP, level up characters, and unlock achievements. Built the Nuxt.js frontend and shaped the app's architecture, with a focus on making the game mechanics feel motivating without becoming pressure.",
+        montana:
+          "A self-initiated concept redesign of the Montana Cans Czech spray-paint shop — built purely to push my frontend and motion design. Its signature feature is a colour wall: picking a shade propagates that accent across the entire page. Built solo in Next.js 15 + React 19 with a bold, street-art art direction and Motion animations.",
       },
     },
     about: {
@@ -185,6 +188,7 @@ const cs: Messages = {
       liveDemo: "Živé demo",
       closeDemo: "Zavřít demo",
       source: "Zdroj",
+      personalProject: "Osobní projekt",
       items: {
         skinsmc:
           "Galerie Minecraft skinů s miliony uživatelů — procházení, nahrávání, vyhledávání podle tagů, editor skinů přímo v prohlížeči a integrace s Microsoft účtem. Pracoval jsem v malém týmu na Nuxt.js frontendu i Kotlin backendu, se zaměřením na rychlost obrazově náročných stránek pod velkou zátěží. K tomu nasazování přes Docker a DevOps.",
@@ -193,6 +197,8 @@ const cs: Messages = {
           "Cross-platform aplikace pro péči o rostliny — uživatelé si zaznamenávají zálivku, světlo a fotky a skládají si časovou osu růstu každé rostliny. Postavil jsem ji sám s jednou Nuxt.js kódovou základnou nasazenou na web, iOS i Android přes Capacitor — s offline-friendly synchronizací mezi zařízeními.",
         questie:
           "Gamifikovaný správce úkolů, který běžné to-do mění v questy — sbíráš XP, levelíš postavy a odemykáš achievementy. Postavil jsem Nuxt.js frontend a navrhl architekturu aplikace, s důrazem na to, aby herní mechaniky motivovaly, ale netlačily.",
+        montana:
+          "Vlastní koncepční redesign českého e-shopu Montana Cans se sprejemi — postavil jsem ho čistě proto, abych posunul svůj frontend a motion design. Hlavní fíčura je barevná zeď: výběr odstínu rozprostře daný akcent po celé stránce. Sólo v Next.js 15 + React 19, s výraznou street-art art direction a animacemi v Motion.",
       },
     },
     about: {

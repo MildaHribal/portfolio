@@ -3,7 +3,6 @@
 import { ExternalLink, Github, ArrowUpRight } from "lucide-react";
 import Image from "next/image";
 import { useState } from "react";
-import { getPostHog } from "@/lib/posthog";
 import { useT } from "@/lib/language-context";
 
 interface Project {
@@ -13,6 +12,7 @@ interface Project {
   href: string;
   repo: string;
   image: string;
+  personal?: boolean;
 }
 
 export default function Projects() {
@@ -41,6 +41,7 @@ export default function Projects() {
       href: "https://budbuddy.hribal.site",
       repo: "https://github.com/MildaHribal/budbuddy",
       image: "/BudBuddy.webp",
+      personal: true,
     },
     {
       title: "Questie App",
@@ -49,6 +50,16 @@ export default function Projects() {
       href: "https://questieapp.com/",
       repo: "#",
       image: "/Questie.webp",
+      personal: true,
+    },
+    {
+      title: "Montana Cans",
+      description: t.projects.items.montana,
+      tags: ["Next.js 15", "React 19", "TypeScript", "Tailwind CSS", "Motion"],
+      href: "https://montana.hribal.site/",
+      repo: "https://github.com/MildaHribal/montana-cans-cz",
+      image: "/montana.webp",
+      personal: true,
     },
   ];
   const [activeIframe, setActiveIframe] = useState<string | null>(null);
@@ -70,22 +81,64 @@ export default function Projects() {
           {projects.map((project, i) => {
             const isQuestie = project.title === "Questie App";
             const isBudBuddy = project.title === "BudBuddy";
-            const hasLink = project.href !== "#" && !isBudBuddy;
+            const isMontana = project.title === "Montana Cans";
+            const isWide = isQuestie || isMontana;
+            const hasLink = project.href !== "#" && !isBudBuddy && !isMontana;
 
             return (
               <article
                 key={project.title}
-                className={`group p-6 md:p-8 rounded-2xl border border-zinc-800/60 bg-zinc-900/20 hover:bg-zinc-900/40 hover:border-zinc-700/60 hover:-translate-y-1 hover:shadow-xl hover:shadow-black/30 transition-all duration-300 ${isQuestie ? "flex flex-col gap-8" : "grid md:grid-cols-2 gap-8"
+                className={`group p-6 md:p-8 rounded-2xl border border-zinc-800/60 bg-zinc-900/20 hover:bg-zinc-900/40 hover:border-zinc-700/60 hover:-translate-y-1 hover:shadow-xl hover:shadow-black/30 transition-all duration-300 ${isWide ? "flex flex-col gap-8" : "grid md:grid-cols-2 gap-8"
                   }`}
               >
-                {/* Image / Iframe Container */}
+                {/* Montana: desktop browser frame — screenshot links out to the live site */}
+                {isMontana ? (
+                  <a
+                    href={project.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="relative block w-full rounded-xl overflow-hidden bg-zinc-950 border border-zinc-800 group/img shadow-lg shadow-black/20"
+                  >
+                    {/* Browser chrome */}
+                    <div className="flex items-center gap-2 px-4 h-9 bg-zinc-900 border-b border-zinc-800">
+                      <div className="flex gap-1.5">
+                        <span className="w-3 h-3 rounded-full bg-zinc-700" />
+                        <span className="w-3 h-3 rounded-full bg-zinc-700" />
+                        <span className="w-3 h-3 rounded-full bg-zinc-700" />
+                      </div>
+                      <div className="flex-1 flex justify-center">
+                        <span className="px-4 py-1 rounded-md bg-zinc-950 border border-zinc-800 text-[11px] text-zinc-500 max-w-full truncate">
+                          montana.hribal.site
+                        </span>
+                      </div>
+                      <div className="w-[52px]" aria-hidden />
+                    </div>
+                    {/* Viewport */}
+                    <div className="relative w-full aspect-[1078/674] bg-zinc-950">
+                      <Image
+                        src={project.image}
+                        alt={`${project.title} — project screenshot by Miloslav Hříbal (${project.tags.join(", ")})`}
+                        fill
+                        quality={100}
+                        sizes="(max-width: 768px) 100vw, 1100px"
+                        className="object-cover object-top transition-transform duration-500 group-hover/img:scale-[1.02]"
+                        loading="lazy"
+                      />
+                      <div className="absolute inset-0 flex items-start justify-end p-3">
+                        <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-black/60 backdrop-blur-sm text-white/90 text-xs font-semibold border border-white/10 opacity-0 group-hover:opacity-100 transition-all duration-300">
+                          {t.projects.visit} <ArrowUpRight size={13} />
+                        </span>
+                      </div>
+                    </div>
+                  </a>
+                ) : (
                 <div
                   className={`relative rounded-[2.5rem] overflow-hidden bg-zinc-950 border border-zinc-800 group/img ${isBudBuddy
                     ? activeIframe === project.title
                       ? "aspect-[9/20.5] max-w-[370px] w-full mx-auto"
                       : "aspect-[9/19.5] max-w-[300px] w-full mx-auto"
                     : isQuestie ? "w-full aspect-[2.2/1]" : "aspect-video"
-                    } ${!isQuestie && i % 2 === 1 ? "md:order-last" : ""}`}
+                    } ${!isWide && i % 2 === 1 ? "md:order-last" : ""}`}
                 >
                   {isBudBuddy && activeIframe === project.title ? (
                     <div className="relative w-full h-full">
@@ -129,10 +182,18 @@ export default function Projects() {
                     </a>
                   )}
                 </div>
+                )}
 
                 {/* Content Section */}
                 <div className="flex flex-col justify-center gap-4">
-                  <h3 className="text-xl font-semibold text-zinc-50">{project.title}</h3>
+                  <div className="flex items-center gap-3 flex-wrap">
+                    <h3 className="text-xl font-semibold text-zinc-50">{project.title}</h3>
+                    {project.personal && (
+                      <span className="text-[10px] px-2 py-0.5 rounded-full border border-zinc-700 bg-zinc-800/50 text-zinc-400 uppercase tracking-wider font-medium">
+                        {t.projects.personalProject}
+                      </span>
+                    )}
+                  </div>
                   <p className="text-zinc-400 text-sm leading-relaxed">{project.description}</p>
 
                   <div className="flex flex-wrap gap-2 mt-1">
@@ -143,15 +204,27 @@ export default function Projects() {
                     ))}
                   </div>
 
-                  {isBudBuddy && (
+                  {(isBudBuddy || isMontana) && (
                     <div className="flex items-center gap-5 mt-4">
-                      <button
-                        onClick={() => setActiveIframe(activeIframe === project.title ? null : project.title)}
-                        className="inline-flex items-center gap-2 px-5 py-2.5 bg-zinc-100 text-zinc-900 rounded-xl font-semibold hover:bg-white hover:scale-105 transition-all duration-300 active:scale-95 cursor-pointer"
-                      >
-                        <ExternalLink size={18} />
-                        {activeIframe === project.title ? t.projects.closeDemo : t.projects.liveDemo}
-                      </button>
+                      {isMontana ? (
+                        <a
+                          href={project.href}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center gap-2 px-5 py-2.5 bg-zinc-100 text-zinc-900 rounded-xl font-semibold hover:bg-white hover:scale-105 transition-all duration-300 active:scale-95 cursor-pointer"
+                        >
+                          <ExternalLink size={18} />
+                          {t.projects.visit}
+                        </a>
+                      ) : (
+                        <button
+                          onClick={() => setActiveIframe(activeIframe === project.title ? null : project.title)}
+                          className="inline-flex items-center gap-2 px-5 py-2.5 bg-zinc-100 text-zinc-900 rounded-xl font-semibold hover:bg-white hover:scale-105 transition-all duration-300 active:scale-95 cursor-pointer"
+                        >
+                          <ExternalLink size={18} />
+                          {activeIframe === project.title ? t.projects.closeDemo : t.projects.liveDemo}
+                        </button>
+                      )}
                       <a href={project.repo} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 text-sm font-medium text-zinc-400 hover:text-zinc-200 transition-colors">
                         <Github size={18} /> {t.projects.source}
                       </a>

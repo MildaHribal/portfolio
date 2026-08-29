@@ -6,10 +6,16 @@ if (typeof window !== 'undefined') {
 
   const initPostHog = () => {
     if (posthogInitialized) return;
+
+    // Skip init when no key is configured (e.g. local dev without .env).
+    // Avoids PostHog's "initialized without a token" console error.
+    const posthogKey = process.env.NEXT_PUBLIC_POSTHOG_KEY;
+    if (!posthogKey) return;
+
     posthogInitialized = true;
 
     import('posthog-js').then(({ default: posthog }) => {
-      posthog.init(process.env.NEXT_PUBLIC_POSTHOG_KEY!, {
+      posthog.init(posthogKey, {
         api_host: "/ingest",
         ui_host: "https://eu.posthog.com",
         defaults: "2026-01-30",
