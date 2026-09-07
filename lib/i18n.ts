@@ -61,6 +61,8 @@ const en = {
           "A gamified task manager that turns everyday to-dos into quests — earn XP, level up characters, and unlock achievements. Built the Nuxt.js frontend and shaped the app's architecture, with a focus on making the game mechanics feel motivating without becoming pressure.",
         montana:
           "A self-initiated concept redesign of the Montana Cans Czech spray-paint shop — built purely to push my frontend and motion design. Its signature feature is a colour wall: picking a shade propagates that accent across the entire page. Built solo in Next.js 15 + React 19 with a bold, street-art art direction and Motion animations.",
+        dosmundos:
+          "A concept redesign of Dos Mundos, a real Prague café whose live site scores just 22/100 on Google's mobile speed test and takes 12.5 s to show its content. Rebuilt as a fast, clean, appetising single-page site with a warm editorial art direction, a draggable before/after comparison, and a mobile-first layout. Shows how I'd turn a slow, cluttered small-business website into one that actually converts.",
       },
     },
     about: {
@@ -199,6 +201,8 @@ const cs: Messages = {
           "Gamifikovaný správce úkolů, který běžné to-do mění v questy — sbíráš XP, levelíš postavy a odemykáš achievementy. Postavil jsem Nuxt.js frontend a navrhl architekturu aplikace, s důrazem na to, aby herní mechaniky motivovaly, ale netlačily.",
         montana:
           "Vlastní koncepční redesign českého e-shopu Montana Cans se sprejemi — postavil jsem ho čistě proto, abych posunul svůj frontend a motion design. Hlavní fíčura je barevná zeď: výběr odstínu rozprostře daný akcent po celé stránce. Sólo v Next.js 15 + React 19, s výraznou street-art art direction a animacemi v Motion.",
+        dosmundos:
+          "Koncepční redesign Dos Mundos — skutečné pražské kavárny, jejíž web má v Google testu rychlosti na mobilu jen 22/100 a hlavní obsah naběhne až za 12,5 s. Předělal jsem ho na rychlou, přehlednou a chutnou jednostránku s teplou editorial identitou, přetahovacím porovnáním před/po a mobile-first layoutem. Ukázka, jak z pomalého a přeplácaného webu malé firmy udělám takový, který zákazníky opravdu získává.",
       },
     },
     about: {
