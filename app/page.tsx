@@ -35,7 +35,6 @@ export default function Home() {
         <SectionReveal>
           <Experience />
         </SectionReveal>
-
         <SectionReveal>
           <About />
         </SectionReveal>

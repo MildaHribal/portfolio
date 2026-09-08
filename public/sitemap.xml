@@ -5,22 +5,30 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
     <loc>https://hribal.site/</loc>
-    <lastmod>2026-05-16</lastmod>
+    <lastmod>2026-09-08</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://hribal.site/" />
     <xhtml:link rel="alternate" hreflang="x-default" href="https://hribal.site/" />
     <image:image>
       <image:loc>https://hribal.site/opengraph-image</image:loc>
-      <image:title>Miloslav Hříbal — Fullstack Developer</image:title>
+      <image:title>Miloslav Hříbal — Fullstack &amp; Frontend Developer</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://hribal.site/tynkybordel.webp</image:loc>
+      <image:title>Týnky Bordel — E-shop (Nuxt, PostgreSQL, Drizzle ORM, Stripe)</image:title>
     </image:image>
     <image:image>
       <image:loc>https://hribal.site/skinsmc.webp</image:loc>
-      <image:title>SkinsMC — Minecraft skin gallery (Nuxt.js, Kotlin, Docker)</image:title>
+      <image:title>SkinsMC — Minecraft skin gallery (Nuxt.js, Docker)</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://hribal.site/montana.webp</image:loc>
+      <image:title>Montana Cans — concept redesign (Next.js, Motion)</image:title>
     </image:image>
     <image:image>
       <image:loc>https://hribal.site/mcip.webp</image:loc>
-      <image:title>Minecraft IP List — server directory (Nuxt.js, Kotlin, MongoDB)</image:title>
+      <image:title>Minecraft IP List — server directory (Nuxt.js, Docker)</image:title>
     </image:image>
     <image:image>
       <image:loc>https://hribal.site/BudBuddy.webp</image:loc>
@@ -33,31 +41,31 @@
   </url>
   <url>
     <loc>https://hribal.site/#projects</loc>
-    <lastmod>2026-05-16</lastmod>
+    <lastmod>2026-09-08</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://hribal.site/#experience</loc>
-    <lastmod>2026-05-16</lastmod>
+    <lastmod>2026-09-08</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://hribal.site/#about</loc>
-    <lastmod>2026-05-16</lastmod>
+    <lastmod>2026-09-08</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://hribal.site/#contact</loc>
-    <lastmod>2026-05-16</lastmod>
+    <lastmod>2026-09-08</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://hribal.site/resume.pdf</loc>
-    <lastmod>2026-05-16</lastmod>
+    <lastmod>2026-09-08</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>

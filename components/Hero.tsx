@@ -71,15 +71,15 @@ export default function Hero() {
             </div>
           </div>
           <div>
-            <div className="text-2xl font-bold text-zinc-50 mb-1">10+</div>
+            <div className="text-2xl font-bold text-zinc-50 mb-1">7</div>
             <div className="text-[10px] font-medium text-zinc-500 uppercase tracking-widest">
-              {t.hero.statsTech}
+              {t.hero.statsApps}
             </div>
           </div>
           <div>
-            <div className="text-2xl font-bold text-zinc-50 mb-1">3+</div>
+            <div className="text-2xl font-bold text-zinc-50 mb-1">1M+</div>
             <div className="text-[10px] font-medium text-zinc-500 uppercase tracking-widest">
-              {t.hero.statsApps}
+              {t.hero.statsUsers}
             </div>
           </div>
         </div>

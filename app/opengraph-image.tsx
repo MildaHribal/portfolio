@@ -2,7 +2,7 @@ import { ImageResponse } from "next/og";
 
 export const runtime = "edge";
 export const alt =
-  "Miloslav Hříbal — Fullstack Developer (React, Next.js, TypeScript, Kotlin)";
+  "Miloslav Hříbal — Fullstack Developer (React, Next.js, TypeScript, Nuxt.js)";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
@@ -76,8 +76,8 @@ export default function OpengraphImage() {
               lineHeight: 1.35,
             }}
           >
-            4+ years building production web apps · React, Next.js,
-            TypeScript, Nuxt.js, Kotlin & Docker · Pilsen, Czech Republic
+            4+ years building modern web apps · React, Next.js,
+            TypeScript, Nuxt.js, Node.js & Docker · Pilsen, Czech Republic
           </div>
         </div>
 
@@ -97,7 +97,9 @@ export default function OpengraphImage() {
             <span>·</span>
             <span>TypeScript</span>
             <span>·</span>
-            <span>Kotlin</span>
+            <span>Nuxt.js</span>
+            <span>·</span>
+            <span>Node.js</span>
             <span>·</span>
             <span>Docker</span>
           </div>

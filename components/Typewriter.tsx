@@ -29,8 +29,10 @@ export default function Typewriter() {
         setDisplayed(current.slice(0, charIndex - 1));
       }, 35);
     } else if (deleting && charIndex === 0) {
-      setDeleting(false);
-      setRoleIndex((r) => (r + 1) % roles.length);
+      timeout = setTimeout(() => {
+        setDeleting(false);
+        setRoleIndex((r) => (r + 1) % roles.length);
+      }, 300);
     }
 
     return () => clearTimeout(timeout);

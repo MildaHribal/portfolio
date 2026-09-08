@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { useT } from "@/lib/language-context";
 
-const targets = [4, 3, 10, 100];
+const targets = [4, 7, 12, 1];
 
 function Counter({ target, suffix }: { target: number; suffix: string }) {
   const [count, setCount] = useState(0);
@@ -17,8 +17,12 @@ function Counter({ target, suffix }: { target: number; suffix: string }) {
       ([entry]) => {
         if (entry.isIntersecting && !started.current) {
           started.current = true;
+          if (target <= 1) {
+            setCount(target);
+            return;
+          }
           const duration = 1200;
-          const steps = 40;
+          const steps = Math.min(target, 40);
           const increment = target / steps;
           let current = 0;
           const interval = setInterval(() => {
@@ -55,7 +59,7 @@ export default function StatsStrip() {
   }));
 
   return (
-    <div className="w-full py-8">
+    <div className="w-full py-4">
       <div className="max-w-6xl mx-auto px-6">
         <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
           {stats.map((stat) => (
@@ -66,7 +70,7 @@ export default function StatsStrip() {
               <p className="text-3xl font-bold text-zinc-50 mb-1">
                 <Counter target={stat.value} suffix={stat.suffix} />
               </p>
-              <p className="text-xs text-zinc-500 uppercase tracking-widest">
+              <p className="text-xs text-zinc-400 uppercase tracking-widest font-medium">
                 {stat.label}
               </p>
             </div>

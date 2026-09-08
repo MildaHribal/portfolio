@@ -1,6 +1,6 @@
 "use client";
 
-import { ExternalLink, Github, ArrowUpRight } from "lucide-react";
+import { ExternalLink, Github } from "lucide-react";
 import Image from "next/image";
 import { useT } from "@/lib/language-context";
 
@@ -12,18 +12,46 @@ interface Project {
   repo: string;
   image: string;
   personal?: boolean;
-  /** Rám prohlížeče + odkaz na celou ukázku (redesigny). */
-  framed?: boolean;
-  /** Adresa v liště prohlížeče u framed karet. */
+  client?: boolean;
+  commercial?: boolean;
+  /**
+   * Váha projektu v sekci: 1 = vlajkový (přes celou šířku, s rámem prohlížeče),
+   * 2 = poloviční, 3 = čtvrtinový. Hierarchii nese velikost, ne dekorace — díky
+   * tomu je z jednoho pohledu poznat, co je ta nejlepší práce.
+   */
+  tier: 1 | 2 | 3;
+  /** Adresa v liště prohlížeče. Rám má schválně JEN vlajkový projekt, ať to
+   *  znamená „tohle je živý web klienta“, a ne aby to byla opakovaná ozdoba. */
   frameLabel?: string;
+}
+
+/**
+ * Druh projektu jako obyčejný text, ne verzálkový štítek. Je to užitečná
+ * informace, ale ne ta nejdůležitější na kartě — a barevná pilulka verzálkami
+ * na ní byla dosud vždycky nejhlasitější prvek.
+ */
+function kindLabel(project: Project, t: ReturnType<typeof useT>): string | null {
+  if (project.client) return t.projects.badges.client;
+  if (project.commercial) return t.projects.badges.commercial;
+  if (project.personal) return t.projects.badges.personal;
+  return null;
 }
 
 export default function Projects() {
   const t = useT();
 
-  // Pořadí = od nejsilnějšího pro zákazníka. Nahoře dva redesigny webů (přesně to,
-  // co si zákazník kupuje), pak produkční projekty s reálným provozem, pak appky.
   const projects: Project[] = [
+    {
+      title: "Týnky Bordel — E-shop",
+      description: t.projects.items.tynkybordel,
+      tags: ["Nuxt", "Vue.js", "TypeScript", "PostgreSQL", "Drizzle ORM", "Stripe", "Docker"],
+      href: "https://tynkybordel.shop/",
+      repo: "#",
+      image: "/tynkybordel.webp",
+      client: true,
+      tier: 1,
+      frameLabel: "tynkybordel.shop",
+    },
     {
       title: "Dos Mundos — redesign",
       description: t.projects.items.dosmundos,
@@ -32,8 +60,7 @@ export default function Projects() {
       repo: "#",
       image: "/showcase/dos-mundos/card-v2.png",
       personal: true,
-      framed: true,
-      frameLabel: "hribal.site/ukazky/dos-mundos",
+      tier: 2,
     },
     {
       title: "Montana Cans",
@@ -43,24 +70,27 @@ export default function Projects() {
       repo: "https://github.com/MildaHribal/montana-cans-cz",
       image: "/montana.webp",
       personal: true,
-      framed: true,
-      frameLabel: "montana.hribal.site",
+      tier: 2,
     },
     {
       title: "SkinsMC",
       description: t.projects.items.skinsmc,
-      tags: ["Nuxt.js", "Kotlin", "PHP", "PostgreSQL", "Docker"],
+      tags: ["Nuxt.js", "Vue.js", "TypeScript", "Tailwind CSS", "Docker", "DevOps"],
       href: "https://skinsmc.org/",
       repo: "#",
       image: "/skinsmc.webp",
+      commercial: true,
+      tier: 3,
     },
     {
       title: "Minecraft IP List",
       description: t.projects.items.mcip,
-      tags: ["Nuxt.js", "Kotlin", "MongoDB", "Docker", "DevOps"],
+      tags: ["Nuxt.js", "Vue.js", "TypeScript", "MongoDB", "Docker"],
       href: "https://www.minecraftiplist.com/",
       repo: "#",
       image: "/mcip.webp",
+      commercial: true,
+      tier: 3,
     },
     {
       title: "BudBuddy",
@@ -70,6 +100,7 @@ export default function Projects() {
       repo: "https://github.com/MildaHribal/budbuddy",
       image: "/showcase/thumbs/budbuddy.png",
       personal: true,
+      tier: 3,
     },
     {
       title: "Questie App",
@@ -79,169 +110,186 @@ export default function Projects() {
       repo: "#",
       image: "/showcase/thumbs/questie-v3.png",
       personal: true,
+      tier: 3,
     },
   ];
 
-  const featured = projects.filter((p) => p.framed);
-  const rest = projects.filter((p) => !p.framed);
-
-  const Badge = ({ project }: { project: Project }) =>
-    project.personal ? (
-      <span className="text-[10px] px-2 py-0.5 rounded-full border border-zinc-700 bg-zinc-800/50 text-zinc-400 uppercase tracking-wider font-medium">
-        {t.projects.personalProject}
-      </span>
-    ) : null;
-
-  const VisitOverlay = () => (
-    <div className="absolute inset-0 flex items-start justify-end p-3 pointer-events-none">
-      <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-black/60 backdrop-blur-sm text-white/90 text-xs font-semibold border border-white/10 opacity-0 group-hover:opacity-100 transition-all duration-300">
-        {t.projects.visit} <ArrowUpRight size={13} />
-      </span>
-    </div>
-  );
+  const flagship = projects.filter((p) => p.tier === 1);
+  const showcase = projects.filter((p) => p.tier === 2);
+  const rest = projects.filter((p) => p.tier === 3);
 
   return (
     <section id="projects" className="py-32">
       <div className="max-w-6xl mx-auto px-6">
-        <div className="flex items-center gap-3 mb-4">
-          <span className="h-px w-8 bg-zinc-700" />
-          <span className="text-xs text-zinc-500 uppercase tracking-widest font-medium">
-            {t.projects.eyebrow}
-          </span>
+        <div className="flex items-baseline gap-4 mb-14">
+          <h2 className="text-3xl sm:text-4xl font-bold tracking-tight text-zinc-50">
+            {t.projects.title}
+          </h2>
+          <span className="text-sm text-zinc-500">{t.projects.eyebrow}</span>
         </div>
-        <h2 className="text-3xl sm:text-4xl font-bold tracking-tight text-zinc-50 mb-16">
-          {t.projects.title}
-        </h2>
 
-        {/* Featured — velké karty nahoře */}
-        <div className="flex flex-col gap-8">
-          {featured.map((project, i) => (
-            <article
-              key={project.title}
-              className="group flex flex-col gap-8 p-6 md:p-8 rounded-2xl border border-zinc-800/60 bg-zinc-900/20 hover:bg-zinc-900/40 hover:border-zinc-700/60 hover:-translate-y-1 hover:shadow-xl hover:shadow-black/30 transition-all duration-300"
+        {/* Vlajkový projekt: obrázek a text vedle sebe, ne pod sebou. Ušetří to
+            polovinu výšky a dá sekci osu, na které stojí zbytek. */}
+        {flagship.map((project) => (
+          <article key={project.title} className="grid lg:grid-cols-12 gap-8 lg:gap-10 items-center">
+            <a
+              href={project.href}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="lg:col-span-7 group/img block rounded-xl overflow-hidden bg-zinc-950 border border-zinc-800"
             >
-              <a
-                href={project.href}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="relative block w-full rounded-xl overflow-hidden bg-zinc-950 border border-zinc-800 group/img shadow-lg shadow-black/20"
-              >
-                {/* Browser chrome */}
-                <div className="flex items-center gap-2 px-4 h-9 bg-zinc-900 border-b border-zinc-800">
-                  <div className="flex gap-1.5">
-                    <span className="w-3 h-3 rounded-full bg-zinc-700" />
-                    <span className="w-3 h-3 rounded-full bg-zinc-700" />
-                    <span className="w-3 h-3 rounded-full bg-zinc-700" />
-                  </div>
-                  <div className="flex-1 flex justify-center">
-                    <span className="px-4 py-1 rounded-md bg-zinc-950 border border-zinc-800 text-[11px] text-zinc-500 max-w-full truncate">
-                      {project.frameLabel}
-                    </span>
-                  </div>
-                  <div className="w-[52px]" aria-hidden />
+              {/* Rám prohlížeče má jen tenhle projekt — je to signál „živý web
+                  klienta, klikni“, ne ozdoba opakovaná u každé karty. */}
+              <div className="flex items-center gap-2 px-4 h-9 bg-zinc-900 border-b border-zinc-800">
+                <div className="flex gap-1.5">
+                  <span className="w-3 h-3 rounded-full bg-zinc-700" />
+                  <span className="w-3 h-3 rounded-full bg-zinc-700" />
+                  <span className="w-3 h-3 rounded-full bg-zinc-700" />
                 </div>
-                <div className="relative w-full aspect-[1078/674] bg-zinc-950">
-                  <Image
-                    src={project.image}
-                    alt={`${project.title} — ukázka práce Miloslava Hříbala (${project.tags.join(", ")})`}
-                    fill
-                    quality={100}
-                    sizes="(max-width: 768px) 100vw, 1100px"
-                    className="object-cover object-top transition-transform duration-500 group-hover/img:scale-[1.02]"
-                    priority={i === 0}
-                    loading={i === 0 ? undefined : "lazy"}
-                  />
-                  <VisitOverlay />
+                <div className="flex-1 flex justify-center">
+                  <span className="px-4 py-1 rounded-md bg-zinc-950 border border-zinc-800 text-[11px] text-zinc-500 max-w-full truncate">
+                    {project.frameLabel}
+                  </span>
                 </div>
-              </a>
-
-              <div className="flex flex-col justify-center gap-4">
-                <div className="flex items-center gap-3 flex-wrap">
-                  <h3 className="text-xl font-semibold text-zinc-50">{project.title}</h3>
-                  <Badge project={project} />
-                </div>
-                <p className="text-zinc-400 text-sm leading-relaxed max-w-3xl">{project.description}</p>
-                <div className="flex flex-wrap gap-2 mt-1">
-                  {project.tags.map((tag) => (
-                    <span key={tag} className="text-xs px-2.5 py-1 rounded-md border border-zinc-800 bg-zinc-900 text-zinc-400">
-                      {tag}
-                    </span>
-                  ))}
-                </div>
-                <div className="flex items-center gap-5 mt-4">
-                  <a
-                    href={project.href}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center gap-2 px-5 py-2.5 bg-zinc-100 text-zinc-900 rounded-xl font-semibold hover:bg-white hover:scale-105 transition-all duration-300 active:scale-95 cursor-pointer"
-                  >
-                    <ExternalLink size={18} />
-                    {t.projects.visit}
-                  </a>
-                  {project.repo !== "#" && (
-                    <a href={project.repo} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 text-sm font-medium text-zinc-400 hover:text-zinc-200 transition-colors">
-                      <Github size={18} /> {t.projects.source}
-                    </a>
-                  )}
-                </div>
+                <div className="w-[52px]" aria-hidden />
               </div>
-            </article>
-          ))}
-        </div>
+              <div className="relative w-full aspect-[1078/674] bg-zinc-950">
+                <Image
+                  src={project.image}
+                  alt={`${project.title} — ukázka práce Miloslava Hříbala (${project.tags.join(", ")})`}
+                  fill
+                  quality={100}
+                  sizes="(max-width: 1024px) 100vw, 640px"
+                  className="object-cover object-top motion-safe:transition-transform motion-safe:duration-500 group-hover/img:scale-[1.02]"
+                  priority
+                />
+              </div>
+            </a>
 
-        {/* Ostatní — přehledná mřížka */}
-        <div className="grid md:grid-cols-2 gap-8 mt-8">
-          {rest.map((project) => (
-            <article
-              key={project.title}
-              className="group flex flex-col rounded-2xl border border-zinc-800/60 bg-zinc-900/20 hover:bg-zinc-900/40 hover:border-zinc-700/60 hover:-translate-y-1 hover:shadow-xl hover:shadow-black/30 transition-all duration-300 overflow-hidden"
-            >
+            <div className="lg:col-span-5 flex flex-col gap-4">
+              <div>
+                <h3 className="text-2xl font-semibold text-zinc-50">{project.title}</h3>
+                {kindLabel(project, t) && (
+                  <p className="text-sm text-zinc-500 mt-1">{kindLabel(project, t)}</p>
+                )}
+              </div>
+              <p className="text-zinc-400 leading-relaxed">{project.description}</p>
+              <p className="text-xs text-zinc-600 leading-relaxed">{project.tags.join(", ")}</p>
+              <div className="flex items-center gap-5 mt-2">
+                <a
+                  href={project.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 px-5 py-2.5 bg-zinc-100 text-zinc-900 rounded-xl font-semibold hover:bg-white transition-colors"
+                >
+                  <ExternalLink size={18} />
+                  {t.projects.visit}
+                </a>
+                {project.repo !== "#" && (
+                  <a href={project.repo} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 text-sm text-zinc-400 hover:text-zinc-200 transition-colors">
+                    <Github size={18} /> {t.projects.source}
+                  </a>
+                )}
+              </div>
+            </div>
+          </article>
+        ))}
+
+        {/* Dva redesigny vedle sebe — stejná váha, protože jsou to obě ukázky
+            toho samého: jak umím předělat existující web. */}
+        <div className="grid md:grid-cols-2 gap-8 mt-20">
+          {showcase.map((project) => (
+            <article key={project.title} className="flex flex-col gap-4">
               <a
                 href={project.href}
-                target="_blank"
+                target={project.href.startsWith("/") ? undefined : "_blank"}
                 rel="noopener noreferrer"
-                className="relative block aspect-video overflow-hidden bg-zinc-950 border-b border-zinc-800 group/img"
+                className="group/img block relative aspect-[16/10] rounded-xl overflow-hidden bg-zinc-950 border border-zinc-800"
               >
                 <Image
                   src={project.image}
                   alt={`${project.title} — ukázka práce Miloslava Hříbala (${project.tags.join(", ")})`}
                   fill
-                  quality={90}
-                  sizes="(max-width: 768px) 100vw, 50vw"
-                  className="object-cover object-top transition-transform duration-500 group-hover/img:scale-[1.04]"
+                  quality={95}
+                  sizes="(max-width: 768px) 100vw, 560px"
+                  className="object-cover object-top motion-safe:transition-transform motion-safe:duration-500 group-hover/img:scale-[1.03]"
+                />
+              </a>
+              <div>
+                <h3 className="text-lg font-semibold text-zinc-50">{project.title}</h3>
+                {kindLabel(project, t) && (
+                  <p className="text-sm text-zinc-500 mt-0.5">{kindLabel(project, t)}</p>
+                )}
+              </div>
+              <p className="text-zinc-400 text-sm leading-relaxed">{project.description}</p>
+              <p className="text-xs text-zinc-600">{project.tags.join(", ")}</p>
+              <div className="flex items-center gap-5 mt-auto pt-1">
+                <a
+                  href={project.href}
+                  target={project.href.startsWith("/") ? undefined : "_blank"}
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 text-sm font-semibold text-zinc-100 hover:text-white transition-colors"
+                >
+                  <ExternalLink size={16} /> {t.projects.visit}
+                </a>
+                {project.repo !== "#" && (
+                  <a href={project.repo} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 text-sm text-zinc-400 hover:text-zinc-200 transition-colors">
+                    <Github size={16} /> {t.projects.source}
+                  </a>
+                )}
+              </div>
+            </article>
+          ))}
+        </div>
+
+        {/* Starší produkty a appky. Menší, ale pořád klikací — dohromady zaberou
+            tolik místa co dřív jedna karta. */}
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-x-6 gap-y-10 mt-20 pt-12 border-t border-zinc-800/60">
+          {rest.map((project) => (
+            <article key={project.title} className="flex flex-col gap-3">
+              <a
+                href={project.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group/img block relative aspect-[16/10] rounded-lg overflow-hidden bg-zinc-950 border border-zinc-800"
+              >
+                <Image
+                  src={project.image}
+                  alt={`${project.title} — ukázka práce Miloslava Hříbala (${project.tags.join(", ")})`}
+                  fill
+                  quality={85}
+                  sizes="(max-width: 1024px) 50vw, 270px"
+                  className="object-cover object-top motion-safe:transition-transform motion-safe:duration-500 group-hover/img:scale-[1.04]"
                   loading="lazy"
                 />
-                <VisitOverlay />
               </a>
-
-              <div className="flex flex-col gap-3 p-6 flex-1">
-                <div className="flex items-center gap-3 flex-wrap">
-                  <h3 className="text-lg font-semibold text-zinc-50">{project.title}</h3>
-                  <Badge project={project} />
-                </div>
-                <p className="text-zinc-400 text-sm leading-relaxed">{project.description}</p>
-                <div className="flex flex-wrap gap-2 mt-1">
-                  {project.tags.map((tag) => (
-                    <span key={tag} className="text-xs px-2.5 py-1 rounded-md border border-zinc-800 bg-zinc-900 text-zinc-400">
-                      {tag}
-                    </span>
-                  ))}
-                </div>
-                <div className="flex items-center gap-5 mt-auto pt-3">
+              <div>
+                <h3 className="text-base font-semibold text-zinc-50">{project.title}</h3>
+                {kindLabel(project, t) && (
+                  <p className="text-xs text-zinc-500 mt-0.5">{kindLabel(project, t)}</p>
+                )}
+              </div>
+              <p className="text-zinc-400 text-sm leading-relaxed line-clamp-4">{project.description}</p>
+              <div className="flex items-center gap-4 mt-auto pt-1">
+                <a
+                  href={project.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1.5 text-sm font-semibold text-zinc-100 hover:text-white transition-colors"
+                >
+                  <ExternalLink size={15} /> {t.projects.visit}
+                </a>
+                {project.repo !== "#" && (
                   <a
-                    href={project.href}
+                    href={project.repo}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center gap-2 text-sm font-semibold text-zinc-100 hover:text-white transition-colors"
+                    aria-label={`${project.title} — ${t.projects.source}`}
+                    className="inline-flex items-center gap-1.5 text-sm text-zinc-400 hover:text-zinc-200 transition-colors"
                   >
-                    <ExternalLink size={16} /> {t.projects.visit}
+                    <Github size={15} />
                   </a>
-                  {project.repo !== "#" && (
-                    <a href={project.repo} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 text-sm font-medium text-zinc-400 hover:text-zinc-200 transition-colors">
-                      <Github size={16} /> {t.projects.source}
-                    </a>
-                  )}
-                </div>
+                )}
               </div>
             </article>
           ))}

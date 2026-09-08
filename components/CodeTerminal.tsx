@@ -5,7 +5,7 @@ import { useEffect, useRef, useState } from "react";
 const lines = [
   { text: "const miloslav = {", color: "text-sky-400" },
   { text: '  role: "Fullstack Developer",', color: "text-emerald-300" },
-  { text: '  stack: ["Next.js", "TypeScript", "Kotlin", "Docker"],', color: "text-amber-300" },
+  { text: '  stack: ["Next.js", "TypeScript", "Node.js", "Docker"],', color: "text-amber-300" },
   { text: '  passion: "Building things that matter",', color: "text-violet-300" },
   { text: "  yearsOfExperience: 4,", color: "text-orange-300" },
   { text: "  available: true,", color: "text-emerald-400" },

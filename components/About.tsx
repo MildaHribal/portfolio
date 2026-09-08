@@ -13,15 +13,15 @@ export default function About() {
     },
     {
       label: t.about.skills.backend,
-      skills: ["Node.js", "Kotlin", "tRPC", "Prisma", "PostgreSQL", "MongoDB"],
+      skills: ["Node.js", "TypeScript", "PostgreSQL", "Drizzle ORM", "Prisma", "MongoDB"],
     },
     {
       label: t.about.skills.tooling,
-      skills: ["Git", "GitHub Actions", "Docker", "Vite", "Linux", "CI/CD"],
+      skills: ["Git", "GitHub Actions", "Docker", "Vite", "pnpm", "CI/CD"],
     },
     {
       label: t.about.skills.design,
-      skills: ["Figma", "Radix UI", "shadcn/ui", "CSS Animations", "SVG", "Responsive Design"],
+      skills: ["Figma", "Radix UI", "shadcn/ui", "CSS Animations", "Responsive Design", "UI/UX"],
     },
   ];
 
@@ -44,7 +44,7 @@ export default function About() {
   ];
 
   return (
-    <section id="about" className="py-32 border-t border-zinc-800/60">
+    <section id="about" className="py-28 border-t border-zinc-800/60">
       <div className="max-w-6xl mx-auto px-6">
         <div className="grid md:grid-cols-2 gap-16 items-start">
           {/* Left – bio */}

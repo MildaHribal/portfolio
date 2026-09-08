@@ -24,11 +24,11 @@ export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: {
     default:
-      "Miloslav Hříbal — Fullstack Developer | React, Next.js, TypeScript & Kotlin",
-    template: "%s | Miloslav Hříbal — Fullstack Developer",
+      "Miloslav Hříbal — Fullstack & Frontend Developer | React, Next.js, Nuxt & TypeScript",
+    template: "%s | Miloslav Hříbal — Fullstack & Frontend Developer",
   },
   description:
-    "Miloslav Hříbal — Fullstack Developer from Pilsen, Czech Republic. 4+ years building production React, Next.js, Nuxt.js, TypeScript, Kotlin & Docker apps for 100k+ users. Available for hire — full-time, contract or freelance, remote or on-site in Czechia.",
+    "Miloslav Hříbal — Fullstack & Frontend Developer from Pilsen, Czech Republic. 4+ years building modern web applications with React, Next.js, Nuxt.js, TypeScript & Docker. Production experience serving millions of users. Available for hire — full-time, contract or freelance.",
   applicationName: "Miloslav Hříbal — Developer Portfolio",
   category: "technology",
   keywords: [
@@ -38,15 +38,15 @@ export const metadata: Metadata = {
     "fullstack developer",
     "full-stack developer",
     "frontend developer",
-    "backend developer",
     "software engineer",
     "React developer",
     "Next.js developer",
     "TypeScript developer",
     "Vue.js developer",
     "Nuxt.js developer",
-    "Kotlin developer",
     "Node.js developer",
+    "Drizzle ORM",
+    "Stripe",
     "Docker",
     "Tailwind CSS",
     "PostgreSQL",
@@ -93,9 +93,9 @@ export const metadata: Metadata = {
     alternateLocale: ["cs_CZ"],
     url: siteUrl,
     siteName: "Miloslav Hříbal — Developer Portfolio",
-    title: "Miloslav Hříbal — Fullstack Developer (React, Next.js, Kotlin)",
+    title: "Miloslav Hříbal — Fullstack & Frontend Developer (React, Next.js, Nuxt)",
     description:
-      "Fullstack Developer from Pilsen, Czech Republic. 4+ years shipping production web apps with React, Next.js, TypeScript, Kotlin & Docker. Available for hire — remote or on-site.",
+      "Fullstack & Frontend Developer from Pilsen, Czech Republic. 4+ years shipping production web apps with React, Next.js, Nuxt.js, TypeScript & Docker. Available for hire — remote or on-site.",
     firstName: "Miloslav",
     lastName: "Hříbal",
     username: "MildaHribal",
@@ -105,16 +105,16 @@ export const metadata: Metadata = {
         url: "/opengraph-image",
         width: 1200,
         height: 630,
-        alt: "Miloslav Hříbal — Fullstack Developer (React, Next.js, TypeScript, Kotlin)",
+        alt: "Miloslav Hříbal — Fullstack & Frontend Developer (React, Next.js, Nuxt.js, TypeScript)",
         type: "image/png",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Miloslav Hříbal — Fullstack Developer",
+    title: "Miloslav Hříbal — Fullstack & Frontend Developer",
     description:
-      "Fullstack Developer from Czech Republic — React, Next.js, TypeScript, Kotlin & Docker. 4+ years of production experience. Available for hire.",
+      "Fullstack & Frontend Developer from Czech Republic — React, Next.js, Nuxt.js, TypeScript & Docker. Available for hire.",
     images: ["/opengraph-image"],
   },
   alternates: {
@@ -155,7 +155,7 @@ const personSchema = {
   email: `mailto:${personEmail}`,
   jobTitle: "Fullstack Developer",
   description:
-    "Fullstack Developer from Pilsen, Czech Republic with 4+ years of experience building production web applications with React, Next.js, Nuxt.js, TypeScript, Kotlin and Docker. Available for full-time, contract or freelance work — remote or on-site.",
+    "Fullstack & Frontend Developer from Pilsen, Czech Republic with 4+ years of web development experience building production applications with React, Next.js, Nuxt.js, TypeScript and Docker. Available for full-time, contract or freelance work — remote or on-site.",
   knowsLanguage: ["cs", "en"],
   nationality: { "@type": "Country", name: "Czech Republic" },
   knowsAbout: [
@@ -165,16 +165,14 @@ const personSchema = {
     "JavaScript",
     "Vue.js",
     "Nuxt.js",
-    "Kotlin",
     "Node.js",
+    "Drizzle ORM",
+    "Stripe",
     "Docker",
-    "Linux",
     "PostgreSQL",
     "MongoDB",
-    "MariaDB",
     "Tailwind CSS",
     "REST APIs",
-    "DevOps",
     "CI/CD",
     "Web performance",
   ],
@@ -186,7 +184,7 @@ const personSchema = {
       name: "Czech Republic",
     },
     skills:
-      "React, Next.js, TypeScript, Vue.js, Nuxt.js, Kotlin, Node.js, Docker, PostgreSQL, MongoDB, Tailwind CSS, DevOps",
+      "React, Next.js, TypeScript, Vue.js, Nuxt.js, Node.js, Drizzle ORM, Stripe, Docker, PostgreSQL, MongoDB, Tailwind CSS",
     responsibilities:
       "Designing and shipping production-grade web applications across the full stack — frontend, backend, and DevOps.",
   },
@@ -218,7 +216,7 @@ const websiteSchema = {
   name: "Miloslav Hříbal — Developer Portfolio",
   inLanguage: "en",
   description:
-    "Portfolio of Miloslav Hříbal, a Fullstack Developer from Czech Republic specialising in React, Next.js, TypeScript, Kotlin and Docker.",
+    "Portfolio of Miloslav Hříbal, a Fullstack Developer from Czech Republic specialising in React, Next.js, Nuxt.js, TypeScript and Docker.",
   publisher: { "@id": personId },
 };
 
@@ -245,19 +243,19 @@ const projectsItemList = {
   "@type": "ItemList",
   name: "Selected projects by Miloslav Hříbal",
   itemListOrder: "https://schema.org/ItemListOrderAscending",
-  numberOfItems: 4,
+  numberOfItems: 7,
   itemListElement: [
     {
       "@type": "ListItem",
       position: 1,
       item: {
         "@type": "CreativeWork",
-        name: "SkinsMC",
-        url: "https://skinsmc.org/",
-        image: `${siteUrl}/skinsmc.webp`,
+        name: "Týnky Bordel",
+        url: "https://tynkybordel.shop/",
+        image: `${siteUrl}/tynkybordel.webp`,
         description:
-          "Minecraft skin gallery serving millions of users. Built the Nuxt.js frontend, Kotlin backend, and managed the Dockerised DevOps stack.",
-        keywords: "Nuxt.js, Kotlin, PHP, MariaDB, Docker, DevOps",
+          "Custom fullstack e-commerce store built with Nuxt, PostgreSQL, Drizzle ORM, Stripe payments, Czech QR payments, and automated PDF invoicing.",
+        keywords: "Nuxt, Vue.js, TypeScript, PostgreSQL, Drizzle ORM, Stripe, Docker",
         author: { "@id": personId },
       },
     },
@@ -266,18 +264,60 @@ const projectsItemList = {
       position: 2,
       item: {
         "@type": "CreativeWork",
-        name: "Minecraft IP List",
-        url: "https://www.minecraftiplist.com/",
-        image: `${siteUrl}/mcip.webp`,
+        name: "SkinsMC",
+        url: "https://skinsmc.org/",
+        image: `${siteUrl}/skinsmc.webp`,
         description:
-          "International directory of Minecraft multiplayer servers — Nuxt.js frontend, Kotlin + MongoDB backend, Dockerised deployment.",
-        keywords: "Nuxt.js, Kotlin, MongoDB, Docker, DevOps",
+          "Minecraft skin gallery serving millions of users. Built the Nuxt.js frontend and managed Dockerized deployment.",
+        keywords: "Nuxt.js, Vue.js, TypeScript, Docker, DevOps",
         author: { "@id": personId },
       },
     },
     {
       "@type": "ListItem",
       position: 3,
+      item: {
+        "@type": "CreativeWork",
+        name: "Dos Mundos — Redesign",
+        url: `${siteUrl}/ukazky/dos-mundos`,
+        image: `${siteUrl}/showcase/dos-mundos/card-v2.png`,
+        description:
+          "Concept redesign of Prague café Dos Mundos focused on speed and modern editorial UI. Rebuilt in Next.js 15 with sub-second load times.",
+        keywords: "Next.js, React 19, TypeScript, UI/UX, Web Performance",
+        author: { "@id": personId },
+      },
+    },
+    {
+      "@type": "ListItem",
+      position: 4,
+      item: {
+        "@type": "CreativeWork",
+        name: "Montana Cans",
+        url: "https://montana.hribal.site/",
+        image: `${siteUrl}/montana.webp`,
+        description:
+          "Interactive concept redesign with dynamic color wall and theme propagation built with Next.js 15 and Motion.",
+        keywords: "Next.js 15, React 19, TypeScript, Tailwind CSS, Motion",
+        author: { "@id": personId },
+      },
+    },
+    {
+      "@type": "ListItem",
+      position: 5,
+      item: {
+        "@type": "CreativeWork",
+        name: "Minecraft IP List",
+        url: "https://www.minecraftiplist.com/",
+        image: `${siteUrl}/mcip.webp`,
+        description:
+          "International directory of Minecraft multiplayer servers — Nuxt.js frontend and Docker deployment.",
+        keywords: "Nuxt.js, Vue.js, TypeScript, Docker",
+        author: { "@id": personId },
+      },
+    },
+    {
+      "@type": "ListItem",
+      position: 6,
       item: {
         "@type": "CreativeWork",
         name: "BudBuddy",
@@ -291,7 +331,7 @@ const projectsItemList = {
     },
     {
       "@type": "ListItem",
-      position: 4,
+      position: 7,
       item: {
         "@type": "CreativeWork",
         name: "Questie App",
