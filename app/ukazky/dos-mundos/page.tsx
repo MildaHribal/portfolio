@@ -2,8 +2,8 @@ import type { Metadata } from "next";
 import { Fraunces, Hanken_Grotesk } from "next/font/google";
 import Showcase from "./Showcase";
 
-// Vlastní identita kavárny — teplý editorial, ať route nevypadá jako tmavé portfolio.
-// latin-ext kvůli české diakritice (ř, ž, č…).
+// Custom café identity — warm editorial feel, so the route doesn't look like the dark portfolio.
+// latin-ext for Czech diacritics (ř, ž, č…).
 const display = Fraunces({
   subsets: ["latin", "latin-ext"],
   style: ["normal", "italic"],
@@ -18,10 +18,10 @@ const body = Hanken_Grotesk({
 });
 
 export const metadata: Metadata = {
-  title: "Redesign kavárny — Dos Mundos (ukázka)",
+  title: "Café Redesign — Dos Mundos (showcase)",
   description:
-    "Ukázkový redesign webu pražské kavárny Dos Mundos — z pomalého, přeplácaného webu (PageSpeed 22/100, načtení 12,5 s) na rychlou, přehlednou a chutnou prezentaci. Neoficiální koncept od Miloslava Hříbala.",
-  // Neoficiální koncept cizí značky — ať se to neplete do vyhledávání pod „Dos Mundos".
+    "A showcase redesign of the Prague café Dos Mundos — from a slow, cluttered website (PageSpeed 22/100, 12.5 s load time) to a fast, clean, and appetising presentation. Unofficial concept by Miloslav Hříbal.",
+  // Unofficial concept of an external brand — keep it out of search results for "Dos Mundos".
   robots: { index: false, follow: true },
   alternates: { canonical: "https://hribal.site/ukazky/dos-mundos" },
 };
