@@ -56,6 +56,9 @@ jobs:
     needs: build-and-push-image
     runs-on: ubuntu-latest
     steps:
-      - name: Trigger Webhook
+      - name: Deploy
         if: success()
-        run: curl -X POST https://n8n.turhobr.cz/webhook/a02a8670-1453-451b-95c5-9b21bd96fe65
+        run: |
+          curl -sSN --fail-with-body -X POST -H "X-Deploy-Token: ${{ secrets.DEPLOY_TOKEN }}" \
+            https://deploy.turhobr.cz/hribal_site | tee deploy.log
+          tail -n 1 deploy.log | grep -qx OK
