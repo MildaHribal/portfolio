@@ -1,84 +1,73 @@
-# 💼 Portfolio
+<div align="center">
 
-A personal portfolio website built with **Next.js 16** (App Router) and **React 19**, styled with **Tailwind CSS v4**. It features hero, about, experience and projects sections, plus a contact form that sends emails over SMTP. Traffic is tracked with PostHog. ✨
+# Portfolio
 
-🌐 **Live:** [hribal.site](https://hribal.site)
+Personal portfolio of Miloslav Hříbal, frontend / fullstack developer.
+
+[![Next.js](https://img.shields.io/badge/Next.js_16-000000?style=flat-square&logo=nextdotjs&logoColor=white)](https://nextjs.org)
+[![React](https://img.shields.io/badge/React_19-20232A?style=flat-square&logo=react&logoColor=61DAFB)](https://react.dev)
+[![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?style=flat-square&logo=typescript&logoColor=white)](https://www.typescriptlang.org)
+[![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS_4-06B6D4?style=flat-square&logo=tailwindcss&logoColor=white)](https://tailwindcss.com)
+[![PostHog](https://img.shields.io/badge/PostHog-1D4AFF?style=flat-square&logo=posthog&logoColor=white)](https://posthog.com)
+[![Docker](https://img.shields.io/badge/Docker-2496ED?style=flat-square&logo=docker&logoColor=white)](https://www.docker.com)
+
+**[Live site: hribal.site](https://hribal.site)**
 
 ![Portfolio screenshot](docs/screenshot.png)
 
-## 🧰 Tech stack
+</div>
 
-- ⚡ [Next.js 16](https://nextjs.org) (App Router, standalone output)
-- ⚛️ [React 19](https://react.dev)
-- 🎨 [Tailwind CSS v4](https://tailwindcss.com)
-- 🟦 [TypeScript](https://www.typescriptlang.org)
-- ✉️ [Nodemailer](https://nodemailer.com) – sending emails from the contact form
-- 📊 [PostHog](https://posthog.com) – analytics (client + server)
-- 🎯 [lucide-react](https://lucide.dev) – icons
-- 📦 [pnpm](https://pnpm.io) – package manager
+## About
 
-## 📁 Project structure
+A single-page portfolio built with the Next.js App Router. It presents my experience and projects and has a working contact form that delivers messages by email. It ships as a Docker image built by GitHub Actions.
 
-```
-app/
-  layout.tsx            root layout
-  page.tsx              main page
-  globals.css           global styles (Tailwind)
-  api/contact/route.ts  contact form API endpoint
-components/             UI components (Hero, About, Experience, Projects, Contact, ...)
-lib/
-  posthog.ts            PostHog client (browser)
-  posthog-server.ts     PostHog client (server)
-public/                static assets
-```
+## Features
 
-## 🚀 Development
+- Hero, about, experience and projects sections with scroll reveal animations
+- Czech / English language toggle (detected from `Accept-Language`, remembered in a cookie)
+- Contact form API route that sends email via Nodemailer, with SMTP fallbacks and local `sendmail`
+- Showcase page with a before/after café website redesign (`/ukazky/dos-mundos`)
+- Generated Open Graph image, sitemap and robots.txt
+- PostHog analytics on client and server, proxied through `/ingest`
 
-Requirements: Node.js 20+ and pnpm.
+## Tech stack
+
+| Area      | Tools                                         |
+| --------- | --------------------------------------------- |
+| Framework | Next.js 16 (App Router, standalone output), React 19 |
+| Styling   | Tailwind CSS v4, lucide-react icons           |
+| Backend   | Next.js route handler, Nodemailer             |
+| Analytics | PostHog (`posthog-js`, `posthog-node`)        |
+| Delivery  | Docker multi-stage build, GitHub Actions → GHCR |
+
+## Getting started
+
+Requires Node.js 20+ and pnpm.
 
 ```bash
 pnpm install
-pnpm dev
+pnpm dev        # http://localhost:3000
 ```
 
-The app runs at [http://localhost:3000](http://localhost:3000).
+Other scripts: `pnpm build`, `pnpm start`, `pnpm lint`.
 
-### 📜 Scripts
+The contact form and analytics read their config from `.env.local`: `SMTP_HOST`, `SMTP_PORT`, `SMTP_USER`, `SMTP_PASS`, `NEXT_PUBLIC_POSTHOG_KEY`, `NEXT_PUBLIC_POSTHOG_HOST`.
 
-| Command      | Description               |
-| ------------ | ------------------------- |
-| `pnpm dev`   | Start the dev server      |
-| `pnpm build` | Production build          |
-| `pnpm start` | Run the production build  |
-| `pnpm lint`  | Run ESLint                |
-
-## 🔐 Environment variables
-
-Create a `.env.local` file (for development) with the following values:
-
-```bash
-# Contact form (SMTP)
-SMTP_HOST=smtp.seznam.com   # default: smtp.seznam.com
-SMTP_PORT=587               # default: 587 (STARTTLS); 465 is tried first over SSL
-SMTP_USER=you@email.com     # also the recipient of form messages
-SMTP_PASS=password
-
-# PostHog analytics
-NEXT_PUBLIC_POSTHOG_KEY=phc_...
-NEXT_PUBLIC_POSTHOG_HOST=https://eu.i.posthog.com
-```
-
-> 💡 The contact endpoint tries to deliver the email through several methods in order: SMTP over SSL (465), SMTP over STARTTLS (587), `emailproffi.seznam.cz` without authentication, and finally local `sendmail`. This lets it work both on regular hosting and inside a Docker container.
-
-## 🐳 Docker
-
-The repository includes a multi-stage `Dockerfile` (deps → build → runner) using the Next.js standalone output. The runner image ships `msmtp` as `sendmail` for the email fallback.
+### Docker
 
 ```bash
 docker build -t portfolio .
 docker run -p 3000:3000 --env-file .env.local portfolio
 ```
 
-## 📈 Analytics
+## Project structure
 
-PostHog is integrated on both the client (`instrumentation-client.ts`, `lib/posthog.ts`) and the server (`lib/posthog-server.ts`). Requests are proxied through `/ingest` (see rewrites in `next.config.ts`). The contact API captures the `contact_api_message_sent` and `contact_api_message_failed` events.
+```
+app/
+  page.tsx               main page
+  api/contact/route.ts   contact form endpoint
+  ukazky/dos-mundos/     redesign showcase
+components/              UI sections (Hero, Projects, Contact, ...)
+lib/                     i18n, language context, PostHog clients
+public/                  images, sitemap, robots.txt
+```
