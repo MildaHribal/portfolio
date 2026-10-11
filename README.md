@@ -2,6 +2,10 @@
 
 A personal portfolio website built with **Next.js 16** (App Router) and **React 19**, styled with **Tailwind CSS v4**. It features hero, about, experience and projects sections, plus a contact form that sends emails over SMTP. Traffic is tracked with PostHog. ✨
 
+🌐 **Live:** [hribal.site](https://hribal.site)
+
+![Portfolio screenshot](docs/screenshot.png)
+
 ## 🧰 Tech stack
 
 - ⚡ [Next.js 16](https://nextjs.org) (App Router, standalone output)
