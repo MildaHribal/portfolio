@@ -9,10 +9,10 @@ import { isExternal, kindLabel, loc, projects, type Project } from "@/lib/projec
 const byId = (id: string) => projects.find((p) => p.id === id)!;
 
 /** The box front: cover art with a coloured spine strip down the left edge. */
-function BoxFront({ p, sizes, priority }: { p: Project; sizes: string; priority?: boolean }) {
+function BoxFront({ p, sizes, priority, flip }: { p: Project; sizes: string; priority?: boolean; flip?: boolean }) {
   const { lang } = useLanguage();
   return (
-    <div className="turn-in">
+    <div className={flip ? "turn-in turn-in-flip" : "turn-in"}>
       <Tilt className="rounded-2xl">
         <a
           href={p.href}
@@ -113,7 +113,7 @@ function Feature({ p, flip }: { p: Project; flip?: boolean }) {
   return (
     <article id={p.id} className="grid lg:grid-cols-12 gap-x-10 gap-y-8 items-start">
       <div className={`lg:col-span-7 ${flip ? "lg:order-2" : ""}`}>
-        <BoxFront p={p} sizes="(max-width: 1024px) 100vw, 760px" />
+        <BoxFront p={p} sizes="(max-width: 1024px) 100vw, 760px" flip={flip} />
       </div>
       <div className={`slide-in lg:col-span-5 flex flex-col gap-6 border-2 border-ink bg-stock rounded-3xl p-6 sm:p-8 ${flip ? "lg:order-1" : ""}`}>
         <Heading p={p} />
