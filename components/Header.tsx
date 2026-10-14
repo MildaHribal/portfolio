@@ -1,8 +1,6 @@
 "use client";
 
-import { useState } from "react";
-import Link from "next/link";
-import { Menu, X } from "lucide-react";
+import { useEffect, useState } from "react";
 import { getPostHog } from "@/lib/posthog";
 import { useT } from "@/lib/language-context";
 import LanguageToggle from "@/components/LanguageToggle";
@@ -13,104 +11,91 @@ export default function Header() {
 
   const navLinks = [
     { label: t.nav.projects, href: "#projects" },
+    { label: t.nav.services, href: "#services" },
     { label: t.nav.experience, href: "#experience" },
     { label: t.nav.about, href: "#about" },
   ];
 
-  const handleScroll = (
-    e: React.MouseEvent<HTMLAnchorElement>,
-    href: string,
-    label: string,
-    menuType: string
-  ) => {
-    if (href.startsWith("#")) {
-      e.preventDefault();
-      setMenuOpen(false);
+  useEffect(() => {
+    if (!menuOpen) return;
+    const close = (e: KeyboardEvent) => e.key === "Escape" && setMenuOpen(false);
+    window.addEventListener("keydown", close);
+    return () => window.removeEventListener("keydown", close);
+  }, [menuOpen]);
 
-      const element = document.querySelector(href);
-      if (element) {
-        element.scrollIntoView({ behavior: "smooth" });
-        window.history.pushState(null, "", href);
-      }
-
-      getPostHog().capture("nav_link_clicked", {
-        label: label,
-        href: href,
-        menu: menuType,
-      });
-    }
+  const track = (label: string, href: string, menu: string) => {
+    setMenuOpen(false);
+    getPostHog().capture("nav_link_clicked", { label, href, menu });
   };
 
   return (
-    <header className="fixed top-0 inset-x-0 z-50 bg-zinc-950/90 backdrop-blur-md border-b border-zinc-800/60 shadow-[0_1px_0_0_rgba(255,255,255,0.03)] transition-all duration-500">
-      <div className="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
-        {/* Logo / Name */}
-        <Link
-          href="/"
-          className="group inline-flex items-center gap-2 text-zinc-400 font-semibold tracking-tight text-base hover:text-zinc-200 transition-colors duration-200"
-        >
-          <span className="w-2 h-2 rounded-full bg-emerald-500 shrink-0 transition-transform duration-200 group-hover:scale-150" />
+    <header className="fixed top-0 inset-x-0 z-50 bg-board border-b-2 border-ink">
+      <a
+        href="#main"
+        className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-3 focus:bg-sticker focus:text-black focus:rounded-xl focus:px-3 focus:py-2 focus:font-semibold"
+      >
+        {t.nav.skip}
+      </a>
+      <div className="max-w-[90rem] mx-auto px-5 sm:px-8 h-16 flex items-center justify-between gap-6">
+        <a href="#" className="font-spine text-2xl leading-none" aria-label="hribal.site, back to top">
           hribal.site
-        </Link>
+        </a>
 
-        {/* Desktop nav */}
-        <nav className="hidden md:flex items-center gap-8">
+        <nav className="hidden md:flex items-center gap-7" aria-label="Main">
           {navLinks.map((link) => (
-            <Link
+            <a
               key={link.href}
               href={link.href}
-              onClick={(e) =>
-                handleScroll(e, link.href, link.label, "desktop")
-              }
-              className="text-sm text-zinc-400 hover:text-zinc-50 transition-colors duration-200"
+              onClick={() => track(link.label, link.href, "desktop")}
+              className="text-[0.95rem] font-medium hover:underline"
             >
               {link.label}
-            </Link>
+            </a>
           ))}
           <LanguageToggle source="desktop" />
-          <Link
+          <a
             href="#contact"
-            onClick={(e) => handleScroll(e, "#contact", t.nav.contact, "desktop")}
-            className="text-sm px-4 py-1.5 rounded-full border border-zinc-700 text-zinc-300 hover:border-zinc-400 hover:text-white transition-all duration-200"
+            onClick={() => track(t.nav.contact, "#contact", "desktop")}
+            className="btn btn-light h-10 px-4"
           >
             {t.nav.contact}
-          </Link>
+          </a>
         </nav>
 
-        {/* Mobile right cluster */}
         <div className="md:hidden flex items-center gap-3">
           <LanguageToggle source="mobile" />
           <button
-            className="text-zinc-400 hover:text-zinc-50 transition-colors"
-            onClick={() => setMenuOpen(!menuOpen)}
+            type="button"
+            className="w-11 h-11 grid place-items-center border-2 border-ink rounded-xl"
+            onClick={() => setMenuOpen((o) => !o)}
             aria-label={t.nav.menuAria}
+            aria-expanded={menuOpen}
+            aria-controls="mobile-menu"
           >
-            {menuOpen ? <X size={20} /> : <Menu size={20} />}
+            <svg width="20" height="14" viewBox="0 0 20 14" aria-hidden>
+              {menuOpen ? (
+                <path d="M3 1l14 12M17 1L3 13" stroke="currentColor" strokeWidth="2" />
+              ) : (
+                <path d="M0 1h20M0 7h20M0 13h20" stroke="currentColor" strokeWidth="2" />
+              )}
+            </svg>
           </button>
         </div>
       </div>
 
-      {/* Mobile menu */}
       {menuOpen && (
-        <div className="md:hidden bg-zinc-950/95 backdrop-blur-md border-b border-zinc-800 px-6 py-4 flex flex-col gap-4">
-          {navLinks.map((link) => (
-            <Link
+        <nav id="mobile-menu" aria-label="Main" className="md:hidden border-t-2 border-ink bg-board px-5 py-2 flex flex-col">
+          {[...navLinks, { label: t.nav.contact, href: "#contact" }].map((link) => (
+            <a
               key={link.href}
               href={link.href}
-              onClick={(e) => handleScroll(e, link.href, link.label, "mobile")}
-              className="text-sm text-zinc-400 hover:text-zinc-50 transition-colors"
+              onClick={() => track(link.label, link.href, "mobile")}
+              className="font-spine text-3xl py-3 border-b border-ink/20 last:border-0"
             >
               {link.label}
-            </Link>
+            </a>
           ))}
-          <Link
-            href="#contact"
-            onClick={(e) => handleScroll(e, "#contact", t.nav.contact, "mobile")}
-            className="text-sm w-fit px-4 py-1.5 rounded-full border border-zinc-700 text-zinc-300 hover:border-zinc-400 hover:text-white transition-all"
-          >
-            {t.nav.contact}
-          </Link>
-        </div>
+        </nav>
       )}
     </header>
   );

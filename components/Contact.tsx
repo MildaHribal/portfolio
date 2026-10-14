@@ -1,18 +1,17 @@
 "use client";
 
 import { useState } from "react";
-import { Send, CheckCircle, AlertCircle, Loader2, Mail } from "lucide-react";
 import { getPostHog } from "@/lib/posthog";
 import { useT } from "@/lib/language-context";
 
 type Status = "idle" | "loading" | "success" | "error";
 
 const inputClass =
-  "w-full px-4 py-3 rounded-xl border border-zinc-800 bg-zinc-900/50 text-white placeholder:text-zinc-500 text-sm focus:outline-none focus:ring-1 focus:ring-zinc-500 focus:border-zinc-600 transition-colors";
+  "w-full px-4 py-3 rounded-xl border-2 border-ink bg-stock text-ink placeholder:text-muted focus-visible:outline-offset-0 disabled:opacity-60";
 
 export default function Contact() {
   const t = useT();
-  const [form, setForm] = useState({ name: "", email: "", message: "" });
+  const [form, setForm] = useState({ name: "", email: "", message: "", website: "" });
   const [status, setStatus] = useState<Status>("idle");
   const [errorMsg, setErrorMsg] = useState("");
 
@@ -22,6 +21,11 @@ export default function Contact() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!form.name.trim() || !form.email.trim() || !form.message.trim()) {
+      setStatus("error");
+      setErrorMsg(t.contact.required);
+      return;
+    }
     setStatus("loading");
     setErrorMsg("");
 
@@ -50,7 +54,7 @@ export default function Contact() {
 
       getPostHog().capture("contact_form_succeeded");
       setStatus("success");
-      setForm({ name: "", email: "", message: "" });
+      setForm({ name: "", email: "", message: "", website: "" });
     } catch (err) {
       const errorMessage = err instanceof Error ? err.message : t.contact.networkError;
       getPostHog().capture("contact_form_failed", { error: errorMessage });
@@ -61,48 +65,46 @@ export default function Contact() {
   };
 
   return (
-    <section id="contact" className="py-32 border-t border-zinc-800/60">
-      <div className="max-w-6xl mx-auto px-6">
-        <div className="grid md:grid-cols-2 gap-16 items-start">
-          {/* Left – copy */}
-          <div>
-            <div className="flex items-center gap-3 mb-4">
-              <span className="h-px w-8 bg-zinc-700" />
-              <span className="text-xs text-zinc-500 uppercase tracking-widest font-medium">
-                {t.contact.eyebrow}
-              </span>
-            </div>
-            <h2 className="text-3xl sm:text-4xl font-bold tracking-tight text-zinc-50 mb-6">
-              {t.contact.title}
-            </h2>
-            <p className="text-zinc-400 text-sm leading-relaxed mb-8">
-              {t.contact.lead}
-            </p>
-
-            {/* Contact details */}
-            <div className="space-y-4 mb-4">
-              <div className="flex items-center gap-3">
-                <span className="text-xs text-zinc-500 w-20">{t.contact.emailLabel}</span>
-                <a
-                  href="mailto:miloslav@hribal.site"
-                  className="group flex items-center gap-2 text-base sm:text-lg font-medium text-zinc-300 hover:text-emerald-400 transition-colors duration-300"
-                >
-                  <Mail className="w-5 h-5 text-zinc-500 group-hover:text-emerald-400 transition-colors duration-300" />
+    <section id="contact" aria-labelledby="contact-title" className="border-t-2 border-ink py-24 sm:py-32">
+      <div className="max-w-[90rem] mx-auto px-5 sm:px-8 grid lg:grid-cols-12 gap-x-10 gap-y-12">
+        <div className="lg:col-span-5">
+          <h2 id="contact-title" className="reveal-title font-spine text-[clamp(3.5rem,10vw,6rem)]">
+            {t.contact.title}
+          </h2>
+          <p className="reveal mt-6 text-lg leading-relaxed max-w-[44ch]">{t.contact.lead}</p>
+          <dl className="mt-10 border-t-2 border-ink">
+            <div className="flex flex-wrap gap-x-6 py-3 border-b border-ink/25">
+              <dt className="w-28 text-muted">{t.contact.emailLabel}</dt>
+              <dd>
+                <a href="mailto:miloslav@hribal.site" className="font-semibold link-draw">
                   miloslav@hribal.site
                 </a>
-              </div>
-              <div className="flex items-center gap-3">
-                <span className="text-xs text-zinc-500 w-20">{t.contact.locationLabel}</span>
-                <span className="text-sm text-zinc-300">{t.contact.locationValue}</span>
-              </div>
+              </dd>
             </div>
-          </div>
+            <div className="flex flex-wrap gap-x-6 py-3 border-b border-ink/25">
+              <dt className="w-28 text-muted">{t.contact.locationLabel}</dt>
+              <dd>{t.contact.locationValue}</dd>
+            </div>
+          </dl>
+        </div>
 
-          {/* Right – form */}
-          <form className="space-y-4" onSubmit={handleSubmit} noValidate>
+          <form className="reveal lg:col-span-7 space-y-5 relative" onSubmit={handleSubmit} noValidate>
+            {/* Honeypot — invisible to people, irresistible to bots. */}
+            <div aria-hidden className="absolute -left-[9999px] w-px h-px overflow-hidden">
+              <label htmlFor="website">Website</label>
+              <input
+                id="website"
+                name="website"
+                type="text"
+                tabIndex={-1}
+                autoComplete="off"
+                value={form.website}
+                onChange={handleChange}
+              />
+            </div>
             <div className="grid sm:grid-cols-2 gap-4">
               <div className="flex flex-col gap-1.5">
-                <label htmlFor="name" className="text-xs text-zinc-500">
+                <label htmlFor="name" className="font-semibold">
                   {t.contact.fieldName}
                 </label>
                 <input
@@ -118,7 +120,7 @@ export default function Contact() {
                 />
               </div>
               <div className="flex flex-col gap-1.5">
-                <label htmlFor="email" className="text-xs text-zinc-500">
+                <label htmlFor="email" className="font-semibold">
                   {t.contact.fieldEmail}
                 </label>
                 <input
@@ -135,7 +137,7 @@ export default function Contact() {
               </div>
             </div>
             <div className="flex flex-col gap-1.5">
-              <label htmlFor="message" className="text-xs text-zinc-500">
+              <label htmlFor="message" className="font-semibold">
                 {t.contact.fieldMessage}
               </label>
               <textarea
@@ -151,42 +153,19 @@ export default function Contact() {
               />
             </div>
 
-            {/* Status messages */}
-            {status === "success" && (
-              <div className="flex items-center gap-2 text-sm text-emerald-400 bg-emerald-950/40 border border-emerald-800/50 rounded-xl px-4 py-3">
-                <CheckCircle size={15} className="shrink-0" />
-                {t.contact.success}
-              </div>
-            )}
-            {status === "error" && (
-              <div className="flex items-center gap-2 text-sm text-red-400 bg-red-950/40 border border-red-800/50 rounded-xl px-4 py-3">
-                <AlertCircle size={15} className="shrink-0" />
-                {errorMsg}
-              </div>
-            )}
+            <p role="status" aria-live="polite" className="min-h-6">
+              {status === "success" && <span className="font-semibold">{t.contact.success}</span>}
+              {status === "error" && <span className="font-semibold text-danger">{errorMsg}</span>}
+            </p>
 
             <button
               type="submit"
               disabled={status === "loading"}
-              className="group w-full flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-zinc-50 text-zinc-950 text-sm font-medium hover:bg-white transition-colors duration-200 disabled:opacity-60 disabled:cursor-not-allowed"
+              className="btn btn-primary min-h-12 px-7"
             >
-              {status === "loading" ? (
-                <>
-                  <Loader2 size={14} className="animate-spin" />
-                  {t.contact.sending}
-                </>
-              ) : (
-                <>
-                  {t.contact.send}
-                  <Send
-                    size={14}
-                    className="group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform"
-                  />
-                </>
-              )}
+              {status === "loading" ? t.contact.sending : t.contact.send}
             </button>
           </form>
-        </div>
       </div>
     </section>
   );

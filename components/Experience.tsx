@@ -4,77 +4,45 @@ import { useT } from "@/lib/language-context";
 
 export default function Experience() {
   const t = useT();
+  const items = t.experience.items;
 
-  const experiences = [
-    {
-      period: `2025 — ${t.experience.present}`,
-      role: t.experience.items.freelance.role,
-      company: t.experience.items.freelance.company,
-      description: t.experience.items.freelance.description,
-    },
-    {
-      period: "2024 — 2025",
-      role: t.experience.items.skinsmc.role,
-      company: t.experience.items.skinsmc.company,
-      description: t.experience.items.skinsmc.description,
-    },
-    {
-      period: "2023 — 2025",
-      role: t.experience.items.mcip.role,
-      company: t.experience.items.mcip.company,
-      description: t.experience.items.mcip.description,
-    },
-    {
-      period: "2020 — 2024",
-      role: t.experience.items.infis.role,
-      company: t.experience.items.infis.company,
-      description: t.experience.items.infis.description,
-    },
+  const rows = [
+    { years: `2025–${t.experience.present}`, ...items.freelance },
+    { years: "2024–2025", ...items.skinsmc },
+    { years: "2023–2025", ...items.mcip },
+    { years: "2020–2024", ...items.infis },
   ];
 
   return (
-    <section id="experience" className="py-32 border-t border-zinc-800/60">
-      <div className="max-w-6xl mx-auto px-6">
-        {/* Section label */}
-        <div className="flex items-center gap-3 mb-4">
-          <span className="h-px w-8 bg-zinc-700" />
-          <span className="text-xs text-zinc-500 uppercase tracking-widest font-medium">
-            {t.experience.eyebrow}
-          </span>
-        </div>
-        <h2 className="text-3xl sm:text-4xl font-bold tracking-tight text-zinc-50 mb-16">
+    <section id="experience" aria-labelledby="experience-title" className="py-24 sm:py-32">
+      <div className="max-w-[90rem] mx-auto px-5 sm:px-8">
+        <h2 id="experience-title" className="reveal-title font-spine text-[clamp(3rem,8vw,5.5rem)] mb-12">
           {t.experience.title}
         </h2>
-
-        <div className="flex flex-col">
-          {experiences.map((exp, i) => (
-            <div
-              key={i}
-              className={`group relative grid md:grid-cols-[180px_1fr] gap-4 md:gap-12 py-10 pl-4 rounded-xl transition-all duration-300 hover:bg-emerald-950/20 ${
-                i !== 0 ? "border-t border-zinc-800/60" : ""
-              }`}
-            >
-              {/* Green left accent bar */}
-              <span className="absolute left-0 top-6 bottom-6 w-px bg-emerald-500 scale-y-0 group-hover:scale-y-100 origin-top transition-transform duration-300 rounded-full" />
-
-              {/* Date */}
-              <p className="text-sm text-zinc-500 pt-0.5 shrink-0 transition-transform duration-300 group-hover:translate-x-1 group-hover:text-zinc-400">
-                {exp.period}
-              </p>
-
-              {/* Content */}
-              <div>
-                <h3 className="text-base font-semibold text-zinc-100 mb-1 group-hover:text-emerald-400 transition-colors duration-200">
-                  {exp.role}
-                </h3>
-                <p className="text-sm text-zinc-500 mb-3">{exp.company}</p>
-                <p className="text-base text-zinc-400 leading-relaxed">
-                  {exp.description}
-                </p>
-              </div>
-            </div>
-          ))}
-        </div>
+        <table className="reveal w-full text-left border-t-2 border-ink">
+          <caption className="sr-only">{t.experience.caption}</caption>
+          <thead className="sr-only">
+            <tr>
+              <th scope="col">{t.experience.cols.years}</th>
+              <th scope="col">{t.experience.cols.where}</th>
+              <th scope="col">{t.experience.cols.role}</th>
+            </tr>
+          </thead>
+          <tbody>
+            {rows.map((r) => (
+              <tr key={r.company} className="border-b-2 border-ink grid md:table-row gap-1 py-6 md:py-0">
+                <td className="md:py-7 md:pr-8 md:w-48 align-top font-semibold">{r.years}</td>
+                <th scope="row" className="md:py-7 md:pr-8 md:w-[30%] align-top font-spine text-3xl sm:text-4xl">
+                  {r.company}
+                </th>
+                <td className="md:py-7 align-top">
+                  <p className="font-semibold">{r.role}</p>
+                  <p className="mt-1 leading-relaxed text-muted max-w-[64ch]">{r.description}</p>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
       </div>
     </section>
   );

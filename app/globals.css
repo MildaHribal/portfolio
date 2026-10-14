@@ -1,175 +1,473 @@
 @import "tailwindcss";
 
+/*
+  Boxed Release Shelf, after dark: a black store, dark carton boxes outlined in light ink,
+  a shelf wall lit by the pulled box's own cover, and one mint accent for the main action.
+*/
 :root {
-  --background: #09090b;
-  --foreground: #fafafa;
+  --board: #0f0f0f;
+  --stock: #191919;
+  --ink: #f2f2ee;
+  --muted: #a5a59d;
+  --cobalt: #2a1243;
+  --cobalt-deep: #1d0c30;
+  --sticker: #8af0c8;
+  --danger: #ff7a7a;
+  --rule: 2px;
+  color-scheme: dark;
+}
+
+/* Boxes on the shelf: dark carton, light ink, the white only as a 2px outline. */
+.carton {
+  --stock: #141414;
+  --ink: #f2f2ee;
+  --muted: #a5a59d;
+  color: var(--ink);
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-board: var(--board);
+  --color-stock: var(--stock);
+  --color-ink: var(--ink);
+  --color-muted: var(--muted);
+  --color-cobalt: var(--cobalt);
+  --color-cobalt-deep: var(--cobalt-deep);
+  --color-sticker: var(--sticker);
+  --color-danger: var(--danger);
+  --font-sans: var(--font-body), system-ui, sans-serif;
 }
 
 html {
   scroll-behavior: smooth;
+  scroll-padding-top: 5rem;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: var(--font-geist-sans), Arial, Helvetica, sans-serif;
+  background: var(--board);
+  color: var(--ink);
+  font-family: var(--font-body), system-ui, sans-serif;
+  line-height: 1.6;
+  font-variant-numeric: tabular-nums;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* ── Selection ──────────────────────────────────── */
-::selection {
-  background: rgba(16, 185, 129, 0.25);
-  color: #fff;
+/* Display voice: names, section titles, box spines. */
+.font-spine {
+  font-family: var(--font-display), var(--font-body), sans-serif;
+  font-weight: 500;
+  letter-spacing: -0.03em;
+  line-height: 1.02;
 }
 
-/* ── Scrollbar ──────────────────────────────────── */
+/* ── Buttons: a fill rises from the bottom edge, the button lifts, a press squashes it ─ */
+
+.btn {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  border-radius: 0.75rem;
+  font-weight: 600;
+  transition:
+    color 300ms cubic-bezier(0.16, 1, 0.3, 1),
+    transform 300ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.btn::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: var(--btn-fill, var(--sticker));
+  border-radius: inherit;
+  transform: translateY(101%);
+  transition: transform 420ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.btn:hover {
+  color: var(--btn-fill-ink, #000);
+  transform: translateY(-2px);
+}
+
+.btn:hover::before {
+  transform: translateY(0);
+}
+
+.btn:active {
+  transform: translateY(0) scale(0.97);
+  transition-duration: 90ms;
+}
+
+/* Main action: mint at rest, fills with light ink on hover. */
+.btn-primary {
+  background: var(--sticker);
+  color: #000;
+  --btn-fill: var(--ink);
+}
+
+/* Secondary: light ink at rest, fills with mint. */
+.btn-light {
+  background: var(--ink);
+  color: var(--board);
+}
+
+/* Ghost: outline only, fills with mint. */
+.btn-ghost {
+  border: 2px solid var(--ink);
+  color: var(--ink);
+}
+
+.btn:disabled {
+  opacity: 0.6;
+  cursor: wait;
+  transform: none;
+}
+
+/* Text links: underline draws in from the left. */
+.link-draw {
+  background: linear-gradient(currentColor, currentColor) 0 100% / 0 2px no-repeat;
+  transition: background-size 400ms cubic-bezier(0.16, 1, 0.3, 1);
+  text-decoration: underline;
+  text-decoration-color: rgb(242 242 238 / 0.35);
+}
+
+.link-draw:hover {
+  background-size: 100% 2px;
+  text-decoration-color: transparent;
+}
+
+.font-wide {
+  font-weight: 500;
+}
+
+::selection {
+  background: var(--sticker);
+  color: #000;
+}
+
+:focus-visible {
+  outline: 3px solid var(--sticker);
+  outline-offset: 3px;
+}
+
 ::-webkit-scrollbar {
-  width: 6px;
+  width: 10px;
+  height: 10px;
 }
 ::-webkit-scrollbar-track {
-  background: #09090b;
+  background: var(--board);
 }
 ::-webkit-scrollbar-thumb {
-  background: #27272a;
-  border-radius: 3px;
-}
-::-webkit-scrollbar-thumb:hover {
-  background: #3f3f46;
+  background: var(--ink);
+  border: 3px solid var(--board);
 }
 
-/* ── Fade-up animation ──────────────────────────── */
-@keyframes fadeUp {
-  from {
-    opacity: 0;
-    transform: translateY(24px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+a {
+  text-underline-offset: 0.2em;
+  text-decoration-thickness: 2px;
 }
 
-.animate-fade-up {
-  animation: fadeUp 0.7s ease forwards;
+input,
+textarea {
+  caret-color: var(--sticker);
 }
 
-.animation-delay-100 {
-  animation-delay: 0.1s;
-}
-.animation-delay-200 {
-  animation-delay: 0.2s;
-}
-.animation-delay-300 {
-  animation-delay: 0.3s;
-}
-.animation-delay-400 {
-  animation-delay: 0.4s;
-}
-.animation-delay-500 {
-  animation-delay: 0.5s;
+/* ── Shelf: CSS 3D boxes ─────────────────────────────── */
+
+.shelf {
+  --W: min(600px, 68vw);
+  /* Spines share whatever width the pulled box leaves, so the row always reaches the edge. */
+  --D: clamp(58px, calc((min(100vw, 90rem) - 4rem - var(--W) - 36px) / 6), 124px);
+  --band: 64px;
+  --H: calc(var(--W) * 0.625 + var(--band));
+  perspective: 2200px;
 }
 
-/* ── Marquee / ticker ───────────────────────────── */
-@keyframes marquee {
-  from {
-    transform: translateX(0);
-  }
-  to {
-    transform: translateX(-50%);
+@media (max-width: 640px) {
+  .shelf {
+    --D: 60px;
+    --band: 56px;
   }
 }
 
-.animate-marquee {
-  animation: marquee 30s linear infinite;
+.spine-title {
+  font-size: clamp(1.5rem, calc(var(--D) * 0.3), 2.4rem);
+}
+
+.shelf-slot {
+  width: var(--D);
+  height: var(--H);
+  transition: width 700ms cubic-bezier(0.16, 1, 0.3, 1);
+  transform-style: preserve-3d;
+}
+
+.shelf-slot[data-active="true"] {
+  width: var(--W);
+}
+
+.shelf-box {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: var(--W);
+  height: var(--H);
+  margin-left: calc(var(--W) / -2);
+  transform-style: preserve-3d;
+  /* Spine faces the viewer; pushed back so spine and cover both sit at z = 0 (no perspective zoom). */
+  transform: translateZ(calc(var(--W) / -2)) rotateY(90deg);
+  transition: transform 700ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.shelf-slot[data-active="true"] .shelf-box {
+  transform: translateZ(calc(var(--D) / -2)) rotateY(0deg);
+}
+
+.shelf-face {
+  position: absolute;
+  inset: 0 auto auto 0;
+  backface-visibility: hidden;
+  border: var(--rule) solid var(--ink);
+  border-radius: 10px;
+  overflow: hidden;
+  background: var(--stock);
+}
+
+.shelf-front {
+  width: var(--W);
+  height: var(--H);
+  transform: translateZ(calc(var(--D) / 2));
+}
+
+.shelf-spine {
+  width: var(--D);
+  height: var(--H);
+  left: calc((var(--W) - var(--D)) / 2);
+  transform: rotateY(-90deg) translateZ(calc(var(--W) / 2));
+}
+
+/* Hover: a finger tips the box forward off the shelf, showing a slice of its cover. */
+.shelf-slot:not([data-active="true"]):hover .shelf-box,
+.shelf-slot:not([data-active="true"]):focus-visible .shelf-box {
+  /* translateX cancels the sideways drift of rotating around the box centre (W/2 * cos 84deg). */
+  transform: translateX(calc(var(--W) * 0.052)) translateZ(calc(var(--W) / -2)) translateY(-10px) rotateY(84deg);
+  transition-duration: 380ms;
+}
+
+.spine-title {
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+}
+
+/* Shelf light: the pulled box's cover, blurred and dimmed, spills onto the wall. */
+.shelf-light {
+  filter: blur(56px) saturate(1.7) brightness(0.5);
+  transform: scale(1.25);
+  opacity: 0;
+  transition: opacity 900ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.shelf-light[data-on="true"] {
+  opacity: 1;
+}
+
+/* ── Release covers: tilt toward the pointer ─────────── */
+
+.tilt {
+  transform: perspective(1100px) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg));
+  transition: transform 500ms cubic-bezier(0.16, 1, 0.3, 1);
   will-change: transform;
 }
 
-/* ── Glow pulse for accent elements ─────────────── */
-@keyframes glowPulse {
-  0%,
-  100% {
-    box-shadow: 0 0 8px rgba(16, 185, 129, 0.15);
-  }
-  50% {
-    box-shadow: 0 0 24px rgba(16, 185, 129, 0.25);
+.tilt[data-tilting="true"] {
+  transition-duration: 120ms;
+}
+
+/* Gloss on the carton: a soft highlight that follows the pointer while tilted. */
+.tilt-gloss {
+  border-radius: inherit;
+  background: radial-gradient(circle at var(--mx, 50%) var(--my, 50%), rgb(255 255 255 / 0.22), transparent 55%);
+  opacity: 0;
+  transition: opacity 300ms;
+}
+
+.tilt[data-tilting="true"] .tilt-gloss {
+  border-radius: inherit;
+  opacity: 1;
+}
+
+/* ── Scrolling the releases: each box turns out to face you ─ */
+
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .turn-in {
+      transform-origin: left center;
+      animation-name: turn-in;
+      animation-timing-function: linear;
+      animation-fill-mode: both;
+      animation-duration: auto;
+      animation-timeline: view();
+      animation-range: entry 5% cover 38%;
+    }
+    .slide-in {
+      animation-name: slide-in;
+      animation-timing-function: linear;
+      animation-fill-mode: both;
+      animation-duration: auto;
+      animation-timeline: view();
+      animation-range: entry 10% cover 34%;
+    }
   }
 }
 
-.animate-glow-pulse {
-  animation: glowPulse 3s ease-in-out infinite;
-}
-
-/* ── Gradient shift for decorative elements ─────── */
-@keyframes gradientShift {
-  0% {
-    background-position: 0% 50%;
-  }
-  50% {
-    background-position: 100% 50%;
-  }
-  100% {
-    background-position: 0% 50%;
-  }
-}
-
-.animate-gradient-shift {
-  background-size: 200% 200%;
-  animation: gradientShift 8s ease infinite;
-}
-
-/* ── Float animation for subtle movement ────────── */
-@keyframes float {
-  0%,
-  100% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(-6px);
-  }
-}
-
-.animate-float {
-  animation: float 6s ease-in-out infinite;
-}
-
-/* ── Smooth line reveal for terminal ────────────── */
-@keyframes lineReveal {
+@keyframes turn-in {
   from {
-    opacity: 0;
-    transform: translateX(-12px);
+    transform: perspective(1400px) rotateY(-62deg) scale(0.94);
+    opacity: 0.35;
   }
   to {
+    transform: none;
     opacity: 1;
-    transform: translateX(0);
   }
 }
 
-.animate-line-reveal {
-  animation: lineReveal 0.4s ease forwards;
+@keyframes slide-in {
+  from {
+    transform: translateY(48px);
+    opacity: 0.3;
+  }
+  to {
+    transform: none;
+    opacity: 1;
+  }
 }
 
-/* ── Performance: Reduce motion for a11y ───────── */
+/* ── Page load: hero rises in ─ */
+
+@media (prefers-reduced-motion: no-preference) {
+  .hero-in {
+    animation: rise-in 0.9s cubic-bezier(0.22, 1, 0.36, 1) var(--d, 0ms) both;
+  }
+}
+
+@keyframes rise-in {
+  from {
+    transform: translateY(28px);
+    opacity: 0;
+    filter: blur(6px);
+  }
+  to {
+    transform: none;
+    opacity: 1;
+    filter: none;
+  }
+}
+
+/* ── Scroll-driven: progress bar, hero drift, section reveals ─ */
+
+.scroll-progress {
+  display: none;
+}
+
+@supports (animation-timeline: scroll()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .scroll-progress {
+      display: block;
+      position: fixed;
+      inset: 0 0 auto;
+      height: 3px;
+      z-index: 60;
+      background: var(--sticker);
+      transform-origin: left;
+      animation-name: grow-x;
+      animation-timing-function: linear;
+      animation-fill-mode: both;
+      animation-duration: auto;
+      animation-timeline: scroll(root);
+    }
+
+    .hero-drift {
+      animation-name: drift-out;
+      animation-timing-function: linear;
+      animation-fill-mode: both;
+      animation-duration: auto;
+      animation-timeline: scroll(root);
+      animation-range: 0 70vh;
+    }
+
+    .reveal-title {
+      animation-name: title-in;
+      animation-timing-function: linear;
+      animation-fill-mode: both;
+      animation-duration: auto;
+      animation-timeline: view();
+      animation-range: entry 0% cover 30%;
+    }
+
+    .reveal {
+      animation-name: fade-up;
+      animation-timing-function: linear;
+      animation-fill-mode: both;
+      animation-duration: auto;
+      animation-timeline: view();
+      animation-range: entry calc(5% + var(--stagger, 0%)) cover calc(30% + var(--stagger, 0%));
+    }
+  }
+}
+
+@keyframes grow-x {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
+@keyframes drift-out {
+  to {
+    transform: translateY(-60px) scale(0.96);
+    opacity: 0.25;
+  }
+}
+
+@keyframes title-in {
+  from {
+    clip-path: inset(0 0 100% 0);
+    transform: translateY(0.35em);
+    opacity: 0;
+  }
+  to {
+    clip-path: inset(0 0 -0.2em 0);
+    transform: none;
+    opacity: 1;
+  }
+}
+
+@keyframes fade-up {
+  from {
+    transform: translateY(40px);
+    opacity: 0;
+  }
+  to {
+    transform: none;
+    opacity: 1;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
-  .animate-fade-up,
-  .animate-marquee,
-  .animate-glow-pulse,
-  .animate-gradient-shift,
-  .animate-float,
-  .animate-line-reveal {
-    animation: none !important;
-    transition: none !important;
+  html {
+    scroll-behavior: auto;
   }
-}
-
-/* ── Section layout containment ──────────────── */
-section {
-  contain: layout style;
+  .shelf-slot,
+  .shelf-box,
+  .shelf-light,
+  .tilt,
+  .btn,
+  .btn::before {
+    transition: none;
+  }
 }

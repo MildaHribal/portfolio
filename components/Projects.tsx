@@ -1,298 +1,219 @@
 "use client";
 
-import { ExternalLink, Github } from "lucide-react";
 import Image from "next/image";
-import { useT } from "@/lib/language-context";
+import Tilt from "@/components/Tilt";
+import { getPostHog } from "@/lib/posthog";
+import { useLanguage } from "@/lib/language-context";
+import { isExternal, kindLabel, loc, projects, type Project } from "@/lib/projects";
 
-interface Project {
-  title: string;
-  description: string;
-  tags: string[];
-  href: string;
-  repo: string;
-  image: string;
-  personal?: boolean;
-  client?: boolean;
-  commercial?: boolean;
-  /**
-   * Váha projektu v sekci: 1 = vlajkový (přes celou šířku, s rámem prohlížeče),
-   * 2 = poloviční, 3 = čtvrtinový. Hierarchii nese velikost, ne dekorace — díky
-   * tomu je z jednoho pohledu poznat, co je ta nejlepší práce.
-   */
-  tier: 1 | 2 | 3;
-  /** Adresa v liště prohlížeče. Rám má schválně JEN vlajkový projekt, ať to
-   *  znamená „tohle je živý web klienta“, a ne aby to byla opakovaná ozdoba. */
-  frameLabel?: string;
-}
+const byId = (id: string) => projects.find((p) => p.id === id)!;
 
-/**
- * Druh projektu jako obyčejný text, ne verzálkový štítek. Je to užitečná
- * informace, ale ne ta nejdůležitější na kartě — a barevná pilulka verzálkami
- * na ní byla dosud vždycky nejhlasitější prvek.
- */
-function kindLabel(project: Project, t: ReturnType<typeof useT>): string | null {
-  if (project.client) return t.projects.badges.client;
-  if (project.commercial) return t.projects.badges.commercial;
-  if (project.personal) return t.projects.badges.personal;
-  return null;
-}
-
-export default function Projects() {
-  const t = useT();
-
-  const projects: Project[] = [
-    {
-      title: "Týnky Bordel — E-shop",
-      description: t.projects.items.tynkybordel,
-      tags: ["Nuxt", "Vue.js", "TypeScript", "PostgreSQL", "Drizzle ORM", "Stripe", "Docker"],
-      href: "https://tynkybordel.shop/",
-      repo: "#",
-      image: "/tynkybordel.webp",
-      client: true,
-      tier: 1,
-      frameLabel: "tynkybordel.shop",
-    },
-    {
-      title: "Dos Mundos — redesign",
-      description: t.projects.items.dosmundos,
-      tags: ["Next.js", "React 19", "TypeScript", "UI/UX", "Web performance"],
-      href: "/ukazky/dos-mundos",
-      repo: "#",
-      image: "/showcase/dos-mundos/card-v2.png",
-      personal: true,
-      tier: 2,
-    },
-    {
-      title: "Montana Cans",
-      description: t.projects.items.montana,
-      tags: ["Next.js 15", "React 19", "TypeScript", "Tailwind CSS", "Motion"],
-      href: "https://montana.hribal.site/",
-      repo: "https://github.com/MildaHribal/montana-cans-cz",
-      image: "/montana.webp",
-      personal: true,
-      tier: 2,
-    },
-    {
-      title: "SkinsMC",
-      description: t.projects.items.skinsmc,
-      tags: ["Nuxt.js", "Vue.js", "TypeScript", "Tailwind CSS", "Docker", "DevOps"],
-      href: "https://skinsmc.org/",
-      repo: "#",
-      image: "/skinsmc.webp",
-      commercial: true,
-      tier: 3,
-    },
-    {
-      title: "Minecraft IP List",
-      description: t.projects.items.mcip,
-      tags: ["Nuxt.js", "Vue.js", "TypeScript", "MongoDB", "Docker"],
-      href: "https://www.minecraftiplist.com/",
-      repo: "#",
-      image: "/mcip.webp",
-      commercial: true,
-      tier: 3,
-    },
-    {
-      title: "BudBuddy",
-      description: t.projects.items.budbuddy,
-      tags: ["Nuxt.js", "Vue.js", "Tailwind CSS", "TypeScript", "Capacitor"],
-      href: "https://budbuddy.hribal.site",
-      repo: "https://github.com/MildaHribal/budbuddy",
-      image: "/showcase/thumbs/budbuddy.png",
-      personal: true,
-      tier: 3,
-    },
-    {
-      title: "Questie App",
-      description: t.projects.items.questie,
-      tags: ["Nuxt.js", "Vue.js", "Tailwind CSS", "TypeScript", "Ionic"],
-      href: "https://questieapp.com/",
-      repo: "#",
-      image: "/showcase/thumbs/questie-v3.png",
-      personal: true,
-      tier: 3,
-    },
-  ];
-
-  const flagship = projects.filter((p) => p.tier === 1);
-  const showcase = projects.filter((p) => p.tier === 2);
-  const rest = projects.filter((p) => p.tier === 3);
-
+/** The box front: cover art with a coloured spine strip down the left edge. */
+function BoxFront({ p, sizes, priority }: { p: Project; sizes: string; priority?: boolean }) {
+  const { lang } = useLanguage();
   return (
-    <section id="projects" className="py-32">
-      <div className="max-w-6xl mx-auto px-6">
-        <div className="flex items-baseline gap-4 mb-14">
-          <h2 className="text-3xl sm:text-4xl font-bold tracking-tight text-zinc-50">
-            {t.projects.title}
-          </h2>
-          <span className="text-sm text-zinc-500">{t.projects.eyebrow}</span>
-        </div>
+    <div className="turn-in">
+      <Tilt className="rounded-2xl">
+        <a
+          href={p.href}
+          target={isExternal(p.href) ? "_blank" : undefined}
+          rel={isExternal(p.href) ? "noopener noreferrer" : undefined}
+          onClick={() => getPostHog().capture("project_link_clicked", { project: p.id, link: "cover" })}
+          aria-label={p.title}
+          className="flex border-2 border-ink bg-stock rounded-2xl overflow-hidden"
+        >
+          <span className="w-3 sm:w-4 shrink-0 border-r-2 border-ink" style={{ background: p.color }} aria-hidden />
+          <span className="relative block flex-1 aspect-[16/10] overflow-hidden">
+            <Image
+              src={p.cover}
+              alt={`${p.title}: ${loc(p.tagline, lang)}`}
+              fill
+              sizes={sizes}
+              quality={85}
+              priority={priority}
+              className="object-cover"
+            />
+          </span>
+        </a>
+      </Tilt>
+    </div>
+  );
+}
 
-        {/* Vlajkový projekt: obrázek a text vedle sebe, ne pod sebou. Ušetří to
-            polovinu výšky a dá sekci osu, na které stojí zbytek. */}
-        {flagship.map((project) => (
-          <article key={project.title} className="grid lg:grid-cols-12 gap-8 lg:gap-10 items-center">
-            <a
-              href={project.href}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="lg:col-span-7 group/img block rounded-xl overflow-hidden bg-zinc-950 border border-zinc-800"
-            >
-              {/* Rám prohlížeče má jen tenhle projekt — je to signál „živý web
-                  klienta, klikni“, ne ozdoba opakovaná u každé karty. */}
-              <div className="flex items-center gap-2 px-4 h-9 bg-zinc-900 border-b border-zinc-800">
-                <div className="flex gap-1.5">
-                  <span className="w-3 h-3 rounded-full bg-zinc-700" />
-                  <span className="w-3 h-3 rounded-full bg-zinc-700" />
-                  <span className="w-3 h-3 rounded-full bg-zinc-700" />
-                </div>
-                <div className="flex-1 flex justify-center">
-                  <span className="px-4 py-1 rounded-md bg-zinc-950 border border-zinc-800 text-[11px] text-zinc-500 max-w-full truncate">
-                    {project.frameLabel}
-                  </span>
-                </div>
-                <div className="w-[52px]" aria-hidden />
-              </div>
-              <div className="relative w-full aspect-[1078/674] bg-zinc-950">
-                <Image
-                  src={project.image}
-                  alt={`${project.title} — ukázka práce Miloslava Hříbala (${project.tags.join(", ")})`}
-                  fill
-                  quality={100}
-                  sizes="(max-width: 1024px) 100vw, 640px"
-                  className="object-cover object-top motion-safe:transition-transform motion-safe:duration-500 group-hover/img:scale-[1.02]"
-                  priority
-                />
-              </div>
-            </a>
+function Specs({ p, compact }: { p: Project; compact?: boolean }) {
+  const { lang, t } = useLanguage();
+  return (
+    <table className={`w-full text-left border-t-2 border-ink ${compact ? "text-sm" : "text-[0.95rem]"}`}>
+      <caption className="sr-only">
+        {t.projects.specsCaption}: {p.title}
+      </caption>
+      <tbody>
+        <tr className="border-b border-ink/25 align-top">
+          <th scope="row" className="py-2.5 pr-4 font-medium text-muted w-[34%] whitespace-nowrap">
+            {t.projects.type}
+          </th>
+          <td className="py-2.5">{loc(kindLabel[p.kind], lang)}</td>
+        </tr>
+        {p.specs.map((s) => (
+          <tr key={s.label.en} className="border-b border-ink/25 align-top">
+            <th scope="row" className="py-2.5 pr-4 font-medium text-muted w-[34%] whitespace-nowrap">
+              {loc(s.label, lang)}
+            </th>
+            <td className="py-2.5">{loc(s.value, lang)}</td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  );
+}
 
-            <div className="lg:col-span-5 flex flex-col gap-4">
-              <div>
-                <h3 className="text-2xl font-semibold text-zinc-50">{project.title}</h3>
-                {kindLabel(project, t) && (
-                  <p className="text-sm text-zinc-500 mt-1">{kindLabel(project, t)}</p>
-                )}
-              </div>
-              <p className="text-zinc-400 leading-relaxed">{project.description}</p>
-              <p className="text-xs text-zinc-600 leading-relaxed">{project.tags.join(", ")}</p>
-              <div className="flex items-center gap-5 mt-2">
-                <a
-                  href={project.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 px-5 py-2.5 bg-zinc-100 text-zinc-900 rounded-xl font-semibold hover:bg-white transition-colors"
-                >
-                  <ExternalLink size={18} />
-                  {t.projects.visit}
-                </a>
-                {project.repo !== "#" && (
-                  <a href={project.repo} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 text-sm text-zinc-400 hover:text-zinc-200 transition-colors">
-                    <Github size={18} /> {t.projects.source}
-                  </a>
-                )}
-              </div>
+function Links({ p }: { p: Project }) {
+  const { t } = useLanguage();
+  const ext = isExternal(p.href);
+  return (
+    <div className="flex flex-wrap items-center gap-x-6 gap-y-3">
+      <a
+        href={p.href}
+        target={ext ? "_blank" : undefined}
+        rel={ext ? "noopener noreferrer" : undefined}
+        onClick={() => getPostHog().capture("project_link_clicked", { project: p.id, link: "live" })}
+        className="btn btn-light min-h-11 px-5"
+      >
+        {ext ? t.projects.visit : t.projects.caseStudy}
+      </a>
+      {p.repo && (
+        <a
+          href={p.repo}
+          target="_blank"
+          rel="noopener noreferrer"
+          onClick={() => getPostHog().capture("project_link_clicked", { project: p.id, link: "source" })}
+          className="font-semibold link-draw"
+        >
+          {t.projects.source}
+        </a>
+      )}
+    </div>
+  );
+}
+
+function Heading({ p, size = "lg" }: { p: Project; size?: "lg" | "md" | "sm" }) {
+  const { lang } = useLanguage();
+  const cls = size === "lg" ? "text-5xl sm:text-6xl" : size === "md" ? "text-4xl sm:text-5xl" : "text-3xl";
+  return (
+    <div>
+      <h3 className={`font-spine ${cls}`}>{p.title}</h3>
+      <p className="mt-2 text-lg font-semibold font-wide">{loc(p.tagline, lang)}</p>
+    </div>
+  );
+}
+
+/** Big spread: the box front and its back panel side by side. */
+function Feature({ p, flip }: { p: Project; flip?: boolean }) {
+  const { lang } = useLanguage();
+  return (
+    <article id={p.id} className="grid lg:grid-cols-12 gap-x-10 gap-y-8 items-start">
+      <div className={`lg:col-span-7 ${flip ? "lg:order-2" : ""}`}>
+        <BoxFront p={p} sizes="(max-width: 1024px) 100vw, 760px" />
+      </div>
+      <div className={`slide-in lg:col-span-5 flex flex-col gap-6 border-2 border-ink bg-stock rounded-3xl p-6 sm:p-8 ${flip ? "lg:order-1" : ""}`}>
+        <Heading p={p} />
+        <p className="leading-relaxed max-w-[62ch]">{loc(p.description, lang)}</p>
+        <Specs p={p} />
+        <Links p={p} />
+      </div>
+    </article>
+  );
+}
+
+/** Two boxes sold together: the paid Minecraft work. */
+function Bundle() {
+  const { lang, t } = useLanguage();
+  const items = [byId("skinsmc"), byId("minecraft-ip-list")];
+  return (
+    <section aria-labelledby="paid-title" className="border-2 border-ink bg-stock rounded-3xl overflow-hidden">
+      <div className="grid lg:grid-cols-12 border-b-2 border-ink">
+        <h3 id="paid-title" className="lg:col-span-5 font-spine text-4xl sm:text-5xl p-6 sm:p-8 lg:border-r-2 border-ink">
+          {t.projects.paidTitle}
+        </h3>
+        <p className="lg:col-span-7 p-6 sm:p-8 pt-0 lg:pt-8 leading-relaxed max-w-[68ch] self-end">{t.projects.paidLead}</p>
+      </div>
+      <div className="grid md:grid-cols-2">
+        {items.map((p, i) => (
+          <article
+            key={p.id}
+            id={p.id}
+            className={`p-6 sm:p-8 flex flex-col gap-5 ${i === 0 ? "md:border-r-2 border-b-2 md:border-b-0 border-ink" : ""}`}
+          >
+            <BoxFront p={p} sizes="(max-width: 768px) 100vw, 640px" />
+            <Heading p={p} size="md" />
+            <p className="leading-relaxed">{loc(p.description, lang)}</p>
+            <Specs p={p} compact />
+            <div className="mt-auto pt-1">
+              <Links p={p} />
             </div>
           </article>
         ))}
+      </div>
+    </section>
+  );
+}
 
-        {/* Dva redesigny vedle sebe — stejná váha, protože jsou to obě ukázky
-            toho samého: jak umím předělat existující web. */}
-        <div className="grid md:grid-cols-2 gap-8 mt-20">
-          {showcase.map((project) => (
-            <article key={project.title} className="flex flex-col gap-4">
-              <a
-                href={project.href}
-                target={project.href.startsWith("/") ? undefined : "_blank"}
-                rel="noopener noreferrer"
-                className="group/img block relative aspect-[16/10] rounded-xl overflow-hidden bg-zinc-950 border border-zinc-800"
-              >
-                <Image
-                  src={project.image}
-                  alt={`${project.title} — ukázka práce Miloslava Hříbala (${project.tags.join(", ")})`}
-                  fill
-                  quality={95}
-                  sizes="(max-width: 768px) 100vw, 560px"
-                  className="object-cover object-top motion-safe:transition-transform motion-safe:duration-500 group-hover/img:scale-[1.03]"
-                />
-              </a>
-              <div>
-                <h3 className="text-lg font-semibold text-zinc-50">{project.title}</h3>
-                {kindLabel(project, t) && (
-                  <p className="text-sm text-zinc-500 mt-0.5">{kindLabel(project, t)}</p>
-                )}
-              </div>
-              <p className="text-zinc-400 text-sm leading-relaxed">{project.description}</p>
-              <p className="text-xs text-zinc-600">{project.tags.join(", ")}</p>
-              <div className="flex items-center gap-5 mt-auto pt-1">
-                <a
-                  href={project.href}
-                  target={project.href.startsWith("/") ? undefined : "_blank"}
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 text-sm font-semibold text-zinc-100 hover:text-white transition-colors"
-                >
-                  <ExternalLink size={16} /> {t.projects.visit}
-                </a>
-                {project.repo !== "#" && (
-                  <a href={project.repo} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 text-sm text-zinc-400 hover:text-zinc-200 transition-colors">
-                    <Github size={16} /> {t.projects.source}
-                  </a>
-                )}
-              </div>
-            </article>
-          ))}
+function Compact({ p }: { p: Project }) {
+  const { lang } = useLanguage();
+  return (
+    <article id={p.id} className="flex flex-col gap-4">
+      <BoxFront p={p} sizes="(max-width: 768px) 100vw, 560px" />
+      <Heading p={p} size="sm" />
+      <p className="leading-relaxed text-[0.95rem]">{loc(p.description, lang)}</p>
+      <Specs p={p} compact />
+      <Links p={p} />
+    </article>
+  );
+}
+
+export default function Projects() {
+  const { lang, t } = useLanguage();
+  const questie = byId("questie");
+
+  return (
+    <section id="projects" aria-labelledby="projects-title" className="py-24 sm:py-32">
+      <div className="max-w-[90rem] mx-auto px-5 sm:px-8">
+        <div className="grid lg:grid-cols-12 gap-x-10 gap-y-4 mb-16 sm:mb-20">
+          <h2 id="projects-title" className="reveal-title lg:col-span-7 font-spine text-[clamp(3.5rem,10vw,6rem)]">
+            {t.projects.title}
+          </h2>
+          <p className="reveal lg:col-span-5 self-end text-lg leading-relaxed max-w-[52ch]">{t.projects.lead}</p>
         </div>
 
-        {/* Starší produkty a appky. Menší, ale pořád klikací — dohromady zaberou
-            tolik místa co dřív jedna karta. */}
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-x-6 gap-y-10 mt-20 pt-12 border-t border-zinc-800/60">
-          {rest.map((project) => (
-            <article key={project.title} className="flex flex-col gap-3">
-              <a
-                href={project.href}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="group/img block relative aspect-[16/10] rounded-lg overflow-hidden bg-zinc-950 border border-zinc-800"
-              >
-                <Image
-                  src={project.image}
-                  alt={`${project.title} — ukázka práce Miloslava Hříbala (${project.tags.join(", ")})`}
-                  fill
-                  quality={85}
-                  sizes="(max-width: 1024px) 50vw, 270px"
-                  className="object-cover object-top motion-safe:transition-transform motion-safe:duration-500 group-hover/img:scale-[1.04]"
-                  loading="lazy"
-                />
-              </a>
-              <div>
-                <h3 className="text-base font-semibold text-zinc-50">{project.title}</h3>
-                {kindLabel(project, t) && (
-                  <p className="text-xs text-zinc-500 mt-0.5">{kindLabel(project, t)}</p>
-                )}
-              </div>
-              <p className="text-zinc-400 text-sm leading-relaxed line-clamp-4">{project.description}</p>
-              <div className="flex items-center gap-4 mt-auto pt-1">
-                <a
-                  href={project.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-1.5 text-sm font-semibold text-zinc-100 hover:text-white transition-colors"
-                >
-                  <ExternalLink size={15} /> {t.projects.visit}
-                </a>
-                {project.repo !== "#" && (
-                  <a
-                    href={project.repo}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    aria-label={`${project.title} — ${t.projects.source}`}
-                    className="inline-flex items-center gap-1.5 text-sm text-zinc-400 hover:text-zinc-200 transition-colors"
-                  >
-                    <Github size={15} />
-                  </a>
-                )}
-              </div>
-            </article>
-          ))}
+        <div className="flex flex-col gap-24 sm:gap-32">
+          <Feature p={byId("tynky-bordel")} />
+          <Feature p={byId("budbuddy")} flip />
+          <Bundle />
+
+          <article id={questie.id} className="reveal grid md:grid-cols-12 gap-x-10 gap-y-8 items-start">
+            <div className="md:col-span-5">
+              <BoxFront p={questie} sizes="(max-width: 768px) 100vw, 520px" />
+            </div>
+            <div className="md:col-span-7 flex flex-col gap-5 max-w-[62ch]">
+              <Heading p={questie} size="md" />
+              <p className="leading-relaxed">{loc(questie.description, lang)}</p>
+              <Specs p={questie} compact />
+              <Links p={questie} />
+            </div>
+          </article>
+
+          <section aria-labelledby="concepts-title" className="border-t-2 border-ink pt-10">
+            <div className="flex flex-wrap items-baseline justify-between gap-x-10 gap-y-2 mb-10">
+              <h3 id="concepts-title" className="reveal-title font-spine text-4xl sm:text-5xl">
+                {t.projects.conceptsTitle}
+              </h3>
+              <p className="text-muted">{t.projects.conceptsLead}</p>
+            </div>
+            <div className="reveal grid md:grid-cols-2 gap-x-10 gap-y-16">
+              <Compact p={byId("dos-mundos")} />
+              <Compact p={byId("montana-cans")} />
+            </div>
+          </section>
         </div>
       </div>
     </section>

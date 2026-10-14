@@ -23,7 +23,8 @@ A single-page portfolio built with the Next.js App Router. It presents my experi
 
 ## Features
 
-- Hero, about, experience and projects sections with scroll reveal animations
+- Hero with a project shelf: each project is a CSS 3D box that turns face-out when you click its spine (keyboard: arrow keys, Enter)
+- Project pages-in-a-page with a spec table per project; covers in `public/covers/` are composited from live-site screenshots by `docs/cover-generator.cjs`
 - Czech / English language toggle (detected from `Accept-Language`, remembered in a cookie)
 - Contact form API route that sends email via Nodemailer, with SMTP fallbacks and local `sendmail`
 - Showcase page with a before/after café website redesign (`/ukazky/dos-mundos`)
@@ -35,7 +36,7 @@ A single-page portfolio built with the Next.js App Router. It presents my experi
 | Area      | Tools                                         |
 | --------- | --------------------------------------------- |
 | Framework | Next.js 16 (App Router, standalone output), React 19 |
-| Styling   | Tailwind CSS v4, lucide-react icons           |
+| Styling   | Tailwind CSS v4, Clash Display + Satoshi (Fontshare, self-hosted) |
 | Backend   | Next.js route handler, Nodemailer             |
 | Analytics | PostHog (`posthog-js`, `posthog-node`)        |
 | Delivery  | Docker multi-stage build, GitHub Actions → GHCR |
@@ -67,7 +68,7 @@ app/
   page.tsx               main page
   api/contact/route.ts   contact form endpoint
   ukazky/dos-mundos/     redesign showcase
-components/              UI sections (Hero, Projects, Contact, ...)
-lib/                     i18n, language context, PostHog clients
+components/              UI sections (Hero, Shelf, Projects, Contact, ...)
+lib/                     i18n, project data, language context, PostHog clients
 public/                  images, sitemap, robots.txt
 ```

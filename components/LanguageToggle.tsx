@@ -14,19 +14,11 @@ export default function LanguageToggle({
   const handleClick = (next: Lang) => {
     if (next === lang) return;
     setLang(next);
-    getPostHog().capture("language_switched", {
-      from: lang,
-      to: next,
-      source,
-    });
+    getPostHog().capture("language_switched", { from: lang, to: next, source });
   };
 
   return (
-    <div
-      role="group"
-      aria-label={t.nav.toggleAria}
-      className="inline-flex items-center rounded-full border border-zinc-700 bg-zinc-900/40 p-0.5 text-xs font-medium select-none"
-    >
+    <div role="group" aria-label={t.nav.toggleAria} className="inline-flex border-2 border-ink rounded-xl overflow-hidden text-sm font-semibold select-none">
       {LANGS.map((code) => {
         const active = code === lang;
         return (
@@ -35,13 +27,12 @@ export default function LanguageToggle({
             type="button"
             onClick={() => handleClick(code)}
             aria-pressed={active}
-            className={`px-2.5 py-1 rounded-full uppercase tracking-wider transition-colors duration-200 cursor-pointer ${
-              active
-                ? "bg-zinc-50 text-zinc-950"
-                : "text-zinc-400 hover:text-zinc-100"
+            lang={code}
+            className={`h-9 min-w-10 px-2 cursor-pointer transition-colors ${
+              active ? "bg-ink text-board" : "hover:bg-ink/15"
             }`}
           >
-            {code}
+            {code === "cs" ? "CZ" : "EN"}
           </button>
         );
       })}

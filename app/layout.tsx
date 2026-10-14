@@ -1,20 +1,22 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Geist } from "next/font/google";
+import localFont from "next/font/local";
 import { cookies } from "next/headers";
 import "./globals.css";
 import { LanguageProvider } from "@/lib/language-context";
 import { DEFAULT_LANG, LANG_COOKIE, isLang } from "@/lib/i18n";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
+const geist = Geist({
+  variable: "--font-body",
+  subsets: ["latin", "latin-ext"],
   display: "swap",
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
+// Headings: General Sans Medium (Fontshare, ITF Free Font License), self-hosted.
+const generalSans = localFont({
+  variable: "--font-display",
   display: "swap",
+  src: [{ path: "./fonts/general-sans-500.woff2", weight: "500" }],
 });
 
 const siteUrl = "https://hribal.site";
@@ -252,7 +254,7 @@ const projectsItemList = {
         "@type": "CreativeWork",
         name: "Týnky Bordel",
         url: "https://tynkybordel.shop/",
-        image: `${siteUrl}/tynkybordel.webp`,
+        image: `${siteUrl}/covers/tynky.webp`,
         description:
           "Custom fullstack e-commerce store built with Nuxt, PostgreSQL, Drizzle ORM, Stripe payments, Czech QR payments, and automated PDF invoicing.",
         keywords: "Nuxt, Vue.js, TypeScript, PostgreSQL, Drizzle ORM, Stripe, Docker",
@@ -266,7 +268,7 @@ const projectsItemList = {
         "@type": "CreativeWork",
         name: "SkinsMC",
         url: "https://skinsmc.org/",
-        image: `${siteUrl}/skinsmc.webp`,
+        image: `${siteUrl}/covers/skinsmc.webp`,
         description:
           "Minecraft skin gallery serving millions of users. Built the Nuxt.js frontend and managed Dockerized deployment.",
         keywords: "Nuxt.js, Vue.js, TypeScript, Docker, DevOps",
@@ -280,7 +282,7 @@ const projectsItemList = {
         "@type": "CreativeWork",
         name: "Dos Mundos — Redesign",
         url: `${siteUrl}/ukazky/dos-mundos`,
-        image: `${siteUrl}/showcase/dos-mundos/card-v2.png`,
+        image: `${siteUrl}/covers/dosmundos.webp`,
         description:
           "Concept redesign of Prague café Dos Mundos focused on speed and modern editorial UI. Rebuilt in Next.js 15 with sub-second load times.",
         keywords: "Next.js, React 19, TypeScript, UI/UX, Web Performance",
@@ -294,7 +296,7 @@ const projectsItemList = {
         "@type": "CreativeWork",
         name: "Montana Cans",
         url: "https://montana.hribal.site/",
-        image: `${siteUrl}/montana.webp`,
+        image: `${siteUrl}/covers/montana.webp`,
         description:
           "Interactive concept redesign with dynamic color wall and theme propagation built with Next.js 15 and Motion.",
         keywords: "Next.js 15, React 19, TypeScript, Tailwind CSS, Motion",
@@ -308,7 +310,7 @@ const projectsItemList = {
         "@type": "CreativeWork",
         name: "Minecraft IP List",
         url: "https://www.minecraftiplist.com/",
-        image: `${siteUrl}/mcip.webp`,
+        image: `${siteUrl}/covers/mcip.webp`,
         description:
           "International directory of Minecraft multiplayer servers — Nuxt.js frontend and Docker deployment.",
         keywords: "Nuxt.js, Vue.js, TypeScript, Docker",
@@ -322,7 +324,7 @@ const projectsItemList = {
         "@type": "CreativeWork",
         name: "BudBuddy",
         url: "https://budbuddy.hribal.site",
-        image: `${siteUrl}/BudBuddy.webp`,
+        image: `${siteUrl}/covers/budbuddy.webp`,
         description:
           "Cross-platform plant journaling app built with Nuxt.js, Vue.js, TypeScript and Capacitor — shipped to iOS, Android and the web from one codebase.",
         keywords: "Nuxt.js, Vue.js, TypeScript, Tailwind CSS, Capacitor",
@@ -336,7 +338,7 @@ const projectsItemList = {
         "@type": "CreativeWork",
         name: "Questie App",
         url: "https://questieapp.com/",
-        image: `${siteUrl}/Questie.webp`,
+        image: `${siteUrl}/covers/questie.webp`,
         description:
           "Gamified personal task manager — XP, levels, characters and achievements. Full Nuxt.js frontend and application architecture.",
         keywords: "Nuxt.js, Vue.js, TypeScript, Tailwind CSS, Ionic",
@@ -361,16 +363,15 @@ export default async function RootLayout({
   const lang = isLang(cookieLang) ? cookieLang : DEFAULT_LANG;
 
   return (
-    <html lang={lang} className="dark" suppressHydrationWarning>
+    <html lang={lang} suppressHydrationWarning>
       <head>
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(graphJsonLd) }}
         />
       </head>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased bg-zinc-950 text-zinc-50`}
+        className={`${geist.variable} ${generalSans.variable} antialiased`}
         suppressHydrationWarning
       >
         <LanguageProvider initialLang={lang}>{children}</LanguageProvider>

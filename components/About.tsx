@@ -1,111 +1,40 @@
 "use client";
 
-import { Code2, Zap, Users } from "lucide-react";
 import { useT } from "@/lib/language-context";
 
 export default function About() {
   const t = useT();
 
-  const skillCategories = [
-    {
-      label: t.about.skills.frontend,
-      skills: ["React", "Next.js", "TypeScript", "Vue.js", "Nuxt.js", "Tailwind CSS"],
-    },
-    {
-      label: t.about.skills.backend,
-      skills: ["Node.js", "TypeScript", "PostgreSQL", "Drizzle ORM", "Prisma", "MongoDB"],
-    },
-    {
-      label: t.about.skills.tooling,
-      skills: ["Git", "GitHub Actions", "Docker", "Vite", "pnpm", "CI/CD"],
-    },
-    {
-      label: t.about.skills.design,
-      skills: ["Figma", "Radix UI", "shadcn/ui", "CSS Animations", "Responsive Design", "UI/UX"],
-    },
-  ];
-
-  const philosophy = [
-    {
-      icon: Code2,
-      title: t.about.philosophy.cleanTitle,
-      desc: t.about.philosophy.cleanDesc,
-    },
-    {
-      icon: Zap,
-      title: t.about.philosophy.perfTitle,
-      desc: t.about.philosophy.perfDesc,
-    },
-    {
-      icon: Users,
-      title: t.about.philosophy.userTitle,
-      desc: t.about.philosophy.userDesc,
-    },
+  const tools = [
+    { label: t.about.skills.frontend, value: "Vue, Nuxt, React, Next.js, TypeScript, Tailwind CSS" },
+    { label: t.about.skills.backend, value: "Node.js, PostgreSQL, Drizzle ORM, MongoDB, Supabase" },
+    { label: t.about.skills.tooling, value: "Git, GitHub Actions, Docker, Capacitor, pnpm" },
   ];
 
   return (
-    <section id="about" className="py-28 border-t border-zinc-800/60">
-      <div className="max-w-6xl mx-auto px-6">
-        <div className="grid md:grid-cols-2 gap-16 items-start">
-          {/* Left – bio */}
-          <div>
-            <div className="flex items-center gap-3 mb-4">
-              <span className="h-px w-8 bg-zinc-700" />
-              <span className="text-xs text-zinc-500 uppercase tracking-widest font-medium">
-                {t.about.eyebrow}
-              </span>
-            </div>
-            <h2 className="text-3xl sm:text-4xl font-bold tracking-tight text-zinc-50 mb-6">
-              {t.about.title}
-            </h2>
-            <div className="space-y-4 text-zinc-400 text-base leading-relaxed">
-              <p>{t.about.p1}</p>
-              <p>{t.about.p2}</p>
-            </div>
+    <section id="about" aria-labelledby="about-title" className="border-t-2 border-ink bg-stock py-24 sm:py-32">
+      <div className="max-w-[90rem] mx-auto px-5 sm:px-8 grid lg:grid-cols-12 gap-x-10 gap-y-12">
+        <h2 id="about-title" className="reveal-title lg:col-span-4 font-spine text-[clamp(3rem,8vw,5.5rem)]">
+          {t.about.title}
+        </h2>
+        <div className="lg:col-span-8 flex flex-col gap-12">
+          <div className="reveal space-y-5 text-lg sm:text-xl leading-relaxed max-w-[60ch]">
+            <p>{t.about.p1}</p>
+            <p>{t.about.p2}</p>
           </div>
-
-          {/* Right – skills */}
-          <div className="grid grid-cols-2 gap-6">
-            {skillCategories.map((cat) => (
-              <div key={cat.label}>
-                <p className="text-xs font-medium text-zinc-500 uppercase tracking-widest mb-3">
-                  {cat.label}
-                </p>
-                <ul className="space-y-1.5">
-                  {cat.skills.map((skill) => (
-                    <li
-                      key={skill}
-                      className="group/skill flex items-center gap-2 text-sm text-zinc-300 hover:text-emerald-400 transition-colors duration-200 cursor-default"
-                    >
-                      <span className="w-1 h-1 rounded-full bg-zinc-600 group-hover/skill:bg-emerald-500 shrink-0 transition-colors duration-200" />
-                      {skill}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        {/* Philosophy Cards */}
-        <div className="grid md:grid-cols-3 gap-6 mt-20">
-          {philosophy.map((item) => (
-            <div
-              key={item.title}
-              className="group p-6 rounded-2xl border border-zinc-800/60 bg-zinc-900/20 hover:bg-zinc-900/50 hover:border-zinc-700/60 hover:-translate-y-1 transition-all duration-300"
-            >
-              <item.icon
-                size={24}
-                className="text-emerald-500 mb-4 group-hover:scale-110 transition-transform duration-300"
-              />
-              <h3 className="text-base font-semibold text-zinc-100 mb-2">
-                {item.title}
-              </h3>
-              <p className="text-sm text-zinc-400 leading-relaxed">
-                {item.desc}
-              </p>
-            </div>
-          ))}
+          <table className="reveal w-full text-left border-t-2 border-ink">
+            <caption className="text-left font-semibold mb-3">{t.about.toolsCaption}</caption>
+            <tbody>
+              {tools.map((row) => (
+                <tr key={row.label} className="border-b border-ink/25 align-top">
+                  <th scope="row" className="py-3 pr-6 w-40 font-medium text-muted">
+                    {row.label}
+                  </th>
+                  <td className="py-3">{row.value}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </div>
       </div>
     </section>

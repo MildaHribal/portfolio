@@ -3,16 +3,17 @@ import { Fraunces, Hanken_Grotesk } from "next/font/google";
 import Showcase from "./Showcase";
 
 // Custom café identity — warm editorial feel, so the route doesn't look like the dark portfolio.
-// latin-ext for Czech diacritics (ř, ž, č…).
+// Only latin is preloaded; the few Czech street names pull latin-ext on demand
+// via unicode-range, so it doesn't compete with the LCP image.
 const display = Fraunces({
-  subsets: ["latin", "latin-ext"],
+  subsets: ["latin"],
   style: ["normal", "italic"],
   variable: "--font-display",
   display: "swap",
 });
 
 const body = Hanken_Grotesk({
-  subsets: ["latin", "latin-ext"],
+  subsets: ["latin"],
   variable: "--font-body",
   display: "swap",
 });

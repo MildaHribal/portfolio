@@ -60,12 +60,10 @@ function BeforeAfter() {
         onPointerMove={(e) => dragging.current && move(e.clientX)}
         onPointerUp={() => (dragging.current = false)}
       >
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img className="ba-img" src="/showcase/dos-mundos/po.png" alt="New Dos Mundos café website" draggable={false} />
+        <Image className="ba-img" src="/showcase/dos-mundos/after-en.webp" alt="New Dos Mundos café website" fill priority sizes="(max-width:1120px) 100vw, 1120px" draggable={false} />
         <span className="ba-tag ba-tag--after">AFTER</span>
         <div className="ba-before" style={{ clipPath: `inset(0 ${100 - pos}% 0 0)` }}>
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img className="ba-img" src="/showcase/dos-mundos/pred.png" alt="Original Dos Mundos café website" draggable={false} />
+          <Image className="ba-img" src="/showcase/dos-mundos/before.webp" alt="Original Dos Mundos café website" fill priority sizes="(max-width:1120px) 100vw, 1120px" draggable={false} />
           <span className="ba-tag ba-tag--before">BEFORE</span>
         </div>
         <div className="ba-handle" style={{ left: `${pos}%` }} aria-hidden>
@@ -376,7 +374,7 @@ function Cafe() {
 export default function Showcase() {
   useReveal();
   return (
-    <div className="cs-root">
+    <main className="cs-root">
       <style>{CSS}</style>
 
       <div className="cs-topbar">
@@ -431,7 +429,7 @@ export default function Showcase() {
           <Link className="cs-btn cs-btn--ghost" href="/#projects">More projects</Link>
         </div>
       </div>
-    </div>
+    </main>
   );
 }
 
@@ -503,8 +501,8 @@ const CSS = `
 .cs-outro h2{font-size:clamp(28px,4vw,40px);color:#f7efe4;margin-bottom:14px;}
 .cs-outro p{color:#d3c4b0;margin-bottom:28px;}
 .cs-outro-cta{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;}
-.cs-root .cs-btn{background:var(--clay);color:#fff;padding:13px 26px;border-radius:30px;font-weight:600;transition:transform .2s,background .2s,box-shadow .2s;box-shadow:0 8px 20px -8px rgba(191,90,51,.6);}
-.cs-root .cs-btn:hover{background:var(--clay-dark);transform:translateY(-2px);box-shadow:0 12px 26px -8px rgba(191,90,51,.7);}
+.cs-root .cs-btn{background:var(--clay-dark);color:#fff;padding:13px 26px;border-radius:30px;font-weight:600;transition:transform .2s,background .2s,box-shadow .2s;box-shadow:0 8px 20px -8px rgba(191,90,51,.6);}
+.cs-root .cs-btn:hover{background:#8a3a19;transform:translateY(-2px);box-shadow:0 12px 26px -8px rgba(191,90,51,.7);}
 .cs-root .cs-btn--ghost{background:transparent;border:1px solid rgba(243,235,221,.25);color:#ecdfce;box-shadow:none;}
 .cs-root .cs-btn--ghost:hover{background:rgba(243,235,221,.06);}
 
