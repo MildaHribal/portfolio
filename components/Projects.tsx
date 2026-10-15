@@ -176,7 +176,7 @@ export default function Projects() {
   const questie = byId("questie");
 
   return (
-    <section id="projects" aria-labelledby="projects-title" className="py-24 sm:py-32">
+    <section id="projects" aria-labelledby="projects-title" className="relative py-24 sm:py-32">
       <div className="max-w-[90rem] mx-auto px-5 sm:px-8">
         <div className="grid lg:grid-cols-12 gap-x-10 gap-y-4 mb-16 sm:mb-20">
           <h2 id="projects-title" className="reveal-title lg:col-span-7 font-spine text-[clamp(3.5rem,10vw,6rem)]">

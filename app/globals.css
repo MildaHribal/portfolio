@@ -179,9 +179,10 @@ textarea {
 /* ── Shelf: CSS 3D boxes ─────────────────────────────── */
 
 .shelf {
-  --W: min(600px, 68vw);
+  /* Capped by viewport height too, so the shelf, its rail and the scroll cue fit the first screen. */
+  --W: min(600px, 68vw, max(380px, (100svh - 620px) * 1.6));
   /* Spines share whatever width the pulled box leaves, so the row always reaches the edge. */
-  --D: clamp(58px, calc((min(100vw, 90rem) - 4rem - var(--W) - 36px) / 6), 124px);
+  --D: clamp(58px, calc((min(100vw, 90rem) - 4rem - var(--W) - 36px) / 6), 150px);
   --band: 64px;
   --H: calc(var(--W) * 0.625 + var(--band));
   perspective: 2200px;
@@ -189,13 +190,15 @@ textarea {
 
 @media (max-width: 640px) {
   .shelf {
+    --W: 80vw;
     --D: 60px;
     --band: 56px;
   }
 }
 
 .spine-title {
-  font-size: clamp(1.5rem, calc(var(--D) * 0.3), 2.4rem);
+  /* Fits the longest title ("Minecraft IP List") in whatever height the box has. */
+  font-size: clamp(0.95rem, min(var(--D) * 0.3, (var(--H) - 120px) / 8.2), 2.4rem);
 }
 
 .shelf-slot {
@@ -260,11 +263,20 @@ textarea {
 .spine-title {
   writing-mode: vertical-rl;
   transform: rotate(180deg);
+  /* Physical padding on purpose: logical padding-block would run sideways in vertical text. */
+  padding-top: 1.25rem;
+  padding-bottom: 1.25rem;
 }
 
 /* Shelf light: the pulled box's cover, blurred and dimmed, spills onto the wall. */
+/* The light has no edges: it dissolves toward every side instead of filling a framed band. */
+.shelf-glow {
+  -webkit-mask-image: radial-gradient(ellipse 66% 40% at 50% 54%, #000 30%, transparent 100%);
+  mask-image: radial-gradient(ellipse 66% 40% at 50% 54%, #000 30%, transparent 100%);
+}
+
 .shelf-light {
-  filter: blur(56px) saturate(1.7) brightness(0.5);
+  filter: blur(70px) saturate(1.6) brightness(0.55);
   transform: scale(1.25);
   opacity: 0;
   visibility: hidden;
@@ -466,6 +478,22 @@ textarea {
     transform: none;
     opacity: 1;
   }
+}
+
+/* Scroll cue: the arrow drops and fades a few times, then rests. */
+@media (prefers-reduced-motion: no-preference) {
+  .scroll-cue-arrow {
+    animation: cue-drop 1.6s cubic-bezier(0.16, 1, 0.3, 1) 1.2s 3;
+  }
+  .scroll-cue:hover .scroll-cue-arrow {
+    animation: cue-drop 1.2s cubic-bezier(0.16, 1, 0.3, 1) infinite;
+  }
+}
+
+@keyframes cue-drop {
+  0% { transform: translateY(-4px); opacity: 0; }
+  40% { opacity: 1; }
+  100% { transform: translateY(6px); opacity: 0; }
 }
 
 @media (prefers-reduced-motion: reduce) {

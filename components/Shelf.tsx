@@ -46,9 +46,9 @@ export default function Shelf() {
   const current = projects[focusIndex];
 
   return (
-    <div className="relative isolate overflow-hidden border-t-2 border-ink text-white">
-      {/* No wall colour of its own: the pulled box lights the shelf with its own cover. */}
-      <div className="absolute inset-0 -z-10 bg-board" aria-hidden>
+    <div className="relative isolate text-white">
+      {/* No wall colour of its own: the pulled box's cover spills light that fades out in every direction. */}
+      <div className="shelf-glow pointer-events-none absolute inset-x-0 -top-40 -bottom-48 -z-10 overflow-hidden" aria-hidden>
         {projects.map((p, i) => (
           <Image
             key={p.id}
@@ -112,7 +112,7 @@ export default function Shelf() {
                   </span>
                   <span className="shelf-face shelf-spine flex flex-col items-center">
                     <span className="block w-full h-10 border-b-2 border-ink" style={{ background: p.color }} />
-                    <span className="spine-title flex-1 py-3 font-spine whitespace-nowrap overflow-hidden">
+                    <span className="spine-title flex-1 font-spine whitespace-nowrap overflow-hidden">
                       {p.spine}
                     </span>
                     <span className="w-full h-9 border-t-2 border-ink grid place-items-center text-xs font-semibold">
@@ -127,8 +127,8 @@ export default function Shelf() {
       </div>
 
       {/* The shelf edge, with a price-rail label for whichever box is out. */}
-      <div className="carton border-y-2 border-ink bg-stock">
-        <div className="max-w-[90rem] mx-auto px-5 sm:px-8 py-4 flex flex-wrap items-baseline gap-x-6 gap-y-2" aria-live="polite">
+      <div className="max-w-[90rem] mx-auto px-5 sm:px-8">
+        <div className="border-t-2 border-ink py-3 flex flex-wrap items-baseline gap-x-6 gap-y-2" aria-live="polite">
           <p className="font-spine text-2xl">{current.title}</p>
           <p className="text-muted">{loc(current.tagline, lang)}</p>
           <div className="flex gap-5 ml-auto text-sm font-semibold">
