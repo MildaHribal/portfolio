@@ -1,40 +1,58 @@
 import { ImageResponse } from "next/og";
+import { readFile } from "node:fs/promises";
 
-export const runtime = "edge";
-export const alt = "Miloslav Hříbal, frontend and fullstack developer (Vue, Nuxt, React, Next.js, TypeScript)";
+export const alt = "Miloslav Hříbal, web developer: websites, e-shops and web apps (Nuxt, Next.js, TypeScript)";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
-const spines = [
-  { name: "Týnky Bordel", color: "#e889b5" },
-  { name: "BudBuddy", color: "#123524" },
-  { name: "SkinsMC", color: "#4e8a56" },
-  { name: "Minecraft IP List", color: "#7fb6ec" },
-  { name: "Questie", color: "#9ec5f7" },
-];
+// Same look as the hero: black room, a pool of light, the name set huge in General Sans.
+export default async function OpengraphImage() {
+  const [bold, medium] = await Promise.all([
+    readFile(new URL("../assets/og/general-sans-700.ttf", import.meta.url)),
+    readFile(new URL("../assets/og/general-sans-500.ttf", import.meta.url)),
+  ]);
 
-export default function OpengraphImage() {
   return new ImageResponse(
     (
-      <div style={{ width: "100%", height: "100%", display: "flex", flexDirection: "column", background: "#0f0f0f", color: "#f2f2ee", fontFamily: "sans-serif" }}>
-        <div style={{ display: "flex", flexDirection: "column", padding: "56px 64px 40px" }}>
-          <div style={{ fontSize: 92, fontWeight: 800, letterSpacing: "-0.03em", lineHeight: 1 }}>Miloslav Hříbal</div>
-          <div style={{ fontSize: 34, fontWeight: 600, marginTop: 18 }}>Frontend and fullstack developer, Pilsen</div>
+      <div
+        style={{
+          width: "100%",
+          height: "100%",
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "space-between",
+          padding: "52px 60px 48px",
+          color: "#f3f3ef",
+          fontFamily: "General Sans",
+          backgroundColor: "#000",
+          backgroundImage: "radial-gradient(circle at 78% 30%, rgba(255,255,255,0.13), rgba(0,0,0,0) 55%)",
+        }}
+      >
+        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", fontSize: 26, fontWeight: 500 }}>
+          <div style={{ display: "flex", alignItems: "center", gap: 14 }}>
+            <div style={{ width: 14, height: 14, borderRadius: 14, background: "#8af0c8" }} />
+            Taking new projects
+          </div>
+          <div style={{ display: "flex", color: "rgba(243,243,239,0.6)" }}>hribal.site</div>
         </div>
-        <div style={{ flex: 1, display: "flex", alignItems: "flex-end", gap: 10, background: "#1d1d1d", padding: "0 64px", borderBottom: "14px solid #000" }}>
-          {spines.map((s) => (
-            <div key={s.name} style={{ display: "flex", flexDirection: "column", width: 190, height: 230, background: "#141414", color: "#f2f2ee", border: "3px solid #f2f2ee", borderBottom: "none" }}>
-              <div style={{ height: 44, background: s.color, borderBottom: "3px solid #f2f2ee" }} />
-              <div style={{ display: "flex", padding: "14px 14px", fontSize: 28, fontWeight: 800, lineHeight: 1.05 }}>{s.name}</div>
-            </div>
-          ))}
+
+        <div style={{ display: "flex", flexDirection: "column", fontWeight: 700, fontSize: 188, lineHeight: 0.98, letterSpacing: "-0.045em" }}>
+          <div style={{ display: "flex" }}>MILOSLAV</div>
+          <div style={{ display: "flex", justifyContent: "flex-end" }}>HŘÍBAL</div>
         </div>
-        <div style={{ display: "flex", justifyContent: "space-between", padding: "18px 64px", background: "#141414", fontSize: 26, fontWeight: 600 }}>
-          <span>Shipped work: client shop, paid Minecraft platforms, own apps</span>
-          <span>hribal.site</span>
+
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-end", fontSize: 30, fontWeight: 500 }}>
+          <div style={{ display: "flex" }}>Websites, e-shops and web apps</div>
+          <div style={{ display: "flex", color: "rgba(243,243,239,0.6)", fontSize: 24 }}>Nuxt, Next.js, TypeScript</div>
         </div>
       </div>
     ),
-    { ...size }
+    {
+      ...size,
+      fonts: [
+        { name: "General Sans", data: bold, weight: 700, style: "normal" },
+        { name: "General Sans", data: medium, weight: 500, style: "normal" },
+      ],
+    },
   );
 }

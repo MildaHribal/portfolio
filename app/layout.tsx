@@ -130,14 +130,6 @@ export const metadata: Metadata = {
       "x-default": siteUrl,
     },
   },
-  icons: {
-    icon: [
-      { url: "/logo.webp?v=4", type: "image/webp" },
-    ],
-    apple: [
-      { url: "/logo.webp?v=4", type: "image/webp" },
-    ],
-  },
   verification: {},
   other: {
     "darkreader-lock": "true",
