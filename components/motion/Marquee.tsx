@@ -1,7 +1,7 @@
 "use client";
 
 import { useRef } from "react";
-import { gsap, useGSAP, prefersReducedMotion } from "@/lib/gsap";
+import { gsap, ScrollTrigger, useGSAP, prefersReducedMotion } from "@/lib/gsap";
 
 const A = ["Nuxt", "Next.js", "Vue", "React", "TypeScript", "Tailwind", "Capacitor"];
 const B = ["Node.js", "PostgreSQL", "Drizzle", "Supabase", "Docker", "Stripe", "GitHub Actions"];
@@ -36,6 +36,13 @@ export default function Marquee() {
       const loops = tracks.map((t, i) =>
         gsap.fromTo(t, { xPercent: i ? -50 : 0 }, { xPercent: i ? 0 : -50, duration: 38, ease: "none", repeat: -1 }).totalTime(38 * 400),
       );
+      // Idle off-screen: no point ticking two endless tweens nobody can see.
+      ScrollTrigger.create({
+        trigger: root.current,
+        start: "top bottom",
+        end: "bottom top",
+        onToggle: (self) => loops.forEach((l) => (self.isActive ? l.resume() : l.pause())),
+      });
       const lenis = window.__lenis;
       if (!lenis) return;
       let dir = 1;

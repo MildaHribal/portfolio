@@ -43,7 +43,7 @@ export default function Header() {
         {t.nav.skip}
       </a>
       <div className="px-4 sm:px-8 h-16 sm:h-20 flex items-center justify-between gap-6">
-        <a href="#top" className="font-display font-semibold text-xl tracking-[-0.03em] leading-none" aria-label="hribal.site, back to top">
+        <a href="#top" className="font-display font-semibold text-xl tracking-[-0.03em] leading-none" aria-label="hříbal.site, back to top">
           hříbal<span className="text-white/50">.site</span>
         </a>
 

@@ -53,7 +53,12 @@ export default function Work() {
       onToggle: (self) => run(self.isActive),
     });
 
-    import("@/components/work/ribbon-gl").then(({ createRibbon }) => {
+    // three.js is ~190 kB: fetch it only when the strip is a couple of screens away.
+    let loading = false;
+    const load = () => {
+      if (loading) return;
+      loading = true;
+      import("@/components/work/ribbon-gl").then(({ createRibbon }) => {
       if (cancelled || !canvas.current) return;
       try {
         ribbon = createRibbon({
@@ -69,6 +74,13 @@ export default function Work() {
       ribbon.render();
       run(near.isActive);
       window.addEventListener("resize", onResize);
+      });
+    };
+    const warm = ScrollTrigger.create({
+      trigger: ".work-pin",
+      start: "top bottom+=200%",
+      end: () => `+=${span() + window.innerHeight * 4}`,
+      onToggle: (self) => self.isActive && load(),
     });
 
     const pin_el = root.current!.querySelector<HTMLElement>(".work-pin")!;
@@ -82,6 +94,7 @@ export default function Work() {
       run(false);
       pin.kill();
       near.kill();
+      warm.kill();
       window.removeEventListener("resize", onResize);
       pin_el.removeEventListener("pointermove", onPointer);
       pin_el.removeEventListener("pointerleave", onOut);

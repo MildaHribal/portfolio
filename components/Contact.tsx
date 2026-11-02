@@ -23,7 +23,7 @@ export default function Contact() {
   useGSAP(
     () => {
       if (prefersReducedMotion()) return;
-      const split = SplitText.create(".ct-big", { type: "words,chars", charsClass: "ct-char" });
+      const split = SplitText.create(".ct-big", { type: "words,chars", charsClass: "ct-char", aria: "none" });
       // The line assembles out of letters flung around in 3D, finishing exactly as the page bottoms out.
       const rnd = gsap.utils.random(-1, 1, 0.01, true);
       gsap.fromTo(
@@ -214,7 +214,7 @@ export default function Contact() {
       {/* Finale: fills the last screen, so the big line is whole when the page bottoms out. */}
       <div className="ct-finale relative mt-32 sm:mt-40 min-h-svh flex flex-col">
         <div className="flex-1 grid place-items-center content-center px-4 sm:px-8 py-16 text-center [perspective:1000px]">
-          <p className="ct-big font-display font-bold uppercase leading-[0.98] tracking-[-0.045em] text-[clamp(3.2rem,11.5vw,13.5rem)] text-balance">
+          <p aria-hidden="true" className="ct-big font-display font-bold uppercase leading-[0.98] tracking-[-0.045em] text-[clamp(3.2rem,11.5vw,13.5rem)] text-balance">
             {t.contact.big}
           </p>
           <ul className="ct-pills mt-12 flex flex-wrap justify-center gap-3">

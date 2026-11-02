@@ -20,7 +20,7 @@ export default function About() {
     () => {
       if (prefersReducedMotion()) return;
       // The statement lights up word by word as it passes through the viewport.
-      const split = SplitText.create(".about-statement", { type: "words" });
+      const split = SplitText.create(".about-statement", { type: "words", aria: "none" });
       gsap.fromTo(
         split.words,
         { opacity: 0.14 },

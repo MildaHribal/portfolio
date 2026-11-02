@@ -35,8 +35,9 @@ if (typeof window !== 'undefined') {
     window.addEventListener(event, initPostHog, { once: true, passive: true, capture: true });
   });
 
-  // Fallback if no interaction after 5 seconds
-  setTimeout(initPostHog, 5000);
+  // Fallback if no interaction: wait until the page is idle, well after first load work.
+  const idle = (window as Window & { requestIdleCallback?: (cb: () => void, o?: { timeout: number }) => void }).requestIdleCallback;
+  setTimeout(() => (idle ? idle(initPostHog, { timeout: 4000 }) : initPostHog()), 8000);
 }
 
 // IMPORTANT: Never combine this approach with other client-side PostHog initialization

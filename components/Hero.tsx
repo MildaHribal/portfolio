@@ -14,11 +14,13 @@ export default function Hero() {
   useGSAP(
     (_, contextSafe) => {
       const reduce = prefersReducedMotion();
-      const split = SplitText.create(".hero-line", { type: "chars", charsClass: "hero-char" });
+      const split = SplitText.create(".hero-line", { type: "chars", charsClass: "hero-char", aria: "none" });
 
       // Entrance, once the preloader curtain lifts.
       gsap.set(split.chars, { yPercent: 115 });
-      gsap.set(".hero-fade", { opacity: 0, y: 24 });
+      // Text that matters for LCP stays opaque and only slides; small bits fade as well.
+      gsap.set(".hero-fade", { y: 24 });
+      gsap.set(".hero-fade:not(.hero-keep)", { opacity: 0 });
       gsap.set(".hero-cue-in", { opacity: 0, scale: 0.6, rotation: -90 });
       onIntroDone(contextSafe!(() => {
         // Lines stop clipping once the letters are up, so they can tumble freely on scroll.
@@ -67,7 +69,7 @@ export default function Hero() {
             start: "top top",
             end: "+=190%",
             pin: true,
-            scrub: 0.8,
+            scrub: 1.2,
           },
         });
         // Each letter tumbles off on its own path while the two lines pull apart.
@@ -92,15 +94,18 @@ export default function Hero() {
           )
           .to(".hero-bottom", { opacity: 0, y: -40 }, 0)
           .to(".hero-cue", { opacity: 0, scale: 0.5, rotation: 120, duration: 0.25 }, 0)
+          // Each edge of the window is its own number (see .hero-window in CSS): tweening the
+          // clip-path string directly mismatches values once the browser shortens inset().
+          // Phase eases meet at zero speed, so rise and expansion read as one motion.
           .fromTo(
             ".hero-window",
-            { clipPath: `inset(100% ${side}% 0% ${side}% round 28px)` },
-            { clipPath: `inset(26% ${side}% 16% ${side}% round 28px)`, ease: "power2.out", duration: 0.45 },
+            { "--t": 100, "--s": side, "--b": 0, "--r": 28 },
+            { "--t": 26, "--b": 16, ease: "sine.out", duration: 0.45 },
             0,
           )
-          .to(".hero-window", { clipPath: "inset(0% 0% 0% 0% round 0px)", ease: "power2.inOut", duration: 0.55 }, 0.45)
-          .fromTo(".hero-w1", { xPercent: 0 }, { xPercent: -95, ease: "power2.inOut", duration: 0.55 }, 0.45)
-          .fromTo(".hero-w2", { xPercent: 0 }, { xPercent: 95, ease: "power2.inOut", duration: 0.55 }, 0.45)
+          .to(".hero-window", { "--t": 0, "--s": 0, "--b": 0, "--r": 0, ease: "sine.inOut", duration: 0.55 }, 0.45)
+          .fromTo(".hero-w1", { xPercent: 0 }, { xPercent: -95, ease: "sine.inOut", duration: 0.55 }, 0.45)
+          .fromTo(".hero-w2", { xPercent: 0 }, { xPercent: 95, ease: "sine.inOut", duration: 0.55 }, 0.45)
           .fromTo(".hero-beam", { opacity: 0.35, rotate: -8 }, { opacity: 1, rotate: 4, duration: 1 }, 0);
       });
 
@@ -117,18 +122,18 @@ export default function Hero() {
     <section ref={root} id="top" aria-labelledby="hero-title" className="hero relative h-svh overflow-hidden bg-coal text-chalk">
       <div aria-hidden="true" className="hero-torch" />
       <h1 id="hero-title" className="absolute inset-x-0 top-[15svh] sm:top-[17svh] px-4 sm:px-8 font-display hero-name">
-        <span className="hero-line hero-l1 block">Miloslav</span>
-        <span className="hero-line hero-l2 block text-right">Hříbal</span>
-        <span className="sr-only">, {t.hero.srTitle}</span>
+        <span aria-hidden="true" className="hero-line hero-l1 block">Miloslav</span>
+        <span aria-hidden="true" className="hero-line hero-l2 block text-right">Hříbal</span>
+        <span className="sr-only">Miloslav Hříbal, {t.hero.srTitle}</span>
       </h1>
 
       {/* Scroll cue: a slowly turning ring of text around an arrow that keeps dropping. */}
       <a
         href="#about"
-        aria-label={t.hero.scroll}
         className="hero-cue absolute z-10 left-4 sm:left-8 top-[44svh] md:top-[calc(17svh+19vw)]"
       >
-        <span className="hero-cue-in relative grid place-items-center size-24 md:size-32">
+        <span className="sr-only">{t.hero.scroll}</span>
+        <span aria-hidden="true" className="hero-cue-in relative grid place-items-center size-24 md:size-32">
           <svg viewBox="0 0 100 100" className="hero-cue-ring absolute inset-0 size-full" aria-hidden="true">
             <defs>
               <path id="cue-circle" d="M50,50 m-38,0 a38,38 0 1,1 76,0 a38,38 0 1,1 -76,0" />
@@ -153,10 +158,10 @@ export default function Hero() {
             </span>
             {t.hero.open}
           </p>
-          <p className="hero-fade mt-3 text-xl sm:text-2xl font-display font-semibold leading-tight max-w-[30ch]">{t.hero.role}</p>
+          <p className="hero-fade hero-keep mt-3 text-xl sm:text-2xl font-display font-semibold leading-tight max-w-[30ch]">{t.hero.role}</p>
         </div>
         <div className="md:col-span-7 lg:col-span-5 lg:col-start-8">
-          <p className="hero-fade text-[0.95rem] sm:text-base leading-relaxed max-w-[54ch] text-chalk/75">{t.hero.pitch}</p>
+          <p className="hero-fade hero-keep text-[0.95rem] sm:text-base leading-relaxed max-w-[54ch] text-chalk/75">{t.hero.pitch}</p>
           <div className="hero-fade mt-5 flex flex-wrap gap-3">
             <a
               href="#contact"
@@ -178,7 +183,7 @@ export default function Hero() {
       </div>
 
       {/* The window that grows into the About section. Decorative; About repeats its title for readers. */}
-      <div aria-hidden="true" className="hero-window absolute inset-0 text-chalk" style={{ clipPath: "inset(100% 37% 0% 37% round 28px)" }}>
+      <div aria-hidden="true" className="hero-window absolute inset-0 text-chalk">
         <div className="hero-beam beam" />
         <div className="absolute inset-0 grid place-items-center">
           <p className="font-display hero-window-word flex gap-[0.25em] uppercase">

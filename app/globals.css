@@ -307,6 +307,11 @@ html.intro-seen .preloader {
 }
 
 .hero-window {
+  --t: 100;
+  --s: 37;
+  --b: 0;
+  --r: 28;
+  clip-path: inset(calc(var(--t) * 1%) calc(var(--s) * 1%) calc(var(--b) * 1%) calc(var(--s) * 1%) round calc(var(--r) * 1px));
   background: radial-gradient(ellipse 70% 60% at 50% 35%, #232323, #000 75%);
 }
 
