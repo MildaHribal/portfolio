@@ -1,19 +1,69 @@
 "use client";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
+import { gsap, SplitText, useGSAP, prefersReducedMotion } from "@/lib/gsap";
+import { GitHubIcon, LinkedInIcon } from "@/components/SocialIcons";
+import Footer from "@/components/Footer";
 import { getPostHog } from "@/lib/posthog";
 import { useT } from "@/lib/language-context";
 
 type Status = "idle" | "loading" | "success" | "error";
 
 const inputClass =
-  "w-full px-4 py-3 rounded-xl border-2 border-ink bg-stock text-ink placeholder:text-muted focus-visible:outline-offset-0 disabled:opacity-60";
+  "w-full px-0 py-3 bg-transparent border-0 border-b border-chalk/30 text-chalk text-lg placeholder:text-chalk/35 focus:border-chalk focus-visible:outline-none transition-colors disabled:opacity-60";
 
 export default function Contact() {
   const t = useT();
   const [form, setForm] = useState({ name: "", email: "", message: "", website: "" });
   const [status, setStatus] = useState<Status>("idle");
   const [errorMsg, setErrorMsg] = useState("");
+  const root = useRef<HTMLElement>(null);
+
+  // The big line folds up out of the floor, letter by letter, as the section scrolls in.
+  useGSAP(
+    () => {
+      if (prefersReducedMotion()) return;
+      const split = SplitText.create(".ct-big", { type: "words,chars", charsClass: "ct-char" });
+      // The line assembles out of letters flung around in 3D, finishing exactly as the page bottoms out.
+      const rnd = gsap.utils.random(-1, 1, 0.01, true);
+      gsap.fromTo(
+        split.chars,
+        {
+          x: () => rnd() * window.innerWidth * 0.5,
+          y: () => rnd() * window.innerHeight * 0.6,
+          z: () => -600 + rnd() * 400,
+          rotationX: () => rnd() * 180,
+          rotationY: () => rnd() * 180,
+          rotation: () => rnd() * 60,
+          opacity: 0,
+          filter: "blur(12px)",
+        },
+        {
+          x: 0,
+          y: 0,
+          z: 0,
+          rotationX: 0,
+          rotationY: 0,
+          rotation: 0,
+          opacity: 1,
+          filter: "blur(0px)",
+          ease: "power3.out",
+          stagger: { each: 0.02, from: "random" },
+          scrollTrigger: { trigger: ".ct-finale", start: "top 95%", end: "top 8%", scrub: 0.7 },
+        },
+      );
+      gsap.from(".ct-pill", {
+        y: 30,
+        opacity: 0,
+        stagger: 0.06,
+        duration: 0.9,
+        ease: "expo.out",
+        scrollTrigger: { trigger: ".ct-pills", start: "top 95%" },
+      });
+      return () => split.revert();
+    },
+    { scope: root, dependencies: [t] },
+  );
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -64,31 +114,24 @@ export default function Contact() {
     }
   };
 
-  return (
-    <section id="contact" aria-labelledby="contact-title" className="border-t-2 border-ink py-24 sm:py-32">
-      <div className="max-w-[90rem] mx-auto px-5 sm:px-8 grid lg:grid-cols-12 gap-x-10 gap-y-12">
-        <div className="lg:col-span-5">
-          <h2 id="contact-title" className="reveal-title font-spine text-[clamp(3.5rem,10vw,6rem)]">
-            {t.contact.title}
-          </h2>
-          <p className="reveal mt-6 text-lg leading-relaxed max-w-[44ch]">{t.contact.lead}</p>
-          <dl className="mt-10 border-t-2 border-ink">
-            <div className="flex flex-wrap gap-x-6 py-3 border-b border-ink/25">
-              <dt className="w-28 text-muted">{t.contact.emailLabel}</dt>
-              <dd>
-                <a href="mailto:miloslav@hribal.site" className="font-semibold link-draw">
-                  miloslav@hribal.site
-                </a>
-              </dd>
-            </div>
-            <div className="flex flex-wrap gap-x-6 py-3 border-b border-ink/25">
-              <dt className="w-28 text-muted">{t.contact.locationLabel}</dt>
-              <dd>{t.contact.locationValue}</dd>
-            </div>
-          </dl>
-        </div>
+  const pills = [
+    { label: "miloslav@hribal.site", href: "mailto:miloslav@hribal.site" },
+    { label: "LinkedIn", href: "https://www.linkedin.com/in/miloslav-hribal/", Icon: LinkedInIcon },
+    { label: "GitHub", href: "https://github.com/MildaHribal", Icon: GitHubIcon },
+    { label: t.hero.ctaCv, href: "/Miloslav-Hribal-CV.pdf", download: true },
+  ];
 
-          <form className="reveal lg:col-span-7 space-y-5 relative" onSubmit={handleSubmit} noValidate>
+  return (
+    <section ref={root} id="contact" aria-labelledby="contact-title" className="bg-coal text-chalk pt-28 sm:pt-40 overflow-hidden">
+      <div className="max-w-[90rem] mx-auto px-4 sm:px-8 grid lg:grid-cols-12 gap-x-10 gap-y-10">
+        <div className="lg:col-span-4">
+          <h2 id="contact-title" className="font-display font-semibold text-4xl sm:text-5xl tracking-[-0.035em]">{t.contact.title}</h2>
+          <p className="mt-4 text-chalk/60 max-w-[34ch]">{t.contact.lead}</p>
+          <p className="mt-2 text-chalk/60">
+            {t.contact.locationLabel} {t.contact.locationValue}
+          </p>
+        </div>
+          <form className="lg:col-span-8 space-y-7 relative" onSubmit={handleSubmit} noValidate>
             {/* Honeypot — invisible to people, irresistible to bots. */}
             <div aria-hidden className="absolute -left-[9999px] w-px h-px overflow-hidden">
               <label htmlFor="website">Website</label>
@@ -104,7 +147,7 @@ export default function Contact() {
             </div>
             <div className="grid sm:grid-cols-2 gap-4">
               <div className="flex flex-col gap-1.5">
-                <label htmlFor="name" className="font-semibold">
+                <label htmlFor="name" className="text-sm font-medium text-chalk/60">
                   {t.contact.fieldName}
                 </label>
                 <input
@@ -120,7 +163,7 @@ export default function Contact() {
                 />
               </div>
               <div className="flex flex-col gap-1.5">
-                <label htmlFor="email" className="font-semibold">
+                <label htmlFor="email" className="text-sm font-medium text-chalk/60">
                   {t.contact.fieldEmail}
                 </label>
                 <input
@@ -137,7 +180,7 @@ export default function Contact() {
               </div>
             </div>
             <div className="flex flex-col gap-1.5">
-              <label htmlFor="message" className="font-semibold">
+              <label htmlFor="message" className="text-sm font-medium text-chalk/60">
                 {t.contact.fieldMessage}
               </label>
               <textarea
@@ -155,17 +198,44 @@ export default function Contact() {
 
             <p role="status" aria-live="polite" className="min-h-6">
               {status === "success" && <span className="font-semibold">{t.contact.success}</span>}
-              {status === "error" && <span className="font-semibold text-danger">{errorMsg}</span>}
+              {status === "error" && <span className="font-semibold text-[#ff8a8a]">{errorMsg}</span>}
             </p>
 
             <button
               type="submit"
               disabled={status === "loading"}
-              className="btn btn-primary min-h-12 px-7"
+              className="btn btn-light"
             >
               {status === "loading" ? t.contact.sending : t.contact.send}
             </button>
           </form>
+      </div>
+
+      {/* Finale: fills the last screen, so the big line is whole when the page bottoms out. */}
+      <div className="ct-finale relative mt-32 sm:mt-40 min-h-svh flex flex-col">
+        <div className="flex-1 grid place-items-center content-center px-4 sm:px-8 py-16 text-center [perspective:1000px]">
+          <p className="ct-big font-display font-bold uppercase leading-[0.98] tracking-[-0.045em] text-[clamp(3.2rem,11.5vw,13.5rem)] text-balance">
+            {t.contact.big}
+          </p>
+          <ul className="ct-pills mt-12 flex flex-wrap justify-center gap-3">
+            {pills.map((p) => (
+              <li key={p.href} className="ct-pill">
+                <a
+                  href={p.href}
+                  download={p.download || undefined}
+                  target={p.href.startsWith("http") ? "_blank" : undefined}
+                  rel={p.href.startsWith("http") ? "noopener noreferrer" : undefined}
+                  onClick={() => getPostHog().capture("contact_pill_clicked", { target: p.label })}
+                  className="btn btn-outline-light"
+                >
+                  {p.Icon && <p.Icon className="size-4" />}
+                  {p.label}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
+        <Footer />
       </div>
     </section>
   );

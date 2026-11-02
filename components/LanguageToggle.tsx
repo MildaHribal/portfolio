@@ -18,7 +18,7 @@ export default function LanguageToggle({
   };
 
   return (
-    <div role="group" aria-label={t.nav.toggleAria} className="inline-flex border-2 border-ink rounded-xl overflow-hidden text-sm font-semibold select-none">
+    <div role="group" aria-label={t.nav.toggleAria} className="inline-flex border border-white/60 rounded-full overflow-hidden text-xs font-semibold select-none">
       {LANGS.map((code) => {
         const active = code === lang;
         return (
@@ -28,8 +28,8 @@ export default function LanguageToggle({
             onClick={() => handleClick(code)}
             aria-pressed={active}
             lang={code}
-            className={`h-9 min-w-10 px-2 cursor-pointer transition-colors ${
-              active ? "bg-ink text-board" : "hover:bg-ink/15"
+            className={`h-9 min-w-10 px-2.5 cursor-pointer transition-colors ${
+              active ? "bg-white text-black" : "hover:bg-white/15"
             }`}
           >
             {code === "cs" ? "CZ" : "EN"}

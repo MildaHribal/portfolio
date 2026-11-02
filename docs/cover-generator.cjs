@@ -36,8 +36,8 @@ const covers={
  dosmundos:`<body style="background:#3b2a20">
   <div class="win" style="left:80px;top:90px;width:780px;filter:grayscale(.5) brightness(.8)"><div class="bar"><i></i><i></i><i></i><span>Original site</span></div><img src="before.webp"></div>
   <div class="win" style="left:480px;top:320px;width:1060px"><div class="bar"><i></i><i></i><i></i><span>Concept redesign</span></div><img src="after-en.webp"></div></body>`,
- montana:`<body style="background:#8ad12e">
-  <div class="win dark" style="left:120px;top:130px;width:1360px"><div class="bar"><i></i><i></i><i></i><span>montana.hribal.site</span></div><img src="montana.png"></div></body>`,
+ montana:`<body style="background:#f4c21a">
+  <div class="win" style="left:120px;top:130px;width:1360px"><div class="bar"><i></i><i></i><i></i><span>montana.hribal.site</span></div><img src="montana.png"></div></body>`,
 };
 (async()=>{const b=await chromium.launch();const p=await b.newPage({viewport:{width:1600,height:1000},deviceScaleFactor:2});
 for(const [n,h] of Object.entries(covers)){ if(process.argv[2]&&process.argv[2]!==n) continue;

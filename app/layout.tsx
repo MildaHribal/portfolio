@@ -12,11 +12,15 @@ const geist = Geist({
   display: "swap",
 });
 
-// Headings: General Sans Medium (Fontshare, ITF Free Font License), self-hosted.
+// Display: General Sans (Fontshare, ITF Free Font License), self-hosted.
 const generalSans = localFont({
-  variable: "--font-display",
+  variable: "--font-display-face",
   display: "swap",
-  src: [{ path: "./fonts/general-sans-500.woff2", weight: "500" }],
+  src: [
+    { path: "./fonts/general-sans-500.woff2", weight: "500" },
+    { path: "./fonts/general-sans-600.woff2", weight: "600" },
+    { path: "./fonts/general-sans-700.woff2", weight: "700" },
+  ],
 });
 
 const siteUrl = "https://hribal.site";
@@ -30,7 +34,7 @@ export const metadata: Metadata = {
     template: "%s | Miloslav Hříbal — Fullstack & Frontend Developer",
   },
   description:
-    "Miloslav Hříbal — Fullstack & Frontend Developer from Pilsen, Czech Republic. 4+ years building modern web applications with React, Next.js, Nuxt.js, TypeScript & Docker. Production experience serving millions of users. Available for hire — full-time, contract or freelance.",
+    "Miloslav Hříbal — Fullstack & Frontend Developer from Pilsen, Czech Republic. Programming since 2018, building modern web applications with React, Next.js, Nuxt.js, TypeScript & Docker. Production experience serving millions of users. Available for hire — full-time, contract or freelance.",
   applicationName: "Miloslav Hříbal — Developer Portfolio",
   category: "technology",
   keywords: [
@@ -97,7 +101,7 @@ export const metadata: Metadata = {
     siteName: "Miloslav Hříbal — Developer Portfolio",
     title: "Miloslav Hříbal — Fullstack & Frontend Developer (React, Next.js, Nuxt)",
     description:
-      "Fullstack & Frontend Developer from Pilsen, Czech Republic. 4+ years shipping production web apps with React, Next.js, Nuxt.js, TypeScript & Docker. Available for hire — remote or on-site.",
+      "Fullstack & Frontend Developer from Pilsen, Czech Republic. Programming since 2018, shipping production web apps with React, Next.js, Nuxt.js, TypeScript & Docker. Available for hire — remote or on-site.",
     firstName: "Miloslav",
     lastName: "Hříbal",
     username: "MildaHribal",
@@ -157,7 +161,7 @@ const personSchema = {
   email: `mailto:${personEmail}`,
   jobTitle: "Fullstack Developer",
   description:
-    "Fullstack & Frontend Developer from Pilsen, Czech Republic with 4+ years of web development experience building production applications with React, Next.js, Nuxt.js, TypeScript and Docker. Available for full-time, contract or freelance work — remote or on-site.",
+    "Fullstack & Frontend Developer from Pilsen, Czech Republic programming since 2018 and building production applications with React, Next.js, Nuxt.js, TypeScript and Docker. Available for full-time, contract or freelance work — remote or on-site.",
   knowsLanguage: ["cs", "en"],
   nationality: { "@type": "Country", name: "Czech Republic" },
   knowsAbout: [
@@ -298,8 +302,8 @@ const projectsItemList = {
         url: "https://montana.hribal.site/",
         image: `${siteUrl}/covers/montana.webp`,
         description:
-          "Interactive concept redesign with dynamic color wall and theme propagation built with Next.js 15 and Motion.",
-        keywords: "Next.js 15, React 19, TypeScript, Tailwind CSS, Motion",
+          "Concept graffiti supply store where picking one of 112 shades repaints the whole shop. Built with Next.js 15, React 19 and Tailwind CSS.",
+        keywords: "Next.js 15, React 19, TypeScript, Tailwind CSS",
         author: { "@id": personId },
       },
     },
@@ -365,6 +369,12 @@ export default async function RootLayout({
   return (
     <html lang={lang} suppressHydrationWarning>
       <head>
+        {/* Returning visitors in the same tab session skip the preloader before first paint. */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `try{if(sessionStorage.getItem("intro"))document.documentElement.classList.add("intro-seen")}catch(e){}`,
+          }}
+        />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(graphJsonLd) }}

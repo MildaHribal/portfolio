@@ -160,18 +160,18 @@ export const projects: Project[] = [
     title: "Montana Cans",
     spine: "Montana Cans",
     kind: "concept",
-    color: "#8ad12e",
+    color: "#f4c21a",
     cover: "/covers/montana.webp",
     href: "https://montana.hribal.site/",
     repo: "https://github.com/MildaHribal/montana-cans-cz",
     year: "2026",
     tagline: L("Concept shop for spray paint", "Koncept e-shopu se spreji"),
     description: L(
-      "A concept store for the Montana Cans spray paint range. Its main feature is a colour wall: pick any shade and the accent colour of the whole site changes to match.",
-      "Koncept e-shopu se spreji Montana Cans. Hlavní prvek je barevná zeď: vyberete odstín a akcentová barva celého webu se mu přizpůsobí."
+      "A concept store for graffiti supplies, built around buying paint by the shade. Pick one of 112 colours and a full-size wall photo, the buttons and the whole shop take that colour, so you see it big before it goes in the bag. Catalogue with filters, cart, quick view and search that ignores Czech diacritics.",
+      "Koncept obchodu s potřebami pro graffiti postavený na nákupu barvy podle odstínu. Vyberete jeden ze 112 odstínů a fotka zdi přes celou plochu, tlačítka i celý obchod se do něj přebarví, takže barvu vidíte ve velkém dřív, než jde do košíku. Katalog s filtry, košík, rychlý náhled a vyhledávání, které nevadí chybějící diakritika."
     ),
     specs: [
-      { label: built, value: L("Next.js 15, React 19, Tailwind CSS, Motion", "Next.js 15, React 19, Tailwind CSS, Motion") },
+      { label: built, value: L("Next.js 15, React 19, TypeScript, Tailwind CSS, static export", "Next.js 15, React 19, TypeScript, Tailwind CSS, statický export") },
     ],
   },
 ];

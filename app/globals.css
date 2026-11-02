@@ -1,66 +1,68 @@
 @import "tailwindcss";
 
 /*
-  Boxed Release Shelf, after dark: a black store, dark carton boxes outlined in light ink,
-  a shelf wall lit by the pulled box's own cover, and one mint accent for the main action.
+  Light and shadow: grey concrete for the opening and the work, black rooms for the story and
+  the contact. Type is the image: General Sans set huge, tight and in capitals for the big lines.
 */
 :root {
-  --board: #0f0f0f;
-  --stock: #191919;
-  --ink: #f2f2ee;
-  --muted: #a5a59d;
-  --cobalt: #2a1243;
-  --cobalt-deep: #1d0c30;
-  --sticker: #8af0c8;
-  --danger: #ff7a7a;
-  --rule: 2px;
+  --coal: #000000;
+  --paper: #e3e3df;
+  --chalk: #f3f3ef;
+  --fog: #8e8e88;
+  --mint: #8af0c8;
+  --mint-deep: #17a374;
   color-scheme: dark;
 }
 
-/* Boxes on the shelf: dark carton, light ink, the white only as a 2px outline. */
-.carton {
-  --stock: #141414;
-  --ink: #f2f2ee;
-  --muted: #a5a59d;
-  color: var(--ink);
-}
-
 @theme inline {
-  --color-board: var(--board);
-  --color-stock: var(--stock);
-  --color-ink: var(--ink);
-  --color-muted: var(--muted);
-  --color-cobalt: var(--cobalt);
-  --color-cobalt-deep: var(--cobalt-deep);
-  --color-sticker: var(--sticker);
-  --color-danger: var(--danger);
+  --color-coal: var(--coal);
+  --color-paper: var(--paper);
+  --color-chalk: var(--chalk);
+  --color-fog: var(--fog);
+  --color-mint: var(--mint);
+  --color-mint-deep: var(--mint-deep);
   --font-sans: var(--font-body), system-ui, sans-serif;
+  --font-display: var(--font-display-face), var(--font-body), sans-serif;
 }
 
-html {
-  scroll-behavior: smooth;
-  scroll-padding-top: 5rem;
+html,
+body {
+  overflow-x: clip;
 }
 
 body {
-  background: var(--board);
-  color: var(--ink);
+  background: var(--coal);
+  color: var(--chalk);
   font-family: var(--font-body), system-ui, sans-serif;
   line-height: 1.6;
-  font-variant-numeric: tabular-nums;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* Display voice: names, section titles, box spines. */
-.font-spine {
-  font-family: var(--font-display), var(--font-body), sans-serif;
-  font-weight: 500;
-  letter-spacing: -0.03em;
-  line-height: 1.02;
+.font-display {
+  font-family: var(--font-display-face), var(--font-body), sans-serif;
 }
 
-/* ── Buttons: a fill rises from the bottom edge, the button lifts, a press squashes it ─ */
+::selection {
+  background: var(--mint);
+  color: #000;
+}
+
+:focus-visible {
+  outline: 2px solid var(--mint);
+  outline-offset: 3px;
+}
+
+a {
+  text-underline-offset: 0.2em;
+}
+
+input,
+textarea {
+  caret-color: var(--mint);
+}
+
+/* ── Buttons: pills; a fill rises from the bottom edge on hover ─ */
 
 .btn {
   position: relative;
@@ -70,11 +72,21 @@ body {
   align-items: center;
   justify-content: center;
   gap: 0.5rem;
-  border-radius: 0.75rem;
+  min-height: 3rem;
+  padding: 0 1.4rem;
+  border-radius: 999px;
   font-weight: 600;
+  font-size: 0.95rem;
+  white-space: nowrap;
   transition:
-    color 300ms cubic-bezier(0.16, 1, 0.3, 1),
-    transform 300ms cubic-bezier(0.16, 1, 0.3, 1);
+    color 350ms cubic-bezier(0.16, 1, 0.3, 1),
+    transform 350ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.btn-sm {
+  min-height: 2.5rem;
+  padding: 0 1.05rem;
+  font-size: 0.875rem;
 }
 
 .btn::before {
@@ -82,15 +94,10 @@ body {
   position: absolute;
   inset: 0;
   z-index: -1;
-  background: var(--btn-fill, var(--sticker));
+  background: var(--btn-fill);
   border-radius: inherit;
   transform: translateY(101%);
-  transition: transform 420ms cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.btn:hover {
-  color: var(--btn-fill-ink, #000);
-  transform: translateY(-2px);
+  transition: transform 450ms cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .btn:hover::before {
@@ -98,414 +105,445 @@ body {
 }
 
 .btn:active {
-  transform: translateY(0) scale(0.97);
+  transform: scale(0.97);
   transition-duration: 90ms;
 }
 
-/* Main action: mint at rest, fills with light ink on hover. */
-.btn-primary {
-  background: var(--sticker);
-  color: #000;
-  --btn-fill: var(--ink);
+.btn-dark {
+  background: var(--coal);
+  color: var(--chalk);
+  --btn-fill: #2b2b2b;
 }
 
-/* Secondary: light ink at rest, fills with mint. */
+.btn-outline-dark {
+  box-shadow: inset 0 0 0 1px rgb(0 0 0 / 0.35);
+  color: var(--coal);
+  --btn-fill: var(--coal);
+}
+.btn-outline-dark:hover {
+  color: var(--chalk);
+}
+
 .btn-light {
-  background: var(--ink);
-  color: var(--board);
+  background: var(--chalk);
+  color: var(--coal);
+  --btn-fill: var(--mint);
 }
 
-/* Ghost: outline only, fills with mint. */
-.btn-ghost {
-  border: 2px solid var(--ink);
-  color: var(--ink);
+.btn-outline-light {
+  box-shadow: inset 0 0 0 1px rgb(255 255 255 / 0.4);
+  color: var(--chalk);
+  --btn-fill: var(--chalk);
+}
+.btn-outline-light:hover {
+  color: var(--coal);
 }
 
 .btn:disabled {
   opacity: 0.6;
   cursor: wait;
-  transform: none;
 }
 
 /* Text links: underline draws in from the left. */
 .link-draw {
-  background: linear-gradient(currentColor, currentColor) 0 100% / 0 2px no-repeat;
-  transition: background-size 400ms cubic-bezier(0.16, 1, 0.3, 1);
-  text-decoration: underline;
-  text-decoration-color: rgb(242 242 238 / 0.35);
+  background: linear-gradient(currentColor, currentColor) 0 100% / 0 1px no-repeat;
+  transition: background-size 450ms cubic-bezier(0.16, 1, 0.3, 1);
 }
-
 .link-draw:hover {
-  background-size: 100% 2px;
-  text-decoration-color: transparent;
+  background-size: 100% 1px;
 }
 
-.font-wide {
+.nav-link {
+  position: relative;
+  padding: 0.5rem 0.8rem;
+  font-size: 0.9rem;
   font-weight: 500;
 }
-
-::selection {
-  background: var(--sticker);
-  color: #000;
-}
-
-:focus-visible {
-  outline: 3px solid var(--sticker);
-  outline-offset: 3px;
-}
-
-::-webkit-scrollbar {
-  width: 10px;
-  height: 10px;
-}
-::-webkit-scrollbar-track {
-  background: var(--board);
-}
-::-webkit-scrollbar-thumb {
-  background: var(--ink);
-  border: 3px solid var(--board);
-}
-
-a {
-  text-underline-offset: 0.2em;
-  text-decoration-thickness: 2px;
-}
-
-input,
-textarea {
-  caret-color: var(--sticker);
-}
-
-/* ── Shelf: CSS 3D boxes ─────────────────────────────── */
-
-.shelf {
-  /* Capped by viewport height too, so the shelf, its rail and the scroll cue fit the first screen. */
-  --W: min(600px, 68vw, max(380px, (100svh - 620px) * 1.6));
-  /* Spines share whatever width the pulled box leaves, so the row always reaches the edge. */
-  --D: clamp(58px, calc((min(100vw, 90rem) - 4rem - var(--W) - 36px) / 6), 150px);
-  --band: 64px;
-  --H: calc(var(--W) * 0.625 + var(--band));
-  perspective: 2200px;
-}
-
-@media (max-width: 640px) {
-  .shelf {
-    --W: 80vw;
-    --D: 60px;
-    --band: 56px;
-  }
-}
-
-.spine-title {
-  /* Fits the longest title ("Minecraft IP List") in whatever height the box has. */
-  font-size: clamp(0.95rem, min(var(--D) * 0.3, (var(--H) - 120px) / 8.2), 2.4rem);
-}
-
-.shelf-slot {
-  width: var(--D);
-  height: var(--H);
-  transition: width 700ms cubic-bezier(0.16, 1, 0.3, 1);
-  transform-style: preserve-3d;
-}
-
-.shelf-slot[data-active="true"] {
-  width: var(--W);
-}
-
-.shelf-box {
+.nav-link::after {
+  content: "";
   position: absolute;
-  top: 0;
-  left: 50%;
-  width: var(--W);
-  height: var(--H);
-  margin-left: calc(var(--W) / -2);
-  transform-style: preserve-3d;
-  /* Spine faces the viewer; pushed back so spine and cover both sit at z = 0 (no perspective zoom). */
-  transform: translateZ(calc(var(--W) / -2)) rotateY(90deg);
-  transition: transform 700ms cubic-bezier(0.16, 1, 0.3, 1);
+  left: 0.8rem;
+  right: 0.8rem;
+  bottom: 0.35rem;
+  height: 1px;
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: right;
+  transition: transform 450ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+.nav-link:hover::after {
+  transform: scaleX(1);
+  transform-origin: left;
 }
 
-.shelf-slot[data-active="true"] .shelf-box {
-  transform: translateZ(calc(var(--D) / -2)) rotateY(0deg);
+/* ── Preloader ─ */
+
+.preloader {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: grid;
+  place-items: center;
+  background: var(--coal);
+  color: var(--chalk);
+  clip-path: inset(0 0 0 0);
+  /* If scripts never run, the curtain still goes away. */
+  animation: preloader-failsafe 0s 6s forwards;
 }
 
-.shelf-face {
-  position: absolute;
-  inset: 0 auto auto 0;
-  backface-visibility: hidden;
-  border: var(--rule) solid var(--ink);
-  border-radius: 10px;
-  overflow: hidden;
-  background: var(--stock);
-}
-
-.shelf-front {
-  width: var(--W);
-  height: var(--H);
-  transform: translateZ(calc(var(--D) / 2));
-}
-
-.shelf-spine {
-  width: var(--D);
-  height: var(--H);
-  left: calc((var(--W) - var(--D)) / 2);
-  transform: rotateY(-90deg) translateZ(calc(var(--W) / 2));
-}
-
-/* Hover: a finger tips the box forward off the shelf, showing a slice of its cover. */
-.shelf-slot:not([data-active="true"]):hover .shelf-box,
-.shelf-slot:not([data-active="true"]):focus-visible .shelf-box {
-  /* translateX cancels the sideways drift of rotating around the box centre (W/2 * cos 84deg). */
-  transform: translateX(calc(var(--W) * 0.052)) translateZ(calc(var(--W) / -2)) translateY(-10px) rotateY(84deg);
-  transition-duration: 380ms;
-}
-
-.spine-title {
-  writing-mode: vertical-rl;
-  transform: rotate(180deg);
-  /* Physical padding on purpose: logical padding-block would run sideways in vertical text. */
-  padding-top: 1.25rem;
-  padding-bottom: 1.25rem;
-}
-
-/* Shelf light: the pulled box's cover, blurred and dimmed, spills onto the wall. */
-/* The light has no edges: it dissolves toward every side instead of filling a framed band. */
-.shelf-glow {
-  -webkit-mask-image: radial-gradient(ellipse 66% 40% at 50% 54%, #000 30%, transparent 100%);
-  mask-image: radial-gradient(ellipse 66% 40% at 50% 54%, #000 30%, transparent 100%);
-}
-
-.shelf-light {
-  filter: blur(70px) saturate(1.6) brightness(0.55);
-  transform: scale(1.25);
-  opacity: 0;
-  visibility: hidden;
-  transition:
-    opacity 900ms cubic-bezier(0.16, 1, 0.3, 1),
-    visibility 0s 900ms;
-}
-
-.shelf-light[data-on="true"] {
-  opacity: 1;
-  visibility: visible;
-  transition-delay: 0s;
-}
-
-/* ── Release covers: tilt toward the pointer ─────────── */
-
-.tilt {
-  transform: perspective(1100px) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg));
-  transition: transform 500ms cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.tilt[data-tilting="true"] {
-  transition-duration: 120ms;
-  will-change: transform;
-}
-
-/* Gloss on the carton: a soft highlight that follows the pointer while tilted. */
-.tilt-gloss {
-  border-radius: inherit;
-  background: radial-gradient(circle at var(--mx, 50%) var(--my, 50%), rgb(255 255 255 / 0.22), transparent 55%);
-  opacity: 0;
-  transition: opacity 300ms;
-}
-
-.tilt[data-tilting="true"] .tilt-gloss {
-  border-radius: inherit;
-  opacity: 1;
-}
-
-/* ── Scrolling the releases: each box turns out to face you ─ */
-
-@supports (animation-timeline: view()) {
-  @media (prefers-reduced-motion: no-preference) {
-    .turn-in {
-      transform-origin: left center;
-      --turn: 32deg;
-      animation-name: turn-in;
-      animation-timing-function: linear;
-      animation-fill-mode: both;
-      animation-duration: auto;
-      animation-timeline: view();
-      animation-range: entry 5% cover 38%;
-    }
-    .slide-in {
-      animation-name: slide-in;
-      animation-timing-function: linear;
-      animation-fill-mode: both;
-      animation-duration: auto;
-      animation-timeline: view();
-      animation-range: entry 10% cover 34%;
-    }
-  }
-}
-
-/* The far edge swings away from the viewer, so the box never grows past its column. */
-.turn-in-flip {
-  transform-origin: right center !important;
-  --turn: -32deg !important;
-}
-
-@keyframes turn-in {
-  from {
-    transform: perspective(1600px) rotateY(var(--turn)) scale(0.96);
-    opacity: 0.35;
-  }
-  to {
-    transform: none;
-    opacity: 1;
-  }
-}
-
-@keyframes slide-in {
-  from {
-    transform: translateY(48px);
-    opacity: 0.3;
-  }
-  to {
-    transform: none;
-    opacity: 1;
-  }
-}
-
-/* ── Page load: hero rises in ─ */
-
-@media (prefers-reduced-motion: no-preference) {
-  .hero-in {
-    animation: rise-in 0.9s cubic-bezier(0.22, 1, 0.36, 1) var(--d, 0ms) both;
-  }
-}
-
-@keyframes rise-in {
-  from {
-    transform: translateY(28px);
-    opacity: 0;
-    filter: blur(6px);
-  }
-  to {
-    transform: none;
-    opacity: 1;
-    filter: none;
-  }
-}
-
-/* ── Scroll-driven: progress bar, hero drift, section reveals ─ */
-
-.scroll-progress {
+html.intro-seen .preloader {
   display: none;
 }
 
-@supports (animation-timeline: scroll()) {
-  @media (prefers-reduced-motion: no-preference) {
-    .scroll-progress {
-      display: block;
-      position: fixed;
-      inset: 0 0 auto;
-      height: 3px;
-      z-index: 60;
-      background: var(--sticker);
-      transform-origin: left;
-      animation-name: grow-x;
-      animation-timing-function: linear;
-      animation-fill-mode: both;
-      animation-duration: auto;
-      animation-timeline: scroll(root);
-    }
-
-    .hero-drift {
-      animation-name: drift-out;
-      animation-timing-function: linear;
-      animation-fill-mode: both;
-      animation-duration: auto;
-      animation-timeline: scroll(root);
-      animation-range: 0 70vh;
-    }
-
-    .reveal-title {
-      animation-name: title-in;
-      animation-timing-function: linear;
-      animation-fill-mode: both;
-      animation-duration: auto;
-      animation-timeline: view();
-      animation-range: entry 0% cover 30%;
-    }
-
-    .reveal {
-      animation-name: fade-up;
-      animation-timing-function: linear;
-      animation-fill-mode: both;
-      animation-duration: auto;
-      animation-timeline: view();
-      animation-range: entry calc(5% + var(--stagger, 0%)) cover calc(30% + var(--stagger, 0%));
-    }
+@media (prefers-reduced-motion: reduce) {
+  .preloader {
+    display: none;
   }
 }
 
-@keyframes grow-x {
-  from {
-    transform: scaleX(0);
-  }
+@keyframes preloader-failsafe {
   to {
-    transform: scaleX(1);
+    visibility: hidden;
   }
 }
 
-@keyframes drift-out {
+.pl-stage {
+  display: grid;
+  place-items: center;
+  width: min(92vw, 640px);
+  aspect-ratio: 2 / 1;
+}
+
+.pl-word {
+  font-weight: 600;
+  font-size: clamp(2.4rem, 7vw, 4.4rem);
+  letter-spacing: 0.22em;
+  margin-right: -0.22em;
+  text-shadow:
+    0 0 18px rgb(255 255 255 / 0.55),
+    0 0 50px rgb(255 255 255 / 0.25);
+}
+
+.pl-loop {
+  filter: drop-shadow(0 0 6px rgb(255 255 255 / 0.7));
+}
+
+.pl-dot {
+  color: var(--mint);
+  margin-left: -0.15em;
+}
+
+/* ── Hero ─ */
+
+.hero-name {
+  font-weight: 700;
+  text-transform: uppercase;
+  font-size: clamp(3.6rem, 16.2vw, 22rem);
+  line-height: 0.98;
+  letter-spacing: -0.045em;
+  perspective: 900px;
+}
+
+/* Lines clip their rising letters; the top padding keeps the caron on Ř and the accent on Í inside. */
+.hero-line {
+  overflow: clip;
+  padding-top: 0.26em;
+  margin-top: -0.26em;
+}
+
+/* The pointer is a torch: a soft pool of light on the dark wall behind the name. */
+.hero {
+  --mx: 720;
+  --my: 360;
+}
+.hero-torch {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(520px circle at calc(var(--mx) * 1px) calc(var(--my) * 1px), rgb(255 255 255 / 0.1), transparent 70%);
+}
+.hero-torch::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  opacity: 0.07;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+.hero-cue-ring {
+  animation: cue-spin 14s linear infinite;
+}
+.hero-cue:hover .hero-cue-ring {
+  animation-duration: 4s;
+}
+.hero-cue-arrow {
+  animation: cue-drop 1.8s cubic-bezier(0.16, 1, 0.3, 1) infinite;
+}
+
+@keyframes cue-spin {
   to {
-    transform: translateY(-60px) scale(0.96);
-    opacity: 0.25;
+    transform: rotate(360deg);
   }
 }
-
-@keyframes title-in {
-  from {
-    transform: translateY(0.45em);
-    opacity: 0;
-  }
-  to {
-    transform: none;
-    opacity: 1;
-  }
-}
-
-@keyframes fade-up {
-  from {
-    transform: translateY(40px);
-    opacity: 0;
-  }
-  to {
-    transform: none;
-    opacity: 1;
-  }
-}
-
-/* Scroll cue: the arrow drops and fades a few times, then rests. */
-@media (prefers-reduced-motion: no-preference) {
-  .scroll-cue-arrow {
-    animation: cue-drop 1.6s cubic-bezier(0.16, 1, 0.3, 1) 1.2s 3;
-  }
-  .scroll-cue:hover .scroll-cue-arrow {
-    animation: cue-drop 1.2s cubic-bezier(0.16, 1, 0.3, 1) infinite;
-  }
-}
-
 @keyframes cue-drop {
-  0% { transform: translateY(-4px); opacity: 0; }
-  40% { opacity: 1; }
-  100% { transform: translateY(6px); opacity: 0; }
+  0% {
+    transform: translateY(-10px);
+    opacity: 0;
+  }
+  35% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(10px);
+    opacity: 0;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  html {
-    scroll-behavior: auto;
+  .hero-cue-ring,
+  .hero-cue-arrow {
+    animation: none;
   }
-  .shelf-slot,
-  .shelf-box,
-  .shelf-light,
-  .tilt,
+}
+
+.hero-window {
+  background: radial-gradient(ellipse 70% 60% at 50% 35%, #232323, #000 75%);
+}
+
+.hero-char {
+  display: inline-block;
+  will-change: transform;
+}
+
+.hero-window-word {
+  font-weight: 700;
+  font-size: clamp(2.2rem, 4.6vw, 5.5rem);
+  letter-spacing: -0.04em;
+  line-height: 0.85;
+}
+
+/* A light cone from the upper right, falling on an empty floor. */
+.beam {
+  position: absolute;
+  inset: -20%;
+  transform-origin: 78% 0%;
+  background:
+    radial-gradient(ellipse 22% 9% at 46% 76%, rgb(255 255 255 / 0.35), transparent 70%),
+    conic-gradient(from 214deg at 78% 4%, transparent 0deg, rgb(255 255 255 / 0.05) 6deg, rgb(255 255 255 / 0.32) 15deg, rgb(255 255 255 / 0.05) 25deg, transparent 32deg);
+  filter: blur(18px);
+  pointer-events: none;
+}
+
+/* ── Experience: outlined background type and a glitch that settles ─ */
+
+.text-outline {
+  color: transparent;
+  -webkit-text-stroke: 1px rgb(255 255 255 / 0.13);
+}
+
+.glitch {
+  --g: 0;
+  text-shadow:
+    calc(var(--g) * 0.09em) 0 0 rgb(255 255 255 / calc(var(--g) * 0.5)),
+    calc(var(--g) * -0.14em) calc(var(--g) * 0.02em) 0 rgb(255 255 255 / calc(var(--g) * 0.28));
+  filter: blur(calc(var(--g) * 9px));
+  opacity: calc(1 - var(--g) * 0.55);
+  transform: translateX(calc(var(--g) * -0.05em)) skewX(calc(var(--g) * -6deg));
+}
+
+.exp-tab {
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 0.35rem 0.8rem;
+  border-radius: 999px;
+  color: var(--fog);
+  box-shadow: inset 0 0 0 1px rgb(255 255 255 / 0.15);
+  transition:
+    background 400ms,
+    color 400ms;
+}
+.exp-tab[data-on] {
+  background: var(--chalk);
+  color: var(--coal);
+}
+
+/* ── Plus that turns into a minus ─ */
+
+.pi-plus {
+  position: relative;
+  width: 1.5rem;
+  height: 1.5rem;
+}
+.pi-plus::before,
+.pi-plus::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 50%;
+  height: 1.5px;
+  background: currentColor;
+  transition: transform 600ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+.pi-plus::after {
+  transform: rotate(90deg);
+}
+.pi-plus[data-open="true"]::after {
+  transform: rotate(0deg);
+}
+.pi-plus[data-open="true"]::before {
+  transform: rotate(180deg);
+}
+
+.pi-preview {
+  aspect-ratio: 16 / 10;
+  opacity: 0;
+  scale: 0.85;
+  transition:
+    opacity 300ms,
+    scale 500ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+.pi-preview[data-on="true"] {
+  opacity: 1;
+  scale: 1;
+}
+.pi-preview img {
+  transition: opacity 250ms;
+  box-shadow: 0 30px 60px -20px rgb(0 0 0 / 0.45);
+}
+
+/* ── Services: the open item turns dark ─ */
+
+.sv-card {
+  border-radius: 1.25rem;
+  background: rgb(0 0 0 / 0.045);
+  transition:
+    background 600ms cubic-bezier(0.16, 1, 0.3, 1),
+    color 600ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+.sv-card:hover {
+  background: rgb(0 0 0 / 0.08);
+}
+.sv-card[data-open="true"] {
+  background: var(--coal);
+  color: var(--chalk);
+}
+
+.ct-char {
+  display: inline-block;
+}
+
+/* Big type leans with scroll speed; --v is set from Lenis velocity. */
+.v-skew {
+  transform: skewY(calc(var(--v, 0) * -0.09deg));
+}
+
+/* ── Marquee: two bands of the stack, crossed like tape ─ */
+
+.mq-band {
+  position: absolute;
+  left: -10%;
+  right: -10%;
+  top: 50%;
+  padding-block: 0.9rem;
+  white-space: nowrap;
+}
+.mq-a {
+  background: var(--chalk);
+  color: var(--coal);
+  transform: translateY(-50%) rotate(-4deg);
+  z-index: 1;
+}
+.mq-b {
+  color: transparent;
+  -webkit-text-stroke: 1px rgb(255 255 255 / 0.5);
+  transform: translateY(-50%) rotate(3.5deg);
+}
+.mq-word {
+  font-family: var(--font-display-face), sans-serif;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: -0.03em;
+  font-size: clamp(2.6rem, 6.4vw, 6.5rem);
+  line-height: 1;
+  padding-inline: 0.35em;
+}
+.mq-star {
+  font-size: clamp(1.6rem, 3.4vw, 3.4rem);
+  line-height: 1;
+}
+
+/* ── Cursor ─ */
+
+.cursor {
+  display: none;
+}
+.cursor[data-on="true"] {
+  display: grid;
+  place-items: center;
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: 200;
+  width: 14px;
+  height: 14px;
+  margin: -7px 0 0 -7px;
+  border-radius: 999px;
+  background: #fff;
+  mix-blend-mode: difference;
+  pointer-events: none;
+  transition:
+    width 450ms cubic-bezier(0.16, 1, 0.3, 1),
+    height 450ms cubic-bezier(0.16, 1, 0.3, 1),
+    margin 450ms cubic-bezier(0.16, 1, 0.3, 1),
+    background 300ms;
+}
+.cursor[data-mode="link"] {
+  width: 56px;
+  height: 56px;
+  margin: -28px 0 0 -28px;
+}
+.cursor[data-mode="label"] {
+  width: 92px;
+  height: 92px;
+  margin: -46px 0 0 -46px;
+  mix-blend-mode: normal;
+  background: var(--chalk);
+}
+.cursor-label {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--coal);
+  opacity: 0;
+  transition: opacity 200ms;
+}
+.cursor[data-mode="label"] .cursor-label {
+  opacity: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
   .btn,
-  .btn::before {
+  .btn::before,
+  .sv-card,
+  .pi-plus::before,
+  .pi-plus::after {
     transition: none;
+  }
+  .glitch {
+    --g: 0 !important;
+  }
+  .v-skew {
+    transform: none;
+  }
+  /* Without the pinned sideways scroll, the timeline simply stacks. */
+  .exp-pin {
+    height: auto;
+  }
+  .exp-track {
+    flex-direction: column;
+    width: auto;
+    height: auto;
+    padding-block: 3rem 6rem;
+    row-gap: 5rem;
   }
 }
